@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { preload } from 'swr';
 
+//css
+import '../../../pages/auth/auth1/auth.css';
+
 // material-ui
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -51,8 +54,8 @@ export default function AuthLogin({ forgot }) {
     <>
       <Formik
         initialValues={{
-          email: 'info@phoenixcoded.co',
-          password: '123456',
+          email: '',
+          password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -82,7 +85,9 @@ export default function AuthLogin({ forgot }) {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-login" className="input-label">
+                    Email Address
+                  </InputLabel>
                   <OutlinedInput
                     id="email-login"
                     type="email"
@@ -93,6 +98,7 @@ export default function AuthLogin({ forgot }) {
                     placeholder="Enter email address"
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
+                    className="input"
                   />
                 </Stack>
                 {touched.email && errors.email && (
@@ -103,7 +109,9 @@ export default function AuthLogin({ forgot }) {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
+                  <InputLabel htmlFor="password-login" className="input-label">
+                    Password
+                  </InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
@@ -127,6 +135,7 @@ export default function AuthLogin({ forgot }) {
                       </InputAdornment>
                     }
                     placeholder="Enter password"
+                    className="input"
                   />
                 </Stack>
                 {touched.password && errors.password && (
@@ -144,14 +153,20 @@ export default function AuthLogin({ forgot }) {
                         checked={checked}
                         onChange={(event) => setChecked(event.target.checked)}
                         name="checked"
-                        color="primary"
+                        style={{ color: '#144438', fontFamily: "HelveticaNowDisplay', sans-serif" }}
                         size="small"
+                        className="input"
                       />
                     }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
+                    label={<Typography variant="h6">Keep me signed in</Typography>}
                   />
 
-                  <Link variant="h6" component={RouterLink} to={isLoggedIn && forgot ? forgot : '/forgot-password'} color="text.primary">
+                  <Link
+                    variant="h6"
+                    component={RouterLink}
+                    to={isLoggedIn && forgot ? forgot : '/forgot-password'}
+                    style={{ color: '#144438', fontFamily: "HelveticaNowDisplay', sans-serif", textDecoration: 'underline' }}
+                  >
                     Forgot Password?
                   </Link>
                 </Stack>
@@ -163,7 +178,16 @@ export default function AuthLogin({ forgot }) {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Button
+                    disableElevation
+                    disabled={isSubmitting}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    style={{ backgroundColor: '#ff9a30' }}
+                    className="input"
+                  >
                     Login
                   </Button>
                 </AnimateButton>
