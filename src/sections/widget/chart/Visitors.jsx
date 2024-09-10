@@ -63,13 +63,14 @@ function DataChart() {
   };
   const { primary, secondary } = theme.palette.text;
   const line = theme.palette.divider;
+  const orangeColor = '#ff9a30';
 
   const [options, setOptions] = useState(areaChartOptions);
 
   useEffect(() => {
     setOptions((prevState) => ({
       ...prevState,
-      colors: [theme.palette.warning.main],
+      colors: orangeColor,
       theme: {
         mode: mode === ThemeMode.DARK ? 'dark' : 'light'
       }
@@ -127,7 +128,7 @@ export default function Visitors() {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-            <Typography variant="h5">New Users</Typography>
+            <Typography variant="h5">Repeating Users</Typography>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth size="small">
                 <Select id="demo-simple-select" value={age} onChange={handleChange}>
@@ -152,7 +153,7 @@ export default function Visitors() {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <Button fullWidth variant="outlined" color="secondary">
+          <Button fullWidth variant="outlined" style={{ borderColor: '#ff9a30', color: '#ff9a30' }}>
             View more
           </Button>
         </Grid>

@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'HelveticaNowDisplay';
-    src: url('../../../../assets/fonts/Helvetica Now Display/HelveticaNowDisplay-Regular.woff') format('woff');
+    src: url('../../../assets/fonts/HelveticaNowDisplay/HelveticaNowDisplay-Regular.woff2') format('woff2'),
 }
 .heading{
     font-family: 'HelveticaNowDisplay', sans-serif;

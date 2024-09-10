@@ -139,7 +139,11 @@ export default function AuthLogin({ forgot }) {
                   />
                 </Stack>
                 {touched.password && errors.password && (
-                  <FormHelperText error id="standard-weight-helper-text-password-login">
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-password-login"
+                    style={{ fontFamily: "HelveticaNowDisplay', sans-serif" }}
+                  >
                     {errors.password}
                   </FormHelperText>
                 )}

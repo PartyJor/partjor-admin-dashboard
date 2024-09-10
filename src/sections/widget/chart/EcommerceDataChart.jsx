@@ -70,7 +70,7 @@ export default function EcommerceDataChart({ color, height }) {
 
   const [series] = useState([
     {
-      name: 'Users',
+      name: 'Events',
       data: [10, 30, 40, 20, 60, 50, 20, 15, 20, 25, 30, 25]
     }
   ]);

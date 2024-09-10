@@ -33,7 +33,7 @@ export default function NewOrders() {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-            <Typography variant="h5">New Orders</Typography>
+            <Typography variant="h5">Events</Typography>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth size="small">
                 <Select id="demo-simple-select" value={age} onChange={handleChange}>
@@ -58,7 +58,7 @@ export default function NewOrders() {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <Button fullWidth variant="outlined" color="secondary">
+          <Button fullWidth variant="outlined" style={{ borderColor: '#ff9a30', color: '#ff9a30' }}>
             View more
           </Button>
         </Grid>

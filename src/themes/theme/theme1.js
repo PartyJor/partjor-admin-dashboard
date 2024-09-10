@@ -6,12 +6,12 @@ import { ThemeMode } from 'config';
 export default function Theme1(mode) {
   const contrastText = '#fff';
 
-  let primaryColors = ['#D6E4FF', '#D6E4FF', '#ADC8FF', '#84A9FF', '#6690FF', '#3366FF', '#254EDB', '#1939B7', '#102693', '#102693'];
+  let primaryColors = ['#ff9a30', '#ff9a30', '#ff9a30', '#ff9a30', '#144438', '#144438', '#144438', '#144438', '#144438', '#144438'];
   let secondaryColors = ['#F8F9FA', '#F8F9FA', '#F3F5F7', '#DBE0E5', '#BEC8D0', '#8996A4', '#5B6B79', '#3E4853', '#1D2630', '#131920'];
   let errorColors = ['#FFE7D3', '#FF805D', '#FF4528', '#DB271D', '#930C1A'];
   let warningColors = ['#FFF6D0', '#FFCF4E', '#FFB814', '#DB970E', '#935B06'];
   let infoColors = ['#DCF0FF', '#7EB9FF', '#549BFF', '#3D78DB', '#1A3D93'];
-  let successColors = ['#EAFCD4', '#8AE65B', '#58D62A', '#3DB81E', '#137C0D'];
+  let successColors = ['#EAFCD4', '#8AE65B', '#144438', '#3DB81E', '#137C0D'];
 
   if (mode === ThemeMode.DARK) {
     primaryColors = ['#1c2134', '#1f294d', '#243462', '#273e83', '#2c4db0', '#305bdd', '#567fe9', '#80a4f4', '#a9c5f8', '#d2e2fb'];
