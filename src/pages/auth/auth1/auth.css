@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'HelveticaNowDisplay';
+    src: url('../../../assets/fonts/HelveticaNowDisplay/HelveticaNowDisplay-Regular.woff2') format('woff2'),
+}
+.heading{
+    font-family: 'HelveticaNowDisplay', sans-serif;
+    font-weight: bold;
+}
+.input-label{
+    font-family: 'HelveticaNowDisplay', sans-serif;
+    font-size: 16px;
+}
+.input{
+    font-family: 'HelveticaNowDisplay', sans-serif;
+    font-size: 16px;
+}
+.link{
+    text-decoration: underline;
+}
+.caption{
+    font-family: 'HelveticaNowDisplay', sans-serif;
+    color: #333333;
+}
+.button{
+    font-family: 'HelveticaNowDisplay', sans-serif;
+    background-color: #ff9a30;
+}
+

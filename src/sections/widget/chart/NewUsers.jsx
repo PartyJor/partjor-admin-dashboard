@@ -128,7 +128,7 @@ export default function NewUsers() {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <Button fullWidth variant="outlined" color="secondary">
+          <Button fullWidth variant="outlined" style={{ borderColor: '#ff9a30', color: '#ff9a30' }}>
             View more
           </Button>
         </Grid>

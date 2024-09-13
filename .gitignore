@@ -106,3 +106,7 @@ dist
 
 # wincompare file
 .bak
+
+#env
+.env
+.env

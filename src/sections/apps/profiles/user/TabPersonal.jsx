@@ -96,11 +96,12 @@ export default function TabPersonal() {
   maxDate.setFullYear(maxDate.getFullYear() - 18);
   const inputRef = useInputRef();
 
+  const userData = window.localStorage.getItem('userData');
   return (
     <MainCard content={false} title="Personal Information" sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>
       <Formik
         initialValues={{
-          firstname: 'Stebin',
+          firstname: userData.first_name,
           lastname: 'Ben',
           email: 'stebin.ben@gmail.com',
           dob: new Date('03-10-1993'),

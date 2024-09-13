@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 
 // project-imports
 import NavItem from './NavItem';
+import '../../components.css';
 
 // ==============================|| NAVIGATION - GROUP ||============================== //
 

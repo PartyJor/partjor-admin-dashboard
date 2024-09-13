@@ -9,7 +9,6 @@ import NewOrders from 'sections/widget/chart/NewOrders';
 import NewUsers from 'sections/widget/chart/NewUsers';
 import Visitors from 'sections/widget/chart/Visitors';
 
-import DropboxStorage from 'sections/widget/statistics/DropboxStorage';
 import SwitchBalanace from 'sections/widget/statistics/SwitchBalanace';
 
 import ProjectAnalytics from 'sections/widget/chart/ProjectAnalytics';
@@ -41,9 +40,6 @@ export default function DashboardAnalytics() {
       </Grid>
       <Grid item xs={12} md={4} lg={3}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <DropboxStorage />
-          </Grid>
           <Grid item xs={12}>
             <SwitchBalanace />
           </Grid>

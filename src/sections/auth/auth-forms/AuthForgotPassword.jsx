@@ -9,6 +9,9 @@ import Typography from '@mui/material/Typography';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
 
+//css
+import '../../../pages/auth/auth1/auth.css';
+
 // third-party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -82,7 +85,9 @@ export default function AuthForgotPassword() {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-forgot">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-forgot" className="input-label">
+                    Email Address
+                  </InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
@@ -94,10 +99,11 @@ export default function AuthForgotPassword() {
                     onChange={handleChange}
                     placeholder="Enter email address"
                     inputProps={{}}
+                    className="input"
                   />
                 </Stack>
                 {touched.email && errors.email && (
-                  <FormHelperText error id="helper-text-email-forgot">
+                  <FormHelperText error id="helper-text-email-forgot" className="input-label">
                     {errors.email}
                   </FormHelperText>
                 )}
@@ -108,11 +114,21 @@ export default function AuthForgotPassword() {
                 </Grid>
               )}
               <Grid item xs={12} sx={{ mb: -2 }}>
-                <Typography variant="caption">Do not forgot to check SPAM box.</Typography>
+                <Typography variant="caption" className="caption">
+                  Do not forgot to check SPAM box.
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Button
+                    disableElevation
+                    disabled={isSubmitting}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    className="button"
+                  >
                     Send Password Reset Email
                   </Button>
                 </AnimateButton>

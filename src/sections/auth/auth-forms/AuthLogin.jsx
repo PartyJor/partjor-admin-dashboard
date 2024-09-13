@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { preload } from 'swr';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+// import { preload } from 'swr';
+
+//css
+import '../../../pages/auth/auth1/auth.css';
 
 // material-ui
 import Grid from '@mui/material/Grid';
@@ -25,7 +28,7 @@ import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
-import { fetcher } from 'utils/axios';
+// import { fetcher } from 'utils/axios';
 
 // assets
 import { Eye, EyeSlash } from 'iconsax-react';
@@ -47,12 +50,14 @@ export default function AuthLogin({ forgot }) {
     event.preventDefault();
   };
 
+  const navigate = useNavigate();
+
   return (
     <>
       <Formik
         initialValues={{
-          email: 'info@phoenixcoded.co',
-          password: '123456',
+          email: '',
+          password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -65,13 +70,15 @@ export default function AuthLogin({ forgot }) {
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
-              preload('api/menu/dashboard', fetcher); // load menu on login success
+              setTimeout(() => {
+                navigate(isLoggedIn ? '/dashboard/default' : '/');
+              }, 1500); // load menu on login success
             }
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {
               setStatus({ success: false });
-              setErrors({ submit: err.message });
+              setErrors({ submit: 'Invalid email or password' });
               setSubmitting(false);
             }
           }
@@ -82,7 +89,9 @@ export default function AuthLogin({ forgot }) {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-login" className="input-label">
+                    Email Address
+                  </InputLabel>
                   <OutlinedInput
                     id="email-login"
                     type="email"
@@ -93,6 +102,7 @@ export default function AuthLogin({ forgot }) {
                     placeholder="Enter email address"
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
+                    className="input"
                   />
                 </Stack>
                 {touched.email && errors.email && (
@@ -103,7 +113,9 @@ export default function AuthLogin({ forgot }) {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
+                  <InputLabel htmlFor="password-login" className="input-label">
+                    Password
+                  </InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
@@ -127,10 +139,15 @@ export default function AuthLogin({ forgot }) {
                       </InputAdornment>
                     }
                     placeholder="Enter password"
+                    className="input"
                   />
                 </Stack>
                 {touched.password && errors.password && (
-                  <FormHelperText error id="standard-weight-helper-text-password-login">
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-password-login"
+                    style={{ fontFamily: "HelveticaNowDisplay', sans-serif" }}
+                  >
                     {errors.password}
                   </FormHelperText>
                 )}
@@ -144,26 +161,43 @@ export default function AuthLogin({ forgot }) {
                         checked={checked}
                         onChange={(event) => setChecked(event.target.checked)}
                         name="checked"
-                        color="primary"
+                        style={{ color: '#144438', fontFamily: "HelveticaNowDisplay', sans-serif" }}
                         size="small"
+                        className="input"
                       />
                     }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
+                    label={<Typography variant="h6">Keep me signed in</Typography>}
                   />
 
-                  <Link variant="h6" component={RouterLink} to={isLoggedIn && forgot ? forgot : '/forgot-password'} color="text.primary">
+                  <Link
+                    variant="h6"
+                    component={RouterLink}
+                    to={isLoggedIn && forgot ? forgot : '/forgot-password'}
+                    style={{ color: '#144438', fontFamily: "HelveticaNowDisplay', sans-serif", textDecoration: 'underline' }}
+                  >
                     Forgot Password?
                   </Link>
                 </Stack>
               </Grid>
               {errors.submit && (
                 <Grid item xs={12}>
-                  <FormHelperText error>{errors.submit}</FormHelperText>
+                  <FormHelperText error style={{ fontFamily: "HelveticaNowDisplay', sans-serif", fontSize: '16px' }}>
+                    {errors.submit}
+                  </FormHelperText>
                 </Grid>
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Button
+                    disableElevation
+                    disabled={isSubmitting}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    style={{ backgroundColor: '#ff9a30' }}
+                    className="input"
+                  >
                     Login
                   </Button>
                 </AnimateButton>
