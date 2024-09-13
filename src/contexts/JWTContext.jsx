@@ -2,7 +2,9 @@ import { createContext, useEffect, useReducer } from 'react';
 
 // third-party
 import { Chance } from 'chance';
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
+import 'core-js/stable/atob';
+// import { decode } from 'base-64';
 
 // reducer - state management
 import { LOGIN, LOGOUT } from 'contexts/auth-reducer/actions';
@@ -21,17 +23,19 @@ const initialState = {
   user: null
 };
 
-const verifyToken = (serviceToken) => {
-  if (!serviceToken) {
-    return false;
-  }
-  const decoded = jwtDecode(serviceToken);
+// const verifyToken = (serviceToken) => {
+//   if (!serviceToken) {
+//     return false;
+//   }
 
-  /**
-   * Property 'exp' does not exist on type '<T = unknown>(token: string, options?: JwtDecodeOptions | undefined) => T'.
-   */
-  return decoded.exp > Date.now() / 1000;
-};
+//   global.atob = decode;
+//   const decoded = decode(serviceToken, { header: true });
+
+//   /**
+//    * Property 'exp' does not exist on type '<T = unknown>(token: string, options?: JwtDecodeOptions | undefined) => T'.
+//    */
+//   return decoded.exp > Date.now() / 1000;
+// };
 
 const setSession = (serviceToken) => {
   if (serviceToken) {
@@ -54,10 +58,10 @@ export const JWTProvider = ({ children }) => {
     const init = async () => {
       try {
         const serviceToken = window.localStorage.getItem('serviceToken');
-        if (serviceToken && verifyToken(serviceToken)) {
+        if (serviceToken) {
           setSession(serviceToken);
-          const response = await axios.get('/api/account/me');
-          const { user } = response.data;
+          const response = window.localStorage.getItem('userData');
+          const { user } = response;
 
           dispatch({
             type: LOGIN,
@@ -82,9 +86,12 @@ export const JWTProvider = ({ children }) => {
     init();
   }, []);
 
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', { email, password });
-    const { serviceToken, user } = response.data;
+    const response = await axios.post(`${baseUrl}/v1/admin/auth/login`, { email, password });
+    const { serviceToken, user } = response.data.meta.token;
+    const userData = response.data.data.attributes;
     setSession(serviceToken);
     dispatch({
       type: LOGIN,
@@ -93,6 +100,9 @@ export const JWTProvider = ({ children }) => {
         user
       }
     });
+    localStorage.setItem('serviceToken', response.data.meta.token);
+    localStorage.setItem('userData', userData);
+    console.log(userData);
   };
 
   const register = async (email, password, firstName, lastName) => {
@@ -124,12 +134,32 @@ export const JWTProvider = ({ children }) => {
   };
 
   const logout = () => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}/v1/admin/auth/logout`
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setSession(null);
     dispatch({ type: LOGOUT });
   };
 
   const resetPassword = async (email) => {
-    console.log('email - ', email);
+    axios({
+      method: 'post',
+      url: `${baseUrl}/v1/admin/auth/forgot-password`,
+      data: { email: email }
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const updateProfile = () => {};

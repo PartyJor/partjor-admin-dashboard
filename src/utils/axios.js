@@ -17,15 +17,16 @@ axiosServices.interceptors.request.use(
   }
 );
 
-axiosServices.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response.status === 401 && !window.location.href.includes('/login')) {
-      window.location.pathname = '/maintenance/500';
-    }
-    return Promise.reject((error.response && error.response.data) || 'Wrong Services');
-  }
-);
+// axiosServices.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response.status === 401 && !window.location.href.includes('/login')) {
+//       window.location.pathname = '/maintenance/500';
+//     }
+//     console.log(error.response);
+//     return Promise.reject((error.response && error.response.data) || 'Wrong Services');
+//   }
+// );
 
 export default axiosServices;
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { preload } from 'swr';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+// import { preload } from 'swr';
 
 //css
 import '../../../pages/auth/auth1/auth.css';
@@ -28,7 +28,7 @@ import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
-import { fetcher } from 'utils/axios';
+// import { fetcher } from 'utils/axios';
 
 // assets
 import { Eye, EyeSlash } from 'iconsax-react';
@@ -50,6 +50,8 @@ export default function AuthLogin({ forgot }) {
     event.preventDefault();
   };
 
+  const navigate = useNavigate();
+
   return (
     <>
       <Formik
@@ -68,13 +70,15 @@ export default function AuthLogin({ forgot }) {
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
-              preload('api/menu/dashboard', fetcher); // load menu on login success
+              setTimeout(() => {
+                navigate(isLoggedIn ? '/dashboard/default' : '/');
+              }, 1500); // load menu on login success
             }
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {
               setStatus({ success: false });
-              setErrors({ submit: err.message });
+              setErrors({ submit: 'Invalid email or password' });
               setSubmitting(false);
             }
           }
@@ -177,7 +181,9 @@ export default function AuthLogin({ forgot }) {
               </Grid>
               {errors.submit && (
                 <Grid item xs={12}>
-                  <FormHelperText error>{errors.submit}</FormHelperText>
+                  <FormHelperText error style={{ fontFamily: "HelveticaNowDisplay', sans-serif", fontSize: '16px' }}>
+                    {errors.submit}
+                  </FormHelperText>
                 </Grid>
               )}
               <Grid item xs={12}>
