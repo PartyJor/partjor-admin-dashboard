@@ -18,8 +18,6 @@ import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import Transitions from 'components/@extended/Transitions';
 
-import { ImagePath, getImageUrl } from 'utils/getImageUrl';
-
 // assets
 import { Location, Mobile, Sms } from 'iconsax-react';
 
@@ -28,6 +26,20 @@ import { Location, Mobile, Sms } from 'iconsax-react';
 export default function UserView({ data }) {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  const getUserInitials = (name) => {
+    if (!name) return '';
+    const nameParts = name.trim().split(' ');
+
+    if (nameParts.length === 1) {
+      return nameParts[0][0].toUpperCase();
+    }
+
+    const firstInitial = nameParts[0][0].toUpperCase();
+    const lastInitial = nameParts[nameParts.length - 1][0].toUpperCase();
+
+    return `${firstInitial}${lastInitial}`;
+  };
 
   return (
     <Transitions type="slide" direction="down" in={true}>
@@ -43,7 +55,11 @@ export default function UserView({ data }) {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={2.5} alignItems="center">
-                  <Avatar alt="Avatar 1" size="xl" src={getImageUrl(`avatar-${data.avatar}.png`, ImagePath.USERS)} />
+                  {data.attributes.avatar ? (
+                    <Avatar alt="Avatar 1" size="xl" src={data.attributes.avatar} />
+                  ) : (
+                    <Avatar size="xl">{getUserInitials(data.attributes.name)}</Avatar>
+                  )}
                 </Stack>
               </Grid>
               <Grid item xs={12}>

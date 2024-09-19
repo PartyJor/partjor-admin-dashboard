@@ -60,7 +60,7 @@ export const JWTProvider = ({ children }) => {
         const serviceToken = window.localStorage.getItem('serviceToken');
         if (serviceToken) {
           setSession(serviceToken);
-          const response = window.localStorage.getItem('userData');
+          const response = JSON.parse(window.localStorage.getItem('userData'));
           const { user } = response;
 
           dispatch({
@@ -101,7 +101,7 @@ export const JWTProvider = ({ children }) => {
       }
     });
     window.localStorage.setItem('serviceToken', response.data.meta.token);
-    window.localStorage.setItem('userData', userData);
+    window.localStorage.setItem('userData', JSON.stringify(userData));
   };
 
   const register = async (email, password, firstName, lastName) => {
@@ -166,6 +166,7 @@ export const JWTProvider = ({ children }) => {
   if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;
   }
+
 
   return <JWTContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile }}>{children}</JWTContext.Provider>;
 };

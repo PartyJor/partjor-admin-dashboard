@@ -195,7 +195,7 @@ export default function AuthLogin({ forgot }) {
                     size="large"
                     type="submit"
                     variant="contained"
-                    style={{ backgroundColor: '#ff9a30' }}
+                    style={{ backgroundColor: '#144438' }}
                     className="input"
                   >
                     Login

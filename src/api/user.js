@@ -49,7 +49,6 @@ export function useGetUser() {
     }),
     [data, error, isLoading, isValidating]
   );
-
   return memoizedValue;
 }
 
@@ -99,11 +98,15 @@ export async function updateUser(UserId, updatedUser) {
 export async function suspendUser(UserId) {
   const data = UserId;
   await axios
-    .patch(endpoints.key + endpoints.suspend + `${data}/suspend`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    .patch(
+      endpoints.key + endpoints.suspend + `${data}/suspend`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
     .then((response) => {
       console.log(response);
     })
@@ -112,14 +115,17 @@ export async function suspendUser(UserId) {
     });
 }
 
-export async function activateUser(UserId){
-  const data = UserId;
+export async function activateUser(UserId) {
   await axios
-    .patch(endpoints.key + endpoints.suspend + `${data}/activate`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    .patch(
+      endpoints.key + endpoints.suspend + `${UserId}/activate`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
     .then((response) => {
       console.log(response);
     })

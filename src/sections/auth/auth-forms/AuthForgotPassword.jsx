@@ -128,6 +128,7 @@ export default function AuthForgotPassword() {
                     type="submit"
                     variant="contained"
                     className="button"
+                    style={{ backgroundColor: '#144438' }}
                   >
                     Send Password Reset Email
                   </Button>

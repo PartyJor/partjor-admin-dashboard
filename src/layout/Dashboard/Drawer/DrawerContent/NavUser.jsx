@@ -21,8 +21,6 @@ import { useGetMenuMaster } from 'api/menu';
 // assets
 import { ArrowRight2 } from 'iconsax-react';
 
-import avatar1 from 'assets/images/users/avatar-6.png';
-
 const ExpandMore = styled(IconButton, { shouldForwardProp: (prop) => prop !== 'theme' && prop !== 'expand' && prop !== 'drawerOpen' })(
   ({ theme, expand, drawerOpen }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(-90deg)',
@@ -72,6 +70,22 @@ export default function UserList() {
     setAnchorEl(null);
   };
 
+  const userData = JSON.parse(window.localStorage.getItem('userData'));
+
+  const getUserInitials = (name) => {
+    if (!name) return '';
+    const nameParts = name.trim().split(' ');
+
+    if (nameParts.length === 1) {
+      return nameParts[0][0].toUpperCase();
+    }
+
+    const firstInitial = nameParts[0][0].toUpperCase();
+    const lastInitial = nameParts[nameParts.length - 1][0].toUpperCase();
+
+    return `${firstInitial}${lastInitial}`;
+  };
+
   return (
     <Box sx={{ p: 1.25, px: !drawerOpen ? 1.25 : 3, borderTop: '2px solid ', borderTopColor: 'divider' }}>
       <List disablePadding>
@@ -98,9 +112,17 @@ export default function UserList() {
           }}
         >
           <ListItemAvatar>
-            <Avatar alt="Avatar" src={avatar1} sx={{ ...(drawerOpen && { width: 46, height: 46 }) }} />
+            {userData.avatar ? (
+              <Avatar alt="Avatar 1" size="md" src={userData.avatar} />
+            ) : (
+              <Avatar size="md">{getUserInitials(userData.first_name + ' ' + userData.last_name)}</Avatar>
+            )}
           </ListItemAvatar>
-          <ListItemText primary={user?.name} sx={{ ...(!drawerOpen && { display: 'none' }) }} secondary="UI/UX Designer" />
+          <ListItemText
+            primary={user?.name}
+            sx={{ ...(!drawerOpen && { display: 'none' }) }}
+            secondary={userData.first_name + ' ' + userData.last_name}
+          />
         </ListItem>
       </List>
       <Menu

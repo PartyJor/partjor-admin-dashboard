@@ -54,6 +54,7 @@ import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
 import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
+// import UserAvatar from 'sections/apps/chat/UserAvatar';
 // import Alert from 'themes/overrides/Alert';
 
 // ==============================|| REACT TABLE - LIST ||============================== //
@@ -217,6 +218,22 @@ export default function UserListPage() {
     setActivateUserOpen(!activateUserOpen);
   };
 
+  const getUserInitials = (name) => {
+    if (!name) return '';
+    const nameParts = name.trim().split(' ');
+
+    // Handle case with one name
+    if (nameParts.length === 1) {
+      return nameParts[0][0].toUpperCase();
+    }
+
+    // Get initials from the first and last name
+    const firstInitial = nameParts[0][0].toUpperCase();
+    const lastInitial = nameParts[nameParts.length - 1][0].toUpperCase();
+
+    return `${firstInitial}${lastInitial}`;
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -254,14 +271,16 @@ export default function UserListPage() {
         accessorKey: 'attributes.name',
         cell: ({ row, getValue }) => (
           <Stack direction="row" spacing={1.5} alignItems="center">
-            <Avatar
-              alt="Avatar"
-              size="sm"
-              src={getImageUrl(`avatar-${!row.original.avatar ? 1 : row.original.avatar}.png`, ImagePath.USERS)}
-            />
+            {row.original.attributes.avatar ? (
+              <Avatar alt="Avatar" size="sm" src={getImageUrl(`avatar-${!row.original.attributes.avatar}.png`, ImagePath.USERS)} />
+            ) : (
+              <Avatar alt="User Initials" size="sm">
+                {getUserInitials(getValue())}
+              </Avatar>
+            )}
             <Stack spacing={0}>
               <Typography variant="subtitle1">{getValue()}</Typography>
-              <Typography color="text.secondary">{row.original.email}</Typography>
+              <Typography color="text.secondary">{row.original.attributes.email}</Typography>
             </Stack>
           </Stack>
         )

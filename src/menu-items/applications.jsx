@@ -121,28 +121,13 @@ const applications = {
       ]
     },
     {
-      id: 'profile',
+      id: 'Profile',
       title: <FormattedMessage id="profile" />,
-      type: 'collapse',
+      type: 'item',
       icon: icons.profile,
-      children: [
-        {
-          id: 'user-profile',
-          title: <FormattedMessage id="user-profile" />,
-          type: 'item',
-          link: '/apps/profiles/user/:tab',
-          url: '/apps/profiles/user/personal',
-          breadcrumbs: false
-        },
-        {
-          id: 'account-profile',
-          title: <FormattedMessage id="account-profile" />,
-          type: 'item',
-          url: '/apps/profiles/account/basic',
-          link: '/apps/profiles/account/:tab',
-          breadcrumbs: false
-        }
-      ]
+      url: '/apps/profiles/account/basic',
+      link: '/apps/profiles/account/:tab',
+      breadcrumbs: false
     }
   ]
 };
