@@ -34,7 +34,7 @@ export default function AuthBackground() {
       designation: '@alliegrater',
       rating: 4,
       comment:
-        'Very good customer service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted customer service and it was no problem even though the deadline for refund had actually expired.😍'
+        'Very good User service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted User service and it was no problem even though the deadline for refund had actually expired.😍'
     },
     {
       image: Avatar2,
@@ -42,7 +42,7 @@ export default function AuthBackground() {
       designation: '@alliegrater',
       rating: 3,
       comment:
-        'Very good customer service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted customer service and it was no problem even though the deadline for refund had actually expired.😍'
+        'Very good User service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted User service and it was no problem even though the deadline for refund had actually expired.😍'
     },
     {
       image: Avatar3,
@@ -50,7 +50,7 @@ export default function AuthBackground() {
       designation: '@alliegrater',
       rating: 5,
       comment:
-        'Very good customer service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted customer service and it was no problem even though the deadline for refund had actually expired.😍'
+        'Very good User service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted User service and it was no problem even though the deadline for refund had actually expired.😍'
     },
     {
       image: Avatar4,
@@ -58,7 +58,7 @@ export default function AuthBackground() {
       designation: '@alliegrater',
       rating: 4,
       comment:
-        'Very good customer service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted customer service and it was no problem even though the deadline for refund had actually expired.😍'
+        'Very good User service!👌 I liked the design and there was nothing wrong, but found out after testing that it did not quite match the functionality and overall design that I needed for my type of software. I therefore contacted User service and it was no problem even though the deadline for refund had actually expired.😍'
     }
   ];
   return (

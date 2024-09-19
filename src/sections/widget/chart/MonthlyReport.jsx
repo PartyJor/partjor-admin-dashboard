@@ -129,7 +129,7 @@ function EcommerceDataChart() {
       data: [13, 23, 20, 8, 13, 27, 21, 7, 25, 13, 22, 8]
     },
     {
-      name: 'Customer',
+      name: 'User',
       data: [11, 17, 15, 15, 21, 14, 11, 17, 15, 15, 21, 14]
     },
     {

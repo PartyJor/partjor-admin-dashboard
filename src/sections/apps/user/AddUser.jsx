@@ -6,37 +6,37 @@ import Modal from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 
 // project-imports
-import FormCustomerAdd from './FormCustomerAdd';
+import FormUserAdd from './FormUserAdd';
 import MainCard from 'components/MainCard';
 import SimpleBar from 'components/third-party/SimpleBar';
 import CircularWithPath from 'components/@extended/progress/CircularWithPath';
-import { handlerCustomerDialog, useGetCustomer, useGetCustomerMaster } from 'api/customer';
+import { handlerUserDialog, useGetUser, useGetUserMaster } from 'api/user';
 
-// ==============================|| CUSTOMER - ADD / EDIT ||============================== //
+// ==============================|| User - ADD / EDIT ||============================== //
 
-export default function AddCustomer() {
-  const { customerMasterLoading, customerMaster } = useGetCustomerMaster();
-  const { customersLoading: loading, customers } = useGetCustomer();
-  const isModal = customerMaster?.modal;
+export default function AddUser() {
+  const { UserMasterLoading, UserMaster } = useGetUserMaster();
+  const { UsersLoading: loading, Users } = useGetUser();
+  const isModal = UserMaster?.modal;
 
   const [list, setList] = useState(null);
 
   useEffect(() => {
-    if (customerMaster?.modal && typeof customerMaster.modal === 'number') {
-      const newList = customers.filter((info) => info.id === isModal && info)[0];
+    if (UserMaster?.modal && typeof UserMaster.modal === 'number') {
+      const newList = Users.filter((info) => info.id === isModal && info)[0];
       setList(newList);
     } else {
       setList(null);
     }
     // eslint-disable-next-line
-  }, [customerMaster]);
+  }, [UserMaster]);
 
-  const closeModal = () => handlerCustomerDialog(false);
+  const closeModal = () => handlerUserDialog(false);
 
   // eslint-disable-next-line
-  const customerForm = useMemo(
-    () => !loading && !customerMasterLoading && <FormCustomerAdd customer={list} closeModal={closeModal} />,
-    [list, loading, customerMasterLoading]
+  const UserForm = useMemo(
+    () => !loading && !UserMasterLoading && <FormUserAdd User={list} closeModal={closeModal} />,
+    [list, loading, UserMasterLoading]
   );
 
   return (
@@ -45,8 +45,8 @@ export default function AddCustomer() {
         <Modal
           open={true}
           onClose={closeModal}
-          aria-labelledby="modal-customer-add-label"
-          aria-describedby="modal-customer-add-description"
+          aria-labelledby="modal-User-add-label"
+          aria-describedby="modal-User-add-description"
           sx={{ '& .MuiPaper-root:focus': { outline: 'none' } }}
         >
           <MainCard
@@ -60,14 +60,14 @@ export default function AddCustomer() {
                 '& .simplebar-content': { display: 'flex', flexDirection: 'column' }
               }}
             >
-              {loading && customerMasterLoading ? (
+              {loading && UserMasterLoading ? (
                 <Box sx={{ p: 5 }}>
                   <Stack direction="row" justifyContent="center">
                     <CircularWithPath />
                   </Stack>
                 </Box>
               ) : (
-                customerForm
+                UserForm
               )}
             </SimpleBar>
           </MainCard>

@@ -38,7 +38,7 @@
   "contact-us": "Contact US",
   "create": "Create",
   "custom": "Custom",
-  "customer": "Customer",
+  "User": "User",
   "dashboard": "Dashboard",
   "data": "Data",
   "data-display": "Data Display",
@@ -138,5 +138,6 @@
   "user-profile": "User Profile",
   "utils": "Utils",
   "widgets": "Widgets",
-  "more-items": "More Items"
+  "more-items": "More Items",
+  "User Management": "User Management"
 }

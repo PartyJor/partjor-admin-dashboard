@@ -100,9 +100,8 @@ export const JWTProvider = ({ children }) => {
         user
       }
     });
-    localStorage.setItem('serviceToken', response.data.meta.token);
-    localStorage.setItem('userData', userData);
-    console.log(userData);
+    window.localStorage.setItem('serviceToken', response.data.meta.token);
+    window.localStorage.setItem('userData', userData);
   };
 
   const register = async (email, password, firstName, lastName) => {

@@ -2,7 +2,7 @@
 import { FormattedMessage } from 'react-intl';
 
 // project-imports
-import { handlerCustomerDialog } from 'api/customer';
+import { handlerUserDialog } from 'api/user';
 import { NavActionType } from 'config';
 
 // assets
@@ -16,7 +16,7 @@ const icons = {
   chat: Messages2,
   calendar: Calendar1,
   kanban: Kanban,
-  customer: Profile2User,
+  User: Profile2User,
   invoice: Bill,
   profile: UserSquare,
   ecommerce: ShoppingBag,
@@ -66,30 +66,17 @@ const applications = {
       breadcrumbs: false
     },
     {
-      id: 'customer',
-      title: <FormattedMessage id="customer" />,
-      type: 'collapse',
-      icon: icons.customer,
-      children: [
+      id: 'User',
+      title: <FormattedMessage id="User Management" />,
+      type: 'item',
+      icon: icons.User,
+      url: '/apps/User/User-list',
+      actions: [
         {
-          id: 'customer-list',
-          title: <FormattedMessage id="list" />,
-          type: 'item',
-          url: '/apps/customer/customer-list',
-          actions: [
-            {
-              type: NavActionType.FUNCTION,
-              label: 'Add Customer',
-              function: () => handlerCustomerDialog(true),
-              icon: icons.add
-            }
-          ]
-        },
-        {
-          id: 'customer-card',
-          title: <FormattedMessage id="cards" />,
-          type: 'item',
-          url: '/apps/customer/customer-card'
+          type: NavActionType.FUNCTION,
+          label: 'Add User',
+          function: () => handlerUserDialog(true),
+          icon: icons.add
         }
       ]
     },
@@ -154,48 +141,6 @@ const applications = {
           url: '/apps/profiles/account/basic',
           link: '/apps/profiles/account/:tab',
           breadcrumbs: false
-        }
-      ]
-    },
-
-    {
-      id: 'e-commerce',
-      title: <FormattedMessage id="e-commerce" />,
-      type: 'collapse',
-      icon: icons.ecommerce,
-      children: [
-        {
-          id: 'products',
-          title: <FormattedMessage id="products" />,
-          type: 'item',
-          url: '/apps/e-commerce/products'
-        },
-        {
-          id: 'product-details',
-          title: <FormattedMessage id="product-details" />,
-          type: 'item',
-          link: '/apps/e-commerce/product-details/:id',
-          url: '/apps/e-commerce/product-details/1',
-          breadcrumbs: false
-        },
-        {
-          id: 'product-list',
-          title: <FormattedMessage id="product-list" />,
-          type: 'item',
-          url: '/apps/e-commerce/product-list',
-          breadcrumbs: false
-        },
-        {
-          id: 'add-new-product',
-          title: <FormattedMessage id="add-new-product" />,
-          type: 'item',
-          url: '/apps/e-commerce/add-new-product'
-        },
-        {
-          id: 'checkout',
-          title: <FormattedMessage id="checkout" />,
-          type: 'item',
-          url: '/apps/e-commerce/checkout'
         }
       ]
     }

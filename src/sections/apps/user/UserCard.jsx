@@ -24,9 +24,9 @@ import { PatternFormat } from 'react-number-format';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 // project-imports
-import CustomerModal from './CustomerModal';
-import CustomerPreview from './CustomerPreview';
-import AlertCustomerDelete from './AlertCustomerDelete';
+import UserModal from './UserModal';
+import UserPreview from './UserPreview';
+import AlertUserDelete from './AlertUserDelete';
 import ListSmallCard from './export-pdf/ListSmallCard';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
@@ -37,12 +37,12 @@ import MoreIcon from 'components/@extended/MoreIcon';
 import { CallCalling, Link2, Location, Sms } from 'iconsax-react';
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
-// ==============================|| CUSTOMER - CARD ||============================== //
+// ==============================|| User - CARD ||============================== //
 
-export default function CustomerCard({ customer }) {
+export default function UserCard({ User }) {
   const [open, setOpen] = useState(false);
-  const [customerModal, setCustomerModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [UserModal, setUserModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -68,9 +68,9 @@ export default function CustomerCard({ customer }) {
     setAnchorEl(null);
   };
 
-  const editCustomer = () => {
-    setSelectedCustomer(customer);
-    setCustomerModal(true);
+  const editUser = () => {
+    setSelectedUser(User);
+    setUserModal(true);
   };
 
   return (
@@ -94,11 +94,11 @@ export default function CustomerCard({ customer }) {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar alt={customer.name} src={getImageUrl(`avatar-${!customer.avatar ? 1 : customer.avatar}.png`, ImagePath.USERS)} />
+                  <Avatar alt={User.name} src={getImageUrl(`avatar-${!User.avatar ? 1 : User.avatar}.png`, ImagePath.USERS)} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{customer.name}</Typography>}
-                  secondary={<Typography color="text.secondary">{customer.role}</Typography>}
+                  primary={<Typography variant="subtitle1">{User.name}</Typography>}
+                  secondary={<Typography color="text.secondary">{User.role}</Typography>}
                 />
               </ListItem>
             </List>
@@ -113,11 +113,11 @@ export default function CustomerCard({ customer }) {
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
               <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
-                <PDFDownloadLink document={<ListSmallCard customer={customer} />} fileName={`Customer-${customer.name}.pdf`}>
+                <PDFDownloadLink document={<ListSmallCard User={User} />} fileName={`User-${User.name}.pdf`}>
                   Export PDF
                 </PDFDownloadLink>
               </MenuItem>
-              <MenuItem onClick={editCustomer}>Edit</MenuItem>
+              <MenuItem onClick={editUser}>Edit</MenuItem>
               <MenuItem onClick={handleAlertClose}>Delete</MenuItem>
             </Menu>
           </Grid>
@@ -125,7 +125,7 @@ export default function CustomerCard({ customer }) {
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            <Typography>Hello, {customer.about}</Typography>
+            <Typography>Hello, {User.about}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={1} direction={{ xs: 'column', md: 'row' }}>
@@ -142,7 +142,7 @@ export default function CustomerCard({ customer }) {
                     <ListItemIcon>
                       <Sms size={18} />
                     </ListItemIcon>
-                    <ListItemText primary={<Typography color="text.secondary">{customer.email}</Typography>} />
+                    <ListItemText primary={<Typography color="text.secondary">{User.email}</Typography>} />
                   </ListItem>
                   <ListItem alignItems="flex-start">
                     <ListItemIcon>
@@ -151,7 +151,7 @@ export default function CustomerCard({ customer }) {
                     <ListItemText
                       primary={
                         <Typography color="text.secondary">
-                          <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={customer.contact} />
+                          <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={User.contact} />
                         </Typography>
                       }
                     />
@@ -166,7 +166,7 @@ export default function CustomerCard({ customer }) {
                     <ListItemIcon>
                       <Location size={18} />
                     </ListItemIcon>
-                    <ListItemText primary={<Typography color="text.secondary">{customer.country}</Typography>} />
+                    <ListItemText primary={<Typography color="text.secondary">{User.country}</Typography>} />
                   </ListItem>
                   <ListItem alignItems="flex-start">
                     <ListItemIcon>
@@ -175,7 +175,7 @@ export default function CustomerCard({ customer }) {
                     <ListItemText
                       primary={
                         <Link href="https://google.com" target="_blank" sx={{ textTransform: 'lowercase' }}>
-                          https://{customer.firstName}.en
+                          https://{User.firstName}.en
                         </Link>
                       }
                     />
@@ -187,7 +187,7 @@ export default function CustomerCard({ customer }) {
           <Grid item xs={12}>
             <Box>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', listStyle: 'none', p: 0.5, m: 0 }} component="ul">
-                {customer.skills.map((skill, index) => (
+                {User.skills.map((skill, index) => (
                   <ListItem disablePadding key={index} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
                     <Chip color="secondary" variant="outlined" size="small" label={skill} sx={{ color: 'text.secondary' }} />
                   </ListItem>
@@ -205,7 +205,7 @@ export default function CustomerCard({ customer }) {
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
           <Typography variant="caption" color="text.secondary">
-            Updated in {customer.time}
+            Updated in {User.time}
           </Typography>
           <Button variant="outlined" size="small" onClick={handleClickOpen}>
             Preview
@@ -213,11 +213,11 @@ export default function CustomerCard({ customer }) {
         </Stack>
       </MainCard>
 
-      <CustomerPreview customer={customer} open={open} onClose={handleClose} editCustomer={editCustomer} />
-      <AlertCustomerDelete id={customer.id} title={customer.name} open={openAlert} handleClose={handleAlertClose} />
-      <CustomerModal open={customerModal} modalToggler={setCustomerModal} customer={selectedCustomer} />
+      <UserPreview User={User} open={open} onClose={handleClose} editUser={editUser} />
+      <AlertUserDelete id={User.id} title={User.name} open={openAlert} handleClose={handleAlertClose} />
+      <UserModal open={UserModal} modalToggler={setUserModal} User={selectedUser} />
     </>
   );
 }
 
-CustomerCard.propTypes = { customer: PropTypes.any };
+UserCard.propTypes = { User: PropTypes.any };

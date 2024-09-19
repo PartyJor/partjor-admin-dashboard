@@ -21,7 +21,7 @@ import AcquisitionChannels from 'sections/dashboard/analytics/AcquisitionChannel
 import EcommerceDataCard from 'components/cards/statistics/EcommerceDataCard';
 import EcommerceDataChart from 'sections/widget/chart/EcommerceDataChart';
 
-import RepeatCustomerRate from 'sections/widget/chart/RepeatCustomerRate';
+import RepeatUserRate from 'sections/widget/chart/RepeatUserRate';
 import ProjectOverview from 'sections/widget/chart/ProjectOverview';
 import EcommerceIncome from 'sections/widget/chart/EcommerceIncome';
 import EcommerceRadial from 'sections/widget/chart/EcommerceRadial';
@@ -125,7 +125,7 @@ export default function WidgetChart() {
       <Grid item xs={12} md={8} lg={9}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <RepeatCustomerRate />
+            <RepeatUserRate />
           </Grid>
           <Grid item xs={12}>
             <ProjectOverview />

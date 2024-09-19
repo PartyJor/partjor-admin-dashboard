@@ -18,7 +18,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 // third-party
-import { PatternFormat } from 'react-number-format';
 import {
   flexRender,
   getCoreRowModel,
@@ -34,9 +33,10 @@ import ScrollX from 'components/ScrollX';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
-import CustomerModal from 'sections/apps/customer/CustomerModal';
-import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
-import CustomerView from 'sections/apps/customer/CustomerView';
+import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
+import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
+import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
+import UserView from 'sections/apps/user/UserView';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
 import {
@@ -49,11 +49,12 @@ import {
   TablePagination
 } from 'components/third-party/react-table';
 
-import { useGetCustomer } from 'api/customer';
+import { useGetUser } from 'api/user';
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
-import { Add, Edit, Eye, Trash } from 'iconsax-react';
+import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
+// import Alert from 'themes/overrides/Alert';
 
 // ==============================|| REACT TABLE - LIST ||============================== //
 
@@ -111,11 +112,9 @@ function ReactTable({ data, columns, modalToggler }) {
         <Stack direction="row" alignItems="center" spacing={2}>
           <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
           <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
-            Add Customer
+            Add User
           </Button>
-          <CSVExport
-            {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'customer-list.csv' }}
-          />
+          <CSVExport {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'User-list.csv' }} />
         </Stack>
       </Stack>
       <ScrollX>
@@ -168,7 +167,7 @@ function ReactTable({ data, columns, modalToggler }) {
                     {row.getIsExpanded() && (
                       <TableRow sx={{ bgcolor: backColor, '&:hover': { bgcolor: `${backColor} !important` }, overflow: 'hidden' }}>
                         <TableCell colSpan={row.getVisibleCells().length} sx={{ p: 2.5, overflow: 'hidden' }}>
-                          <CustomerView data={row.original} />
+                          <UserView data={row.original} />
                         </TableCell>
                       </TableRow>
                     )}
@@ -195,21 +194,27 @@ function ReactTable({ data, columns, modalToggler }) {
     </MainCard>
   );
 }
-// ==============================|| CUSTOMER LIST ||============================== //
+// ==============================|| User LIST ||============================== //
 
-export default function CustomerListPage() {
+export default function UserListPage() {
   const theme = useTheme();
-
-  const { customersLoading: loading, customers: lists } = useGetCustomer();
-
+  const { UsersLoading: loading, Users: lists } = useGetUser();
   const [open, setOpen] = useState(false);
-
-  const [customerModal, setCustomerModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [customerDeleteId, setCustomerDeleteId] = useState('');
+  const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
+  const [activateUserOpen, setActivateUserOpen] = useState(false); // Renamed
+  const [userName, setUserName] = useState('');
+  const [UserDeleteId, setUserDeleteId] = useState('');
 
   const handleClose = () => {
     setOpen(!open);
+  };
+
+  const handleCloseSuspendModal = () => {
+    setIsSuspendUserOpen(!isSuspendUserOpen);
+  };
+
+  const handleCloseActivateModal = () => {
+    setActivateUserOpen(!activateUserOpen);
   };
 
   const columns = useMemo(
@@ -241,11 +246,12 @@ export default function CustomerListPage() {
         accessorKey: 'id',
         meta: {
           className: 'cell-center'
-        }
+        },
+        cell: ({ row }) => <Typography variant="text.primary">{row.index + 1}</Typography>
       },
       {
-        header: 'Customer Name',
-        accessorKey: 'name',
+        header: 'User',
+        accessorKey: 'attributes.name',
         cell: ({ row, getValue }) => (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Avatar
@@ -262,34 +268,31 @@ export default function CustomerListPage() {
       },
       {
         header: 'Contact',
-        accessorKey: 'contact',
-        cell: ({ getValue }) => <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={getValue()} />
+        accessorKey: 'attributes.phone_number.formattedPhoneNumber',
+        cell: ({ getValue }) => <Typography variant="text.primary">{getValue()}</Typography>
       },
       {
-        header: 'Age',
-        accessorKey: 'age',
+        header: 'Platform',
+        accessorKey: 'attributes.platform',
         meta: {
-          className: 'cell-right'
+          className: 'cell-left'
         }
       },
       {
         header: 'Country',
-        accessorKey: 'country'
+        accessorKey: 'attributes.country'
       },
       {
         header: 'Status',
-        accessorKey: 'status',
-        cell: (cell) => {
-          switch (cell.getValue()) {
-            case 3:
-              return <Chip color="error" label="Rejected" size="small" variant="light" />;
-            case 1:
-              return <Chip color="success" label="Verified" size="small" variant="light" />;
-            case 2:
-            default:
-              return <Chip color="info" label="Pending" size="small" variant="light" />;
-          }
-        }
+        accessorKey: 'attributes.status',
+        cell: ({ getValue }) => (
+          <Chip
+            color={getValue() === 'active' ? 'success' : getValue() === 'inactive' ? 'info' : 'error'}
+            label={getValue()}
+            size="small"
+            variant="light"
+          />
+        )
       },
       {
         header: 'Actions',
@@ -311,16 +314,30 @@ export default function CustomerListPage() {
                   {collapseIcon}
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Edit">
+              <Tooltip title="Suspend User">
                 <IconButton
-                  color="primary"
+                  color="info"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedCustomer(row.original);
-                    setCustomerModal(true);
+                    handleCloseSuspendModal();
+                    setUserDeleteId(row.original.id);
+                    setUserName(row.original.attributes.name);
                   }}
                 >
-                  <Edit />
+                  <UserRemove />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Activate User">
+                <IconButton
+                  color="success"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCloseActivateModal();
+                    setUserDeleteId(row.original.id);
+                    setUserName(row.original.attributes.name);
+                  }}
+                >
+                  <UserTick />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
@@ -329,7 +346,8 @@ export default function CustomerListPage() {
                   onClick={(e) => {
                     e.stopPropagation();
                     handleClose();
-                    setCustomerDeleteId(Number(row.original.id));
+                    setUserDeleteId(row.original.id);
+                    setUserName(row.original.attributes.name);
                   }}
                 >
                   <Trash />
@@ -339,7 +357,7 @@ export default function CustomerListPage() {
           );
         }
       }
-    ], // eslint-disable-next-line
+    ],
     [theme]
   );
 
@@ -352,13 +370,14 @@ export default function CustomerListPage() {
           data: lists,
           columns,
           modalToggler: () => {
-            setCustomerModal(true);
-            setSelectedCustomer(null);
+            setUserModal(true);
           }
         }}
       />
-      <AlertCustomerDelete id={Number(customerDeleteId)} title={customerDeleteId} open={open} handleClose={handleClose} />
-      <CustomerModal open={customerModal} modalToggler={setCustomerModal} customer={selectedCustomer} />
+      <AlertUserDelete id={UserDeleteId} title={userName} open={open} handleClose={handleClose} />
+      <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
+      <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
+      {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );
 }

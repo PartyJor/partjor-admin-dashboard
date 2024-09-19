@@ -88,7 +88,7 @@ function ReactTable({ data, columns }) {
   );
 
   const [activeTab, setActiveTab] = useState(groups[0]);
-  const [sorting, setSorting] = useState([{ id: 'customer_name', desc: false }]);
+  const [sorting, setSorting] = useState([{ id: 'User_name', desc: false }]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
@@ -172,7 +172,7 @@ function ReactTable({ data, columns }) {
         <Stack direction="row" alignItems="center" spacing={2}>
           <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
           <CSVExport
-            {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'customer-list.csv' }}
+            {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'User-list.csv' }}
           />
         </Stack>
       </Stack>
@@ -299,7 +299,7 @@ export default function List() {
       },
       {
         header: 'User Info',
-        accessorKey: 'customer_name',
+        accessorKey: 'User_name',
         cell: ({ row, getValue }) => (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Avatar

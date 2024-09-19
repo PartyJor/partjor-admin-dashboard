@@ -117,10 +117,10 @@ export default function InvoiceModal({ isOpen, setIsOpen, invoiceInfo, items, on
                       <Grid item md={8}>
                         <Typography variant="h5">To:</Typography>
                         <FormControl sx={{ width: '100%' }}>
-                          <Typography variant="subtitle1">{invoiceInfo.customerInfo.name}</Typography>
-                          <Typography color="secondary">{invoiceInfo.customerInfo.address}</Typography>
-                          <Typography color="secondary">{invoiceInfo.customerInfo.phone}</Typography>
-                          <Typography color="secondary">{invoiceInfo.customerInfo.email}</Typography>
+                          <Typography variant="subtitle1">{invoiceInfo.UserInfo.name}</Typography>
+                          <Typography color="secondary">{invoiceInfo.UserInfo.address}</Typography>
+                          <Typography color="secondary">{invoiceInfo.UserInfo.phone}</Typography>
+                          <Typography color="secondary">{invoiceInfo.UserInfo.email}</Typography>
                         </FormControl>
                       </Grid>
                     </Grid>
@@ -194,7 +194,7 @@ export default function InvoiceModal({ isOpen, setIsOpen, invoiceInfo, items, on
           <PDFDownloadLink
             document={<ExportPDFView list={invoiceInfo} />}
             fileName={`${invoiceInfo?.invoiceId || invoiceInfo?.invoice_id}-${
-              invoiceInfo?.customer_name || invoiceInfo?.from?.name || invoiceInfo?.customerInfo?.name
+              invoiceInfo?.User_name || invoiceInfo?.from?.name || invoiceInfo?.UserInfo?.name
             }.pdf`}
             style={{ textDecoration: 'none' }}
           >

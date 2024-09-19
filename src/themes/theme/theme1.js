@@ -10,7 +10,7 @@ export default function Theme1(mode) {
   let secondaryColors = ['#F8F9FA', '#F8F9FA', '#F3F5F7', '#DBE0E5', '#BEC8D0', '#8996A4', '#5B6B79', '#3E4853', '#1D2630', '#131920'];
   let errorColors = ['#FFE7D3', '#FF805D', '#FF4528', '#DB271D', '#930C1A'];
   let warningColors = ['#FFF6D0', '#FFCF4E', '#FFB814', '#DB970E', '#935B06'];
-  let infoColors = ['#DCF0FF', '#7EB9FF', '#549BFF', '#3D78DB', '#1A3D93'];
+  let infoColors = ['#ffe0bd', '#7EB9FF', '#ff9a30', '#3D78DB', '#ff9a30'];
   let successColors = ['#EAFCD4', '#8AE65B', '#144438', '#3DB81E', '#137C0D'];
 
   if (mode === ThemeMode.DARK) {

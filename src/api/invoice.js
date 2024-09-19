@@ -13,7 +13,7 @@ const countries = [
 
 const initialState = {
   isOpen: false,
-  isCustomerOpen: false,
+  isUserOpen: false,
   open: false,
   country: countries[2],
   countries: countries,
@@ -132,18 +132,18 @@ export function useGetInvoiceMaster() {
   return memoizedValue;
 }
 
-export function handlerCustomerTo(isCustomerOpen) {
+export function handlerUserTo(isUserOpen) {
   // to update local state based on key
   mutate(
     endpoints.key + endpoints.actions,
     (currentInvoicemaster) => {
-      return { ...currentInvoicemaster, isCustomerOpen };
+      return { ...currentInvoicemaster, isUserOpen };
     },
     false
   );
 }
 
-export function handlerCustomerFrom(open) {
+export function handlerUserFrom(open) {
   // to update local state based on key
   mutate(
     endpoints.key + endpoints.actions,

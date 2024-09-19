@@ -25,8 +25,8 @@ import Phone3 from 'assets/images/widget/PHONE3.jpg';
 import Phone4 from 'assets/images/widget/PHONE4.jpg';
 
 // table data
-function createData(customer, cid, photo, product, quantity, date, status, statuscolor) {
-  return { customer, cid, photo, product, quantity, date, status, statuscolor };
+function createData(User, cid, photo, product, quantity, date, status, statuscolor) {
+  return { User, cid, photo, product, quantity, date, status, statuscolor };
 }
 
 const rows = [
@@ -53,7 +53,7 @@ export default function LatestOrder() {
         <Table sx={{ minWidth: 350 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ pl: 3 }}>Customer</TableCell>
+              <TableCell sx={{ pl: 3 }}>User</TableCell>
               <TableCell>Order Id</TableCell>
               <TableCell>Photo</TableCell>
               <TableCell>Product</TableCell>
@@ -68,7 +68,7 @@ export default function LatestOrder() {
           <TableBody>
             {rows.map((row, index) => (
               <TableRow hover key={index}>
-                <TableCell sx={{ pl: 3 }}>{row.customer}</TableCell>
+                <TableCell sx={{ pl: 3 }}>{row.User}</TableCell>
                 <TableCell>{row.cid}</TableCell>
                 <TableCell>
                   <CardMedia component="img" image={row.photo} title="image" sx={{ width: 20, height: 'auto' }} />

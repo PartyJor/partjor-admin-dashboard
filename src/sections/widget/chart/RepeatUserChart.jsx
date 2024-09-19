@@ -44,9 +44,9 @@ const areaChartOptions = {
   }
 };
 
-// ==============================|| CHART - REPEAT CUSTOMER CHART ||============================== //
+// ==============================|| CHART - REPEAT User CHART ||============================== //
 
-export default function RepeatCustomerChart() {
+export default function RepeatUserChart() {
   const theme = useTheme();
 
   const mode = theme.palette.mode;

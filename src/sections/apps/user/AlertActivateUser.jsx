@@ -10,20 +10,20 @@ import DialogContent from '@mui/material/DialogContent';
 import Avatar from 'components/@extended/Avatar';
 import { PopupTransition } from 'components/@extended/Transitions';
 
-import { deleteCustomer } from 'api/customer';
+import { activateUser } from 'api/user';
 import { openSnackbar } from 'api/snackbar';
 
 // assets
-import { Trash } from 'iconsax-react';
+import { UserTick } from 'iconsax-react';
 
-// ==============================|| CUSTOMER - DELETE ||============================== //
+// ==============================|| User - DELETE ||============================== //
 
-export default function AlertCustomerDelete({ id, title, open, handleClose }) {
-  const deletehandler = async () => {
-    await deleteCustomer(id).then(() => {
+export default function AlertActivateUser({ id, title, open, handleClose }) {
+  const activateHandler = async () => {
+    await activateUser(id).then(() => {
       openSnackbar({
         open: true,
-        message: 'Customer deleted successfully',
+        message: 'User activated successfully',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
         variant: 'alert',
 
@@ -47,20 +47,20 @@ export default function AlertCustomerDelete({ id, title, open, handleClose }) {
     >
       <DialogContent sx={{ mt: 2, my: 1 }}>
         <Stack alignItems="center" spacing={3.5}>
-          <Avatar color="error" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
-            <Trash variant="Bold" />
+          <Avatar color="success" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
+            <UserTick variant="Bold" />
           </Avatar>
           <Stack spacing={2}>
             <Typography variant="h4" align="center">
-              Are you sure you want to delete?
+              Are you sure you want to activate user?
             </Typography>
             <Typography align="center">
-              By deleting
+              By activating
               <Typography variant="subtitle1" component="span">
                 {' '}
                 &quot;{title}&quot;{' '}
               </Typography>
-              user, all task assigned to that user will also be deleted.
+              this account will be reinstated.
             </Typography>
           </Stack>
 
@@ -68,8 +68,8 @@ export default function AlertCustomerDelete({ id, title, open, handleClose }) {
             <Button fullWidth onClick={handleClose} color="secondary" variant="outlined">
               Cancel
             </Button>
-            <Button fullWidth color="error" variant="contained" onClick={deletehandler} autoFocus>
-              Delete
+            <Button fullWidth color="success" variant="contained" onClick={activateHandler} autoFocus>
+              Activate
             </Button>
           </Stack>
         </Stack>
@@ -78,4 +78,4 @@ export default function AlertCustomerDelete({ id, title, open, handleClose }) {
   );
 }
 
-AlertCustomerDelete.propTypes = { id: PropTypes.number, title: PropTypes.string, open: PropTypes.bool, handleClose: PropTypes.func };
+AlertActivateUser.propTypes = { id: PropTypes.string, title: PropTypes.string, open: PropTypes.bool, handleClose: PropTypes.func };

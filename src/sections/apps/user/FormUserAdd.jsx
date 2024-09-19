@@ -38,14 +38,14 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project imports
-import AlertCustomerDelete from './AlertCustomerDelete';
+import AlertUserDelete from './AlertUserDelete';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import CircularWithPath from 'components/@extended/progress/CircularWithPath';
 
 import { ThemeMode, Gender } from 'config';
 import { openSnackbar } from 'api/snackbar';
-import { insertCustomer, updateCustomer } from 'api/customer';
+import { insertUser, updateUser } from 'api/user';
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
@@ -94,8 +94,8 @@ const skills = [
 ];
 
 // CONSTANT
-const getInitialValues = (customer) => {
-  const newCustomer = {
+const getInitialValues = (User) => {
+  const newUser = {
     firstName: '',
     lastName: '',
     name: '',
@@ -118,11 +118,11 @@ const getInitialValues = (customer) => {
     date: ''
   };
 
-  if (customer) {
-    return _.merge({}, newCustomer, customer);
+  if (User) {
+    return _.merge({}, newUser, User);
   }
 
-  return newCustomer;
+  return newUser;
 };
 
 const allStatus = [
@@ -131,15 +131,15 @@ const allStatus = [
   { value: 2, label: 'Pending' }
 ];
 
-// ==============================|| CUSTOMER ADD / EDIT - FORM ||============================== //
+// ==============================|| User ADD / EDIT - FORM ||============================== //
 
-export default function FormCustomerAdd({ customer, closeModal }) {
+export default function FormUserAdd({ User, closeModal }) {
   const theme = useTheme();
 
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [avatar, setAvatar] = useState(
-    getImageUrl(`avatar-${customer && customer !== null && customer?.avatar ? customer.avatar : 1}.png`, ImagePath.USERS)
+    getImageUrl(`avatar-${User && User !== null && User?.avatar ? User.avatar : 1}.png`, ImagePath.USERS)
   );
 
   useEffect(() => {
@@ -152,7 +152,7 @@ export default function FormCustomerAdd({ customer, closeModal }) {
     setLoading(false);
   }, []);
 
-  const CustomerSchema = Yup.object().shape({
+  const UserSchema = Yup.object().shape({
     firstName: Yup.string().max(255).required('First Name is required'),
     lastName: Yup.string().max(255).required('Last Name is required'),
     email: Yup.string().max(255).required('Email is required').email('Must be a valid email'),
@@ -169,19 +169,19 @@ export default function FormCustomerAdd({ customer, closeModal }) {
   };
 
   const formik = useFormik({
-    initialValues: getInitialValues(customer),
-    validationSchema: CustomerSchema,
+    initialValues: getInitialValues(User),
+    validationSchema: UserSchema,
     enableReinitialize: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        let newCustomer = values;
-        newCustomer.name = newCustomer.firstName + ' ' + newCustomer.lastName;
+        let newUser = values;
+        newUser.name = newUser.firstName + ' ' + newUser.lastName;
 
-        if (customer) {
-          updateCustomer(newCustomer.id, newCustomer).then(() => {
+        if (User) {
+          updateUser(newUser.id, newUser).then(() => {
             openSnackbar({
               open: true,
-              message: 'Customer update successfully.',
+              message: 'User update successfully.',
               variant: 'alert',
 
               alert: {
@@ -192,10 +192,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
             closeModal();
           });
         } else {
-          await insertCustomer(newCustomer).then(() => {
+          await insertUser(newUser).then(() => {
             openSnackbar({
               open: true,
-              message: 'Customer added successfully.',
+              message: 'User added successfully.',
               variant: 'alert',
 
               alert: {
@@ -228,7 +228,7 @@ export default function FormCustomerAdd({ customer, closeModal }) {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{customer ? 'Edit Customer' : 'New Customer'}</DialogTitle>
+            <DialogTitle>{User ? 'Edit User' : 'New User'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
@@ -279,10 +279,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-firstName">First Name</InputLabel>
+                        <InputLabel htmlFor="User-firstName">First Name</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-firstName"
+                          id="User-firstName"
                           placeholder="Enter First Name"
                           {...getFieldProps('firstName')}
                           error={Boolean(touched.firstName && errors.firstName)}
@@ -292,10 +292,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-lastName">Last Name</InputLabel>
+                        <InputLabel htmlFor="User-lastName">Last Name</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-lastName"
+                          id="User-lastName"
                           placeholder="Enter Last Name"
                           {...getFieldProps('lastName')}
                           error={Boolean(touched.lastName && errors.lastName)}
@@ -305,11 +305,11 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={9}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-email">Email</InputLabel>
+                        <InputLabel htmlFor="User-email">Email</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-email"
-                          placeholder="Enter Customer Email"
+                          id="User-email"
+                          placeholder="Enter User Email"
                           {...getFieldProps('email')}
                           error={Boolean(touched.email && errors.email)}
                           helperText={touched.email && errors.email}
@@ -318,11 +318,11 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={3}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-age">Age</InputLabel>
+                        <InputLabel htmlFor="User-age">Age</InputLabel>
                         <TextField
                           type="number"
                           fullWidth
-                          id="customer-age"
+                          id="User-age"
                           placeholder="Enter Age"
                           {...getFieldProps('age')}
                           error={Boolean(touched.age && errors.age)}
@@ -332,10 +332,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-fatherName">Father Name</InputLabel>
+                        <InputLabel htmlFor="User-fatherName">Father Name</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-fatherName"
+                          id="User-fatherName"
                           placeholder="Enter Father Name"
                           {...getFieldProps('fatherName')}
                           error={Boolean(touched.fatherName && errors.fatherName)}
@@ -345,10 +345,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-role">Customer Role</InputLabel>
+                        <InputLabel htmlFor="User-role">User Role</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-role"
+                          id="User-role"
                           placeholder="Enter Role"
                           {...getFieldProps('role')}
                           error={Boolean(touched.role && errors.role)}
@@ -358,7 +358,7 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-gender">Gender</InputLabel>
+                        <InputLabel htmlFor="User-gender">Gender</InputLabel>
                         <RadioGroup row aria-label="payment-card" {...getFieldProps('gender')}>
                           <FormControlLabel control={<Radio value={Gender.FEMALE} />} label={Gender.FEMALE} />
                           <FormControlLabel control={<Radio value={Gender.MALE} />} label={Gender.MALE} />
@@ -367,7 +367,7 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-status">Status</InputLabel>
+                        <InputLabel htmlFor="User-status">Status</InputLabel>
                         <FormControl fullWidth>
                           <Select
                             id="column-hiding"
@@ -404,10 +404,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-contact">Contact</InputLabel>
+                        <InputLabel htmlFor="User-contact">Contact</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-contact"
+                          id="User-contact"
                           placeholder="Enter Contact"
                           {...getFieldProps('contact')}
                           error={Boolean(touched.contact && errors.contact)}
@@ -417,10 +417,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-country">Country</InputLabel>
+                        <InputLabel htmlFor="User-country">Country</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-country"
+                          id="User-country"
                           placeholder="Enter Country"
                           {...getFieldProps('country')}
                           error={Boolean(touched.country && errors.country)}
@@ -430,10 +430,10 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-location">Location</InputLabel>
+                        <InputLabel htmlFor="User-location">Location</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-location"
+                          id="User-location"
                           multiline
                           rows={2}
                           placeholder="Enter Location"
@@ -445,13 +445,13 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-about">About Customer</InputLabel>
+                        <InputLabel htmlFor="User-about">About User</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-about"
+                          id="User-about"
                           multiline
                           rows={2}
-                          placeholder="Enter Customer Information"
+                          placeholder="Enter User Information"
                           {...getFieldProps('about')}
                           error={Boolean(touched.about && errors.about)}
                           helperText={touched.about && errors.about}
@@ -460,11 +460,11 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="customer-skills">Skills</InputLabel>
+                        <InputLabel htmlFor="User-skills">Skills</InputLabel>
                         <Autocomplete
                           multiple
                           fullWidth
-                          id="customer-skills"
+                          id="User-skills"
                           options={skills}
                           {...getFieldProps('skills')}
                           getOptionLabel={(label) => label}
@@ -516,8 +516,8 @@ export default function FormCustomerAdd({ customer, closeModal }) {
             <DialogActions sx={{ p: 2.5 }}>
               <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item>
-                  {customer && (
-                    <Tooltip title="Delete Customer" placement="top">
+                  {User && (
+                    <Tooltip title="Delete User" placement="top">
                       <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
                         <Trash variant="Bold" />
                       </IconButton>
@@ -530,7 +530,7 @@ export default function FormCustomerAdd({ customer, closeModal }) {
                       Cancel
                     </Button>
                     <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      {customer ? 'Edit' : 'Add'}
+                      {User ? 'Edit' : 'Add'}
                     </Button>
                   </Stack>
                 </Grid>
@@ -539,9 +539,9 @@ export default function FormCustomerAdd({ customer, closeModal }) {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {customer && <AlertCustomerDelete id={customer.id} title={customer.name} open={openAlert} handleClose={handleAlertClose} />}
+      {User && <AlertUserDelete id={User.id} title={User.name} open={openAlert} handleClose={handleAlertClose} />}
     </>
   );
 }
 
-FormCustomerAdd.propTypes = { customer: PropTypes.any, closeModal: PropTypes.func };
+FormUserAdd.propTypes = { User: PropTypes.any, closeModal: PropTypes.func };

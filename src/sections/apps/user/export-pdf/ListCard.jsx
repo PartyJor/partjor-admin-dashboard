@@ -124,20 +124,20 @@ const styles = StyleSheet.create({
   }
 });
 
-// ==============================|| CUSTOMER - PREVIEW ||============================== //
+// ==============================|| User - PREVIEW ||============================== //
 
-export default function ListCard({ customer }) {
+export default function ListCard({ User }) {
   const theme = useTheme();
 
   return (
-    <Document title={`${customer?.fatherName}`}>
+    <Document title={`${User?.fatherName}`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.container}>
           <View style={styles.row}>
-            <Image style={styles.image} src={getImageUrl(`avatar-${!customer.avatar ? 1 : customer.avatar}.png`, ImagePath.USERS)} />
+            <Image style={styles.image} src={getImageUrl(`avatar-${!User.avatar ? 1 : User.avatar}.png`, ImagePath.USERS)} />
             <View style={styles.CardInfo}>
-              <Text style={styles.title}>{customer.fatherName}</Text>
-              <Text style={styles.role}>{customer.role}</Text>
+              <Text style={styles.title}>{User.fatherName}</Text>
+              <Text style={styles.role}>{User.role}</Text>
             </View>
           </View>
           <View style={styles.hr} />
@@ -145,7 +145,7 @@ export default function ListCard({ customer }) {
             <View style={styles.leftColumn}>
               <View style={styles.card}>
                 <Text style={styles.cardTitle}>About me</Text>
-                <Text style={[styles.about, styles.cardContent]}>Hello, {customer.about}</Text>
+                <Text style={[styles.about, styles.cardContent]}>Hello, {User.about}</Text>
               </View>
               <View style={styles.card}>
                 <Text style={styles.cardTitle}>Education</Text>
@@ -217,7 +217,7 @@ export default function ListCard({ customer }) {
                 <Text style={styles.cardTitle}>Skill</Text>
                 <View style={styles.cardContent}>
                   <View style={[styles.row, { gap: 1, flexWrap: 'wrap' }]}>
-                    {customer.skills.map((skill, index) => (
+                    {User.skills.map((skill, index) => (
                       <View style={styles.chip} key={index}>
                         <Text style={styles.chipTitle}>{skill}</Text>
                       </View>
@@ -231,28 +231,28 @@ export default function ListCard({ customer }) {
                 <View style={styles.userDetails}>
                   <Text style={styles.mainTitle}>Father Name</Text>
                   <Text style={styles.iconTitle}>
-                    Mr. {customer.firstName} {customer.lastName}
+                    Mr. {User.firstName} {User.lastName}
                   </Text>
                 </View>
                 <View style={styles.userDetails}>
                   <Text style={styles.mainTitle}>Email</Text>
-                  <Text style={styles.iconTitle}>{customer.email}</Text>
+                  <Text style={styles.iconTitle}>{User.email}</Text>
                 </View>
                 <View style={styles.userDetails}>
                   <Text style={styles.mainTitle}>Contact</Text>
-                  <Text style={styles.iconTitle}>{customer.contact}</Text>
+                  <Text style={styles.iconTitle}>{User.contact}</Text>
                 </View>
                 <View style={styles.userDetails}>
                   <Text style={styles.mainTitle}>Location</Text>
-                  <Text style={styles.iconTitle}>{customer.country}</Text>
+                  <Text style={styles.iconTitle}>{User.country}</Text>
                 </View>
                 <View style={styles.userDetails}>
                   <Text style={styles.mainTitle}>Website</Text>
                   <Text style={styles.iconTitle}>
                     <Link
                       style={[styles.iconTitle, { color: theme.palette.primary.main }]}
-                      src={`https://${customer.firstName}.en`}
-                    >{`https://${customer.firstName}.en`}</Link>
+                      src={`https://${User.firstName}.en`}
+                    >{`https://${User.firstName}.en`}</Link>
                   </Text>
                 </View>
               </View>
@@ -264,4 +264,4 @@ export default function ListCard({ customer }) {
   );
 }
 
-ListCard.propTypes = { customer: PropTypes.any };
+ListCard.propTypes = { User: PropTypes.any };

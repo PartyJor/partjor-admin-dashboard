@@ -108,57 +108,57 @@ const styles = StyleSheet.create({
   }
 });
 
-// ==============================|| CUSTOMER - CARD ||============================== //
+// ==============================|| User - CARD ||============================== //
 
-export default function ListSmallCard({ customer }) {
+export default function ListSmallCard({ User }) {
   const theme = useTheme();
   return (
-    <Document title={`${customer?.fatherName}`}>
+    <Document title={`${User?.fatherName}`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.container}>
           <View style={styles.row}>
-            <Image style={styles.image} src={getImageUrl(`avatar-${!customer.avatar ? 1 : customer.avatar}.png`, ImagePath.USERS)} />
+            <Image style={styles.image} src={getImageUrl(`avatar-${!User.avatar ? 1 : User.avatar}.png`, ImagePath.USERS)} />
             <View style={styles.CardInfo}>
-              <Text style={styles.title}>{customer.fatherName}</Text>
-              <Text style={styles.role}>{customer.role}</Text>
+              <Text style={styles.title}>{User.fatherName}</Text>
+              <Text style={styles.role}>{User.role}</Text>
             </View>
           </View>
           <View style={styles.hr} />
           <View>
-            <Text style={styles.about}>Hello, {customer.about}</Text>
+            <Text style={styles.about}>Hello, {User.about}</Text>
           </View>
           <View style={styles.IconContainer}>
             <View style={[styles.row, styles.IconRow]}>
               <Image src={Mail} style={styles.icon} />
-              <Text style={styles.iconTitle}>{customer.email}</Text>
+              <Text style={styles.iconTitle}>{User.email}</Text>
             </View>
             <View style={[styles.row, styles.IconRow]}>
               <Image src={Maps} style={styles.icon} />
-              <Text style={styles.iconTitle}>{customer.country}</Text>
+              <Text style={styles.iconTitle}>{User.country}</Text>
             </View>
           </View>
           <View style={styles.IconContainer}>
             <View style={[styles.row, styles.IconRow]}>
               <Image src={Phone} style={styles.icon} />
-              <Text style={styles.iconTitle}>{customer.contact}</Text>
+              <Text style={styles.iconTitle}>{User.contact}</Text>
             </View>
             <View style={[styles.row, styles.IconRow]}>
               <Image src={LinkIcon} style={styles.icon} />
               <Link
                 style={[styles.iconTitle, { color: theme.palette.primary.main }]}
-                src={`https://${customer.firstName}.en`}
-              >{`https://${customer.firstName}.en`}</Link>
+                src={`https://${User.firstName}.en`}
+              >{`https://${User.firstName}.en`}</Link>
             </View>
           </View>
           <View style={[styles.row, { gap: 1, paddingTop: 18 }]}>
-            {customer.skills.map((skill, index) => (
+            {User.skills.map((skill, index) => (
               <View style={styles.chip} key={index}>
                 <Text style={styles.chipTitle}>{skill}</Text>
               </View>
             ))}
           </View>
           <View style={styles.timer}>
-            <Text style={styles.iconTitle}> Updated in {customer.time}</Text>
+            <Text style={styles.iconTitle}> Updated in {User.time}</Text>
           </View>
         </View>
       </Page>
@@ -166,4 +166,4 @@ export default function ListSmallCard({ customer }) {
   );
 }
 
-ListSmallCard.propTypes = { customer: PropTypes.any };
+ListSmallCard.propTypes = { User: PropTypes.any };

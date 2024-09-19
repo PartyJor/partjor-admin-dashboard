@@ -8,14 +8,14 @@ import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 
 // project-imports
-import RepeatCustomerChart from './RepeatCustomerChart';
+import RepeatUserChart from './RepeatUserChart';
 import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
 import MoreIcon from 'components/@extended/MoreIcon';
 
-// ==============================|| CHART - REPEAT CUSTOMER RATE ||============================== //
+// ==============================|| CHART - REPEAT User RATE ||============================== //
 
-export default function RepeatCustomerRate() {
+export default function RepeatUserRate() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
@@ -31,7 +31,7 @@ export default function RepeatCustomerRate() {
   return (
     <MainCard>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <Typography variant="h5">Repeat customer rate</Typography>
+        <Typography variant="h5">Repeat User rate</Typography>
         <IconButton
           color="secondary"
           id="wallet-button"
@@ -70,7 +70,7 @@ export default function RepeatCustomerRate() {
         <Typography variant="subtitle1">5.44%</Typography>
         <Chip color="success" variant="filled" label="+2.6%" size="small" sx={{ bgcolor: 'success.main', borderRadius: 1 }} />
       </Stack>
-      <RepeatCustomerChart />
+      <RepeatUserChart />
     </MainCard>
   );
 }

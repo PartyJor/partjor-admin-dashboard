@@ -9,7 +9,7 @@ import TeamMembers from 'sections/widget/data/TeamMembers';
 import Products from 'sections/widget/data/Products';
 import MonthlyRevenue from 'sections/widget/data/MonthlyRevenue';
 
-import NewCustomers from 'sections/widget/data/NewCustomers';
+import NewUsers from 'sections/widget/data/NewUsers';
 import RecentTickets from 'sections/widget/data/RecentTickets';
 
 import Transactions from 'sections/widget/data/Transactions';
@@ -32,7 +32,7 @@ import ActiveTickets from 'sections/widget/data/ActiveTickets';
 import LatestPosts from 'sections/widget/data/LatestPosts';
 
 import FeedsCard from 'sections/widget/data/FeedsCard';
-import LatestCustomers from 'sections/widget/data/LatestCustomers';
+import LatestUsers from 'sections/widget/data/LatestUsers';
 
 import LatestOrder from 'sections/widget/data/LatestOrder';
 
@@ -65,7 +65,7 @@ export default function WidgetData() {
 
       {/* row 3 */}
       <Grid item xs={12} md={5} lg={6}>
-        <NewCustomers />
+        <NewUsers />
       </Grid>
       <Grid item xs={12} md={7} lg={6}>
         <RecentTickets />
@@ -133,7 +133,7 @@ export default function WidgetData() {
         <FeedsCard />
       </Grid>
       <Grid item xs={12} md={7} lg={8}>
-        <LatestCustomers />
+        <LatestUsers />
       </Grid>
 
       {/* row 7 */}

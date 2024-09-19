@@ -19,11 +19,11 @@ import Avatar3 from 'assets/images/users/avatar-3.png';
 import Avatar4 from 'assets/images/users/avatar-4.png';
 import Avatar5 from 'assets/images/users/avatar-5.png';
 
-// ===========================|| DATA WIDGET - NEW CUSTOMERS ||=========================== //
+// ===========================|| DATA WIDGET - NEW UserS ||=========================== //
 
-export default function NewCustomers() {
+export default function NewUsers() {
   return (
-    <MainCard title="New Customers" content={false}>
+    <MainCard title="New Users" content={false}>
       <SimpleBar sx={{ height: 432 }}>
         <CardContent>
           <Grid container spacing={3} alignItems="center">
