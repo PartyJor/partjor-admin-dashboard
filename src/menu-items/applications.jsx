@@ -81,6 +81,13 @@ const applications = {
       ]
     },
     {
+      id: 'events',
+      title: <FormattedMessage id="Events Management" />,
+      type: 'item',
+      icon: icons.User,
+      url: '/apps/event-list'
+    },
+    {
       id: 'invoice',
       title: <FormattedMessage id="invoice" />,
       url: '/apps/invoice/dashboard',

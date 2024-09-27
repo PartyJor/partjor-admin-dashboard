@@ -9,7 +9,7 @@ import TeamMembers from 'sections/widget/data/TeamMembers';
 import Products from 'sections/widget/data/Products';
 import MonthlyRevenue from 'sections/widget/data/MonthlyRevenue';
 
-import NewUsers from 'sections/widget/data/NewUsers';
+import NewUsers from 'sections/widget/data/NewCustomers';
 import RecentTickets from 'sections/widget/data/RecentTickets';
 
 import Transactions from 'sections/widget/data/Transactions';
@@ -32,7 +32,7 @@ import ActiveTickets from 'sections/widget/data/ActiveTickets';
 import LatestPosts from 'sections/widget/data/LatestPosts';
 
 import FeedsCard from 'sections/widget/data/FeedsCard';
-import LatestUsers from 'sections/widget/data/LatestUsers';
+import LatestUsers from 'sections/widget/data/LatestCustomers';
 
 import LatestOrder from 'sections/widget/data/LatestOrder';
 

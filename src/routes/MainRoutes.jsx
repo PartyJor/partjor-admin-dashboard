@@ -30,6 +30,8 @@ const AppKanbanBoard = Loadable(lazy(() => import('sections/apps/kanban/Board'))
 const AppUserList = Loadable(lazy(() => import('pages/apps/User/list')));
 const AppUserCard = Loadable(lazy(() => import('pages/apps/User/card')));
 
+const AppEventsList = Loadable(lazy(() => import('pages/apps/Events/eventlist')));
+
 const AppInvoiceCreate = Loadable(lazy(() => import('pages/apps/invoice/create')));
 const AppInvoiceDashboard = Loadable(lazy(() => import('pages/apps/invoice/dashboard')));
 const AppInvoiceList = Loadable(lazy(() => import('pages/apps/invoice/list')));
@@ -209,6 +211,10 @@ const MainRoutes = {
                   element: <AppUserCard />
                 }
               ]
+            },
+            {
+              path: 'event-list',
+              element: <AppEventsList />
             },
             {
               path: 'invoice',
