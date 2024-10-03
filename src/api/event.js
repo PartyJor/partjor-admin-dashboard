@@ -10,7 +10,7 @@ const token = window.localStorage.getItem('serviceToken');
 
 export const endpoints = {
   key: baseUrl,
-  list: '/v1/admin/events',
+  list: '/v1/admin/events/',
   delete: '/v1/admin/events/'
 };
 
@@ -63,4 +63,31 @@ export async function deleteEvent(EventId) {
     .catch((error) => {
       console.log(error);
     });
+}
+
+export async function updateEvent(EventId, EditedEvent, Event) {
+  const eventId = EventId;
+  const otherEventData = {
+    latitude: Event.latitude,
+    longitude: Event.longitude
+  };
+
+  const data = { ...EditedEvent, ...otherEventData };
+
+  await axios({
+    method: 'put',
+    data: data,
+    url: endpoints.key + endpoints.list + `${eventId}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  console.log('Event to be updated', data);
 }

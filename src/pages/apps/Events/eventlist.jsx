@@ -36,6 +36,7 @@ import AlertEventDelete from 'sections/apps/events/AlertEventDelete';
 // import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
 // import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
 import EventView from 'sections/apps/events/EventView';
+import EventsModal from './EventsModal';
 
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
@@ -98,7 +99,7 @@ function ReactTable({ data, columns }) {
         <DebouncedInput
           value={globalFilter ?? ''}
           onFilterChange={(value) => setGlobalFilter(String(value))}
-          placeholder={`Search ${data.length} records...`}
+          placeholder={`Search ${data?.length} records...`}
         />
       </Stack>
       <ScrollX>
@@ -140,7 +141,7 @@ function ReactTable({ data, columns }) {
               </TableHead>
               <TableBody>
                 {table.getRowModel().rows.map((row) => (
-                  <Fragment key={row.id}>
+                  <Fragment key={row.original.id}>
                     <TableRow>
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id} {...cell.column.columnDef.meta}>
@@ -182,24 +183,16 @@ function ReactTable({ data, columns }) {
 
 export default function EventsListPage() {
   const theme = useTheme();
-  //   const { UsersLoading: loading, Users: lists } = useGetUser();
   const { EventsLoading: loading, Events: lists } = useGetEventsList();
   const [open, setOpen] = useState(false);
-  // const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
-  const [activateUserOpen, setActivateUserOpen] = useState(false); // Renamed
   const [eventTitle, setEventTitle] = useState('');
   const [eventDeleteId, setEventDeleteId] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState('');
+  const [eventId, setEventId] = useState('');
+  const [eventModalOpen, setEventModalOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(!open);
-  };
-
-  // const handleCloseSuspendModal = () => {
-  //   setIsSuspendUserOpen(!isSuspendUserOpen);
-  // };
-
-  const handleCloseActivateModal = () => {
-    setActivateUserOpen(!activateUserOpen);
   };
 
   const columns = useMemo(
@@ -305,9 +298,9 @@ export default function EventsListPage() {
                   color="success"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleCloseActivateModal();
-                    setUserEventId(row.original.id);
-                    setUserName(row.original.attributes.name);
+                    setSelectedEvent(row.original.attributes);
+                    setEventModalOpen(true);
+                    setEventId(row.original.id);
                   }}
                 >
                   <Edit />
@@ -348,6 +341,7 @@ export default function EventsListPage() {
         }}
       />
       <AlertEventDelete id={eventDeleteId} title={eventTitle} open={open} handleClose={handleClose} />
+      <EventsModal open={eventModalOpen} modalToggler={setEventModalOpen} EventId={eventId} Event={selectedEvent} />
       {/* <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
       <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} /> */}
       {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}

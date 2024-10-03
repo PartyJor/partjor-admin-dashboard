@@ -41,6 +41,20 @@ export default function EventView({ data }) {
     return `${firstInitial}${lastInitial}`;
   };
 
+  function formatTime(timeString) {
+    let [hours, minutes] = timeString.split(':');
+    hours = parseInt(hours, 10);
+    let timePeriod = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes}:${timePeriod}`
+  }
+  const start_time = data.attributes.start_time;
+  let formattedStartTime = formatTime(start_time);
+
+  const end_time = data.attributes.end_time;
+  let formattedEndTime = formatTime(end_time);
+
   return (
     <Transitions type="slide" direction="down" in={true}>
       <Grid container spacing={2.5} sx={{ pl: { xs: 0, sm: 5, md: 6, lg: 10, xl: 12 } }}>
@@ -182,13 +196,13 @@ export default function EventView({ data }) {
                     <Grid item xs={12} md={6}>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Start Time</Typography>
-                        <Typography>{data.attributes.start_time}</Typography>
+                        <Typography>{formattedStartTime}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">End Time</Typography>
-                        <Typography>{data.attributes.end_time}</Typography>
+                        <Typography>{formattedEndTime}</Typography>
                       </Stack>
                     </Grid>
                   </Grid>
