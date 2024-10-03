@@ -15,8 +15,7 @@ import Select from '@mui/material/Select';
 // project-imports
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { DebouncedInput } from 'components/third-party/react-table';
-import UserCard from 'sections/apps/User/UserCard';
-import UserModal from 'sections/apps/User/UserModal';
+import UserCard from 'sections/apps/user/UserCard';
 
 import usePagination from 'hooks/usePagination';
 import { useGetUser } from 'api/user';
