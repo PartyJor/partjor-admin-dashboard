@@ -113,7 +113,7 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "start": "vite --open false",
+    "start": "vite",
     "build": "vite build",
     "build-stage": "env-cmd -f .env.qa vite build",
     "preview": "vite preview",
