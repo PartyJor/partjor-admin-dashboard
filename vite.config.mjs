@@ -22,19 +22,11 @@ export default defineConfig({
       {
         find: /^src(.+)/,
         replacement: path.join(process.cwd(), 'src/$1')
+      },
+      {
+        find: 'react-native',
+        replacement: path.resolve(__dirname, 'node_modules/react-native')
       }
     ]
-  },
-  server: {
-    // this ensures that the browser opens upon server start
-    open: false,
-    // this sets a default port to 3000
-    port: 3000
-  },
-  preview: {
-    // this ensures that the browser opens upon preview start
-    open: true,
-    // this sets a default port to 3000
-    port: 3000
   }
 });

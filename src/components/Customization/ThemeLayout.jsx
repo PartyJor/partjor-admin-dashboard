@@ -17,6 +17,7 @@ import { MenuOrientation, ThemeDirection } from 'config';
 import useConfig from 'hooks/useConfig';
 import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
 
+
 // assets
 import defaultLayout from 'assets/images/customization/ltr.svg';
 import rtlLayout from 'assets/images/customization/rtl.svg';
@@ -30,7 +31,7 @@ export default function ThemeLayout() {
 
   const { miniDrawer, themeDirection, onChangeDirection, onChangeMiniDrawer, menuOrientation } = useConfig();
   const { menuMaster } = useGetMenuMaster();
-  const drawerOpen = menuMaster.isDashboardDrawerOpened;
+  const drawerOpen = menuMaster.isDashboardDrawerOpened
 
   let initialTheme = 'default';
   if (miniDrawer === true) initialTheme = 'mini';
