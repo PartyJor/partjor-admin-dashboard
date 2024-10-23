@@ -14,7 +14,7 @@ const token = window.localStorage.getItem('serviceToken');
 export const endpoints = {
   key: baseUrl,
   roles: '/v1/admin/acl/roles',
-  permissions: '/v1/admin/acl/permissions?sort=-created_at&all=true' // server URL
+  permissions: '/v1/admin/acl/permissions' // server URL
 };
 
 export function useGetRoles() {
