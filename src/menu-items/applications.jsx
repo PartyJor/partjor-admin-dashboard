@@ -90,9 +90,25 @@ const applications = {
     {
       id: 'acl',
       title: <FormattedMessage id="ACL Management" />,
-      type: 'item',
+      type: 'collapse',
       icon: icons.User,
-      url: '/apps/ACL/ACL-list'
+      url: '/apps/ACL/ACL-roles',
+      children: [
+        {
+          id: 'acl-roles',
+          title: <FormattedMessage id="Roles" />,
+          type: 'item',
+          url: '/apps/ACL/ACL-roles',
+          breadcrumbs: false
+        },
+        {
+          id: 'acl-roles',
+          title: <FormattedMessage id="Permissions" />,
+          type: 'item',
+          url: '/apps/ACL/ACL-permissions',
+          breadcrumbs: false
+        }
+      ]
     },
     {
       id: 'invoice',
