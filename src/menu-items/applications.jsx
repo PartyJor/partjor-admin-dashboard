@@ -88,6 +88,13 @@ const applications = {
       url: '/apps/event-list'
     },
     {
+      id: 'acl',
+      title: <FormattedMessage id="ACL Management" />,
+      type: 'item',
+      icon: icons.User,
+      url: '/apps/ACL/ACL-list'
+    },
+    {
       id: 'invoice',
       title: <FormattedMessage id="invoice" />,
       url: '/apps/invoice/dashboard',

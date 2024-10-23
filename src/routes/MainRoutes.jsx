@@ -31,6 +31,7 @@ const AppUserList = Loadable(lazy(() => import('pages/apps/User/list')));
 const AppUserCard = Loadable(lazy(() => import('pages/apps/User/card')));
 
 const AppEventsList = Loadable(lazy(() => import('pages/apps/Events/eventlist')));
+const AppACLList = Loadable(lazy(() => import('pages/apps/ACL/list')));
 
 const AppInvoiceCreate = Loadable(lazy(() => import('pages/apps/invoice/create')));
 const AppInvoiceDashboard = Loadable(lazy(() => import('pages/apps/invoice/dashboard')));
@@ -215,6 +216,15 @@ const MainRoutes = {
             {
               path: 'event-list',
               element: <AppEventsList />
+            },
+            {
+              path: 'ACL',
+              children: [
+                {
+                  path: 'acl-list',
+                  element: <AppACLList />
+                }
+              ]
             },
             {
               path: 'invoice',
