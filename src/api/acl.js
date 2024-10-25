@@ -78,3 +78,36 @@ export function useGetPermissions() {
   );
   return memoizedValue;
 }
+
+export async function useFetchRole(userId) {
+  // to hit server
+  // you may need to refetch latest data after server hit and based on your logic
+  const { data, isLoading, error, isValidating } = useSWR(
+    [
+      endpoints.key + endpoints.roles + `/${userId}/include=permissions`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    ],
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
+  );
+
+  const memoizedValue = useMemo(
+    () => ({
+      Role: data?.data,
+      RoleLoading: isLoading,
+      RoleError: error,
+      RoleValidating: isValidating,
+      RoleEmpty: !isLoading && !data?.Users?.length
+    }),
+    [data, error, isLoading, isValidating]
+  );
+  return memoizedValue;
+}

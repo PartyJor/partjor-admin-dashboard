@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useMemo, useState, Fragment } from 'react';
+import axios from 'axios';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -36,7 +37,8 @@ import IconButton from 'components/@extended/IconButton';
 import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
 import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
 import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
-import UserView from 'sections/apps/user/UserView';
+import RoleView from 'sections/apps/Acl/Roleview';
+import CreateRoleModal from 'sections/apps/Acl/CreateRoleModal';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
 import {
@@ -107,7 +109,7 @@ function ReactTable({ data, columns, modalToggler }) {
         <DebouncedInput
           value={globalFilter ?? ''}
           onFilterChange={(value) => setGlobalFilter(String(value))}
-          placeholder={`Search ${data.length} records...`}
+          placeholder={`Search ${data?.length} records...`}
         />
 
         <Stack direction="row" alignItems="center" spacing={2}>
@@ -168,7 +170,7 @@ function ReactTable({ data, columns, modalToggler }) {
                     {row.getIsExpanded() && (
                       <TableRow sx={{ bgcolor: backColor, '&:hover': { bgcolor: `${backColor} !important` }, overflow: 'hidden' }}>
                         <TableCell colSpan={row.getVisibleCells().length} sx={{ p: 2.5, overflow: 'hidden' }}>
-                          <UserView data={row.original} />
+                          <RoleView id={row.original.id} />
                         </TableCell>
                       </TableRow>
                     )}
@@ -202,7 +204,8 @@ export default function ACLListPage() {
   const { UsersLoading: loading, Users: lists } = useGetRoles();
   const [open, setOpen] = useState(false);
   const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
-  const [activateUserOpen, setActivateUserOpen] = useState(false); // Renamed
+  const [activateUserOpen, setActivateUserOpen] = useState(false);
+  const [activateCreateRoleOpen, setActivateCreateRoleOpen] = useState(false)
   const [userName, setUserName] = useState('');
   const [UserDeleteId, setUserDeleteId] = useState('');
 
@@ -217,6 +220,9 @@ export default function ACLListPage() {
   const handleCloseActivateModal = () => {
     setActivateUserOpen(!activateUserOpen);
   };
+
+
+
 
   const getUserInitials = (name) => {
     if (!name) return '';
@@ -389,13 +395,14 @@ export default function ACLListPage() {
           data: lists,
           columns,
           modalToggler: () => {
-            setUserModal(true);
+            setActivateCreateRoleOpen(true);
           }
         }}
       />
       <AlertUserDelete id={UserDeleteId} title={userName} open={open} handleClose={handleClose} />
       <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
       <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
+      <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setIsSuspendUserOpen}/>
       {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );
