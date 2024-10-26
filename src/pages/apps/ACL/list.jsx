@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState, Fragment } from 'react';
-import axios from 'axios';
-
+import { useMemo, useState, Fragment, useCallback } from 'react';
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 // import Chip from '@mui/material/Chip';
@@ -205,24 +203,21 @@ export default function ACLListPage() {
   const [open, setOpen] = useState(false);
   const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
   const [activateUserOpen, setActivateUserOpen] = useState(false);
-  const [activateCreateRoleOpen, setActivateCreateRoleOpen] = useState(false)
+  const [activateCreateRoleOpen, setActivateCreateRoleOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [UserDeleteId, setUserDeleteId] = useState('');
 
-  const handleClose = () => {
-    setOpen(!open);
-  };
+  const handleClose = useCallback(() => {
+    setOpen((prevState) => !prevState);
+  }, []);
 
-  const handleCloseSuspendModal = () => {
-    setIsSuspendUserOpen(!isSuspendUserOpen);
-  };
+  const handleCloseSuspendModal = useCallback(() => {
+    setIsSuspendUserOpen((prevState) => !prevState);
+  }, []);
 
-  const handleCloseActivateModal = () => {
-    setActivateUserOpen(!activateUserOpen);
-  };
-
-
-
+  const handleCloseActivateModal = useCallback(() => {
+    setActivateUserOpen((prevState) => !prevState);
+  }, []);
 
   const getUserInitials = (name) => {
     if (!name) return '';
@@ -273,7 +268,7 @@ export default function ACLListPage() {
         cell: ({ row }) => <Typography variant="text.primary">{row.index + 1}</Typography>
       },
       {
-        header: 'User',
+        header: 'Role',
         accessorKey: 'attributes.name',
         cell: ({ row, getValue }) => (
           <Stack direction="row" spacing={1.5} alignItems="center">
@@ -296,29 +291,6 @@ export default function ACLListPage() {
         accessorKey: 'attributes.guard_name',
         cell: ({ getValue }) => <Typography variant="text.primary">{getValue()}</Typography>
       },
-      //   {
-      //     header: 'Platform',
-      //     accessorKey: 'attributes.platform',
-      //     meta: {
-      //       className: 'cell-left'
-      //     }
-      //   },
-      //   {
-      //     header: 'Country',
-      //     accessorKey: 'attributes.country'
-      //   },
-      //   {
-      //     header: 'Status',
-      //     accessorKey: 'attributes.status',
-      //     cell: ({ getValue }) => (
-      //       <Chip
-      //         color={getValue() === 'active' ? 'success' : getValue() === 'inactive' ? 'info' : 'error'}
-      //         label={getValue()}
-      //         size="small"
-      //         variant="light"
-      //       />
-      //     )
-      //   },
       {
         header: 'Actions',
         meta: {
@@ -383,7 +355,7 @@ export default function ACLListPage() {
         }
       }
     ],
-    [theme]
+    [theme, handleClose, handleCloseActivateModal, handleCloseSuspendModal]
   );
 
   if (loading) return <EmptyReactTable />;
@@ -402,7 +374,7 @@ export default function ACLListPage() {
       <AlertUserDelete id={UserDeleteId} title={userName} open={open} handleClose={handleClose} />
       <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
       <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
-      <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setIsSuspendUserOpen}/>
+      <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setActivateCreateRoleOpen} />
       {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );

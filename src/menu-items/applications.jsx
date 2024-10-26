@@ -102,7 +102,7 @@ const applications = {
           breadcrumbs: false
         },
         {
-          id: 'acl-roles',
+          id: 'acl-permissions',
           title: <FormattedMessage id="Permissions" />,
           type: 'item',
           url: '/apps/ACL/ACL-permissions',

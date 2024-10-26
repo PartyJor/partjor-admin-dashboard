@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 
 // material-ui
 import Box from '@mui/material/Box';
@@ -18,9 +18,9 @@ import { useGetUser } from 'api/user';
 export default function CreateRoleModal({ open, modalToggler }) {
   const { UsersLoading: loading } = useGetUser();
 
-  const closeModal = () => modalToggler(false);
+  const closeModal = useCallback(() => modalToggler(false), [modalToggler]);
 
-  const UserForm = useMemo(() => !loading && <FormRoleAdd closeModal={closeModal} />);
+  const UserForm = useMemo(() => !loading && <FormRoleAdd closeModal={closeModal} />, [loading, closeModal]);
 
   return (
     <>

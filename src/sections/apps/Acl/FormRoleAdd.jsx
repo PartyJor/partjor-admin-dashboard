@@ -28,6 +28,7 @@ import DialogActions from '@mui/material/DialogActions';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -49,6 +50,7 @@ import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
 import { Camera, CloseCircle, Trash } from 'iconsax-react';
+import { FormGroup } from '@mui/material';
 
 // ==============================|| User ADD / EDIT - FORM ||============================== //
 
@@ -85,58 +87,42 @@ export default function FormRoleAdd({ closeModal }) {
     },
     {
       id: 7,
-      permission: 'View customer'
-    },
-    {
-      id: 8,
-      permission: 'Edit customer'
-    },
-    {
-      id: 9,
-      permission: 'Delete customer'
-    },
-    {
-      id: 10,
       permission: 'View review'
     },
     {
-      id: 11,
-      permission: 'Impersonate customer'
-    },
-    {
-      id: 12,
+      id: 8,
       permission: 'Create Role'
     },
     {
-      id: 13,
+      id: 9,
       permission: 'Delete role'
     },
     {
-      id: 14,
+      id: 10,
       permission: 'View user'
     },
     {
-      id: 15,
+      id: 11,
       permission: 'Edit user'
     },
     {
-      id: 16,
+      id: 12,
       permission: 'Delete user'
     },
     {
-      id: 17,
+      id: 13,
       permission: 'Create user'
     },
     {
-      id: 18,
+      id: 14,
       permission: 'Impersonate user'
     },
     {
-      id: 19,
+      id: 15,
       permission: 'View event'
     },
     {
-      id: 20,
+      id: 16,
       permission: 'Edit event'
     }
   ];
@@ -236,9 +222,38 @@ export default function FormRoleAdd({ closeModal }) {
                           id="User-firstName"
                           placeholder="Enter First Name"
                           {...getFieldProps('firstName')}
-                          error={Boolean(touched.firstName && errors.firstName)}
-                          helperText={touched.firstName && errors.firstName}
+                          error={Boolean(touched.roleName && errors.roletName)}
+                          helperText={touched.roleName && errors.roleName}
                         />
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel htmlFor="User-firstName">Assign Permissions</InputLabel>
+                  </Stack>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1}>
+                        <FormGroup>
+                          {permissions
+                            .filter((permission) => permission.id >= 1 && permission.id <= 8)
+                            .map((permission) => (
+                              <FormControlLabel key={permission.id} control={<Checkbox />} label={permission.permission} />
+                            ))}
+                        </FormGroup>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1}>
+                        <FormGroup>
+                          {permissions
+                            .filter((permission) => permission.id >= 9 && permission.id <= 16)
+                            .map((permission) => (
+                              <FormControlLabel key={permission.id} control={<Checkbox />} label={permission.permission} />
+                            ))}
+                        </FormGroup>
                       </Stack>
                     </Grid>
                   </Grid>
@@ -246,6 +261,20 @@ export default function FormRoleAdd({ closeModal }) {
               </Grid>
             </DialogContent>
             <Divider />
+            <DialogActions sx={{ p: 2.5 }}>
+              <Grid container justifyContent="space-between" alignItems="center">
+                <Grid item>
+                  <Stack direction="row" spacing={6} alignItems="center">
+                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                      Add Role
+                    </Button>
+                    <Button color="error" onClick={closeModal}>
+                      Cancel
+                    </Button>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </DialogActions>
           </Form>
         </LocalizationProvider>
       </FormikProvider>
