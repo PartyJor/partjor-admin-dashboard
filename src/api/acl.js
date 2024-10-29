@@ -1,9 +1,9 @@
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { useMemo } from 'react';
 
 // utils
 import { fetcher } from 'utils/axios';
-// import axios from 'axios';
+import axios from 'axios';
 
 // const initialState = {
 //   modal: false
@@ -110,4 +110,21 @@ export async function useFetchRole(userId) {
     [data, error, isLoading, isValidating]
   );
   return memoizedValue;
+}
+
+export async function createRole(data) {
+  axios({
+    method: 'POST',
+    url: endpoints.key + endpoints.roles,
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    data: data
+  })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }

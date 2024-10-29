@@ -3,26 +3,19 @@ import PropTypes from 'prop-types';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 
-import { useFetchRole } from 'api/acl';
 import axios from 'axios';
 
 // project-imports
 import MainCard from 'components/MainCard';
-import Avatar from 'components/@extended/Avatar';
 import Transitions from 'components/@extended/Transitions';
 
 // assets
-import { Location, Mobile, Sms } from 'iconsax-react';
 import { useEffect, useState } from 'react';
 
 // ==============================|| User - VIEW ||============================== //
@@ -54,23 +47,8 @@ export default function RoleView({ id }) {
     fetchRole();
   }, []);
 
-
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
-
-  const getUserInitials = (name) => {
-    if (!name) return '';
-    const nameParts = name.trim().split(' ');
-
-    if (nameParts.length === 1) {
-      return nameParts[0][0].toUpperCase();
-    }
-
-    const firstInitial = nameParts[0][0].toUpperCase();
-    const lastInitial = nameParts[nameParts.length - 1][0].toUpperCase();
-
-    return `${firstInitial}${lastInitial}`;
-  };
 
   return (
     <Transitions type="slide" direction="down" in={true}>
@@ -94,17 +72,21 @@ export default function RoleView({ id }) {
                     <Grid item xs={12} md={6}>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Permissions</Typography>
-                        {role?.attributes?.name === 'super_admin' ? <Typography>All</Typography> : <List></List>}
+                        {role?.attributes?.name === 'super_admin' ? (
+                          <Typography>All</Typography>
+                        ) : (
+                          <List>
+                            {role?.relationships?.permissions?.data.map((index, permissions) => (
+                              <ListItem key={index}>
+                                <Typography>{permissions}</Typography>
+                              </ListItem>
+                            ))}
+                          </List>
+                        )}
                       </Stack>
                     </Grid>
                   </Grid>
                 </ListItem>
-                {/* <ListItem>
-                  <Stack spacing={0.5}>
-                    <Typography color="secondary">Address</Typography>
-                    <Typography>{data.address}</Typography>
-                  </Stack>
-                </ListItem> */}
               </List>
             </MainCard>
           </Stack>

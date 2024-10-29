@@ -375,7 +375,6 @@ export default function ACLListPage() {
       <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
       <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
       <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setActivateCreateRoleOpen} />
-      {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );
 }
