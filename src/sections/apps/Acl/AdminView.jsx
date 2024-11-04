@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
+import { useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
@@ -9,46 +10,19 @@ import Stack from '@mui/material/Stack';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 
-import axios from 'axios';
-
 // project-imports
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 
-// assets
-import { useEffect, useState } from 'react';
-
 // ==============================|| User - VIEW ||============================== //
 
-export default function RoleView({ id }) {
-  const [role, setRole] = useState('');
-
-  const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token = window.localStorage.getItem('serviceToken');
-
-  const fetchRole = async () => {
-    await axios({
-      method: 'get',
-      url: `${baseUrl}/v1/admin/acl/roles/${id}?include=permissions`,
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((response) => {
-        setRole(response.data.data);
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  useEffect(() => {
-    fetchRole();
-  }, []);
-
+export default function AdminView({ data }) {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    console.log('data', data);
+  });
 
   return (
     <Transitions type="slide" direction="down" in={true}>
@@ -62,7 +36,7 @@ export default function RoleView({ id }) {
                     <Grid item xs={12} md={6}>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Role</Typography>
-                        <Typography>{role?.attributes?.name || ''}</Typography>
+                        <Typography>{data?.attributes?.roles[0]?.name || ''}</Typography>
                       </Stack>
                     </Grid>
                   </Grid>
@@ -72,7 +46,7 @@ export default function RoleView({ id }) {
                     <Grid item xs={12} md={6}>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Permissions</Typography>
-                        {role?.attributes?.name === 'super_admin' ? <Typography>All</Typography> : <List></List>}
+                        {data?.attributes?.roles[0]?.name === 'super_admin' ? <Typography>All</Typography> : <List></List>}
                       </Stack>
                     </Grid>
                   </Grid>
@@ -92,4 +66,4 @@ export default function RoleView({ id }) {
   );
 }
 
-RoleView.propTypes = { id: PropTypes.any };
+AdminView.propTypes = { data: PropTypes.any };

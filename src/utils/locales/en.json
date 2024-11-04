@@ -143,5 +143,6 @@
   "Events Management": "Events Management",
   "ACL Management": "ACL Management",
   "Roles": "Roles",
-  "Permissions": "Permissions"
+  "Permissions": "Permissions",
+  "Admins": "Admins"
 }

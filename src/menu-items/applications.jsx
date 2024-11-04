@@ -92,8 +92,15 @@ const applications = {
       title: <FormattedMessage id="ACL Management" />,
       type: 'collapse',
       icon: icons.User,
-      url: '/apps/ACL/ACL-roles',
+      url: '/apps/ACL/admin-list',
       children: [
+        {
+          id: 'admin-list',
+          title: <FormattedMessage id="Admins" />,
+          type: 'item',
+          url: '/apps/ACL/admin-list',
+          breadcrumbs: false
+        },
         {
           id: 'acl-roles',
           title: <FormattedMessage id="Roles" />,

@@ -1,4 +1,4 @@
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { useMemo } from 'react';
 
 // utils
@@ -13,6 +13,7 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = window.localStorage.getItem('serviceToken');
 export const endpoints = {
   key: baseUrl,
+  admins: '/v1/admin/admins',
   roles: '/v1/admin/acl/roles',
   permissions: '/v1/admin/acl/permissions' // server URL
 };
@@ -21,6 +22,37 @@ export function useGetRoles() {
   const { data, isLoading, error, isValidating } = useSWR(
     [
       endpoints.key + endpoints.roles,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    ],
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
+  );
+
+  const memoizedValue = useMemo(
+    () => ({
+      Users: data?.data,
+      UsersLoading: isLoading,
+      UsersError: error,
+      UsersValidating: isValidating,
+      UsersEmpty: !isLoading && !data?.Users?.length
+    }),
+    [data, error, isLoading, isValidating]
+  );
+  return memoizedValue;
+}
+
+export function useGetAdmins() {
+  const { data, isLoading, error, isValidating } = useSWR(
+    [
+      endpoints.key + endpoints.admins,
       {
         headers: {
           Authorization: `Bearer ${token}`

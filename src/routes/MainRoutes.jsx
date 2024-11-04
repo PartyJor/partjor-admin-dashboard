@@ -31,8 +31,10 @@ const AppUserList = Loadable(lazy(() => import('pages/apps/User/list')));
 const AppUserCard = Loadable(lazy(() => import('pages/apps/User/card')));
 
 const AppEventsList = Loadable(lazy(() => import('pages/apps/Events/eventlist')));
+
 const AppACLRoles = Loadable(lazy(() => import('pages/apps/ACL/list')));
 const AppACLPermissions = Loadable(lazy(() => import('pages/apps/ACL/permissions')));
+const AppAdminList = Loadable(lazy(() => import('pages/apps/ACL/adminlist')));
 
 const AppInvoiceCreate = Loadable(lazy(() => import('pages/apps/invoice/create')));
 const AppInvoiceDashboard = Loadable(lazy(() => import('pages/apps/invoice/dashboard')));
@@ -221,6 +223,10 @@ const MainRoutes = {
             {
               path: 'ACL',
               children: [
+                {
+                  path: 'admin-list',
+                  element: <AppAdminList />
+                },
                 {
                   path: 'acl-roles',
                   element: <AppACLRoles />
