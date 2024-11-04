@@ -72,17 +72,21 @@ export default function RoleView({ id }) {
                     <Grid item xs={12} md={6}>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Permissions</Typography>
-                        {role?.attributes?.name === 'super_admin' ? <Typography>All</Typography> : <List></List>}
+                        {role?.attributes?.name === 'super_admin' ? (
+                          <Typography>All</Typography>
+                        ) : (
+                          <List>
+                            {role?.relationships?.permissions?.data.map((index, permissions) => (
+                              <ListItem key={index}>
+                                <Typography>{permissions}</Typography>
+                              </ListItem>
+                            ))}
+                          </List>
+                        )}
                       </Stack>
                     </Grid>
                   </Grid>
                 </ListItem>
-                {/* <ListItem>
-                  <Stack spacing={0.5}>
-                    <Typography color="secondary">Address</Typography>
-                    <Typography>{data.address}</Typography>
-                  </Stack>
-                </ListItem> */}
               </List>
             </MainCard>
           </Stack>
