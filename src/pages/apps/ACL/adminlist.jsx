@@ -37,6 +37,7 @@ import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
 import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
 import AdminView from 'sections/apps/Acl/AdminView';
 import CreateRoleModal from 'sections/apps/Acl/CreateRoleModal';
+import CreateAdminModal from 'sections/apps/Acl/CreateAdminModal';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
 import {
@@ -204,6 +205,7 @@ export default function AdminListPage() {
   const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
   const [activateUserOpen, setActivateUserOpen] = useState(false);
   const [activateCreateRoleOpen, setActivateCreateRoleOpen] = useState(false);
+  const [activateCreateAdminOpen, setActivateCreateAdminOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [UserDeleteId, setUserDeleteId] = useState('');
 
@@ -369,7 +371,7 @@ export default function AdminListPage() {
           data: lists,
           columns,
           modalToggler: () => {
-            setActivateCreateRoleOpen(true);
+            setActivateCreateAdminOpen(true);
           }
         }}
       />
@@ -377,6 +379,7 @@ export default function AdminListPage() {
       <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
       <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
       <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setActivateCreateRoleOpen} />
+      <CreateAdminModal open={activateCreateAdminOpen} modalToggler={setActivateCreateAdminOpen} />
       {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );
