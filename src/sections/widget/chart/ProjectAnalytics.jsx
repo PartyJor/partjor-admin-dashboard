@@ -23,13 +23,11 @@ import ReactApexChart from 'react-apexcharts';
 // project-imports
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
-import IconButton from 'components/@extended/IconButton';
-import MoreIcon from 'components/@extended/MoreIcon';
 import { ThemeMode } from 'config';
 
 import axios from 'axios';
 // assets
-import { ArrowDown, ArrowSwapHorizontal, ArrowUp, Chart, Edit, HomeTrendUp, Maximize4, ShoppingCart } from 'iconsax-react';
+import { ArrowDown, ArrowSwapHorizontal, ArrowUp, Chart, HomeTrendUp, ShoppingCart } from 'iconsax-react';
 
 function a11yProps(index) {
   return {
@@ -145,7 +143,6 @@ function EcommerceDataChart({ data }) {
 
 export default function ProjectAnalytics() {
   const [value, setValue] = useState(0);
-  const [age, setAge] = useState('30');
   const [selectedValue, setSelectedValue] = useState('ever');
   const [analytics, setAnalytics] = useState(0);
 

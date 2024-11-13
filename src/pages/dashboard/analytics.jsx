@@ -5,12 +5,6 @@ import Stack from '@mui/material/Stack';
 
 // project-imports
 
-import NewOrders from 'sections/widget/chart/NewOrders';
-import NewUsers from 'sections/widget/chart/NewUsers';
-import Visitors from 'sections/widget/chart/Visitors';
-
-import SwitchBalanace from 'sections/widget/statistics/SwitchBalanace';
-
 import ProjectAnalytics from 'sections/widget/chart/ProjectAnalytics';
 
 import EcommerceIncome from 'sections/widget/chart/EcommerceIncome';

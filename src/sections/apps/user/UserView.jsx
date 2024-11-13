@@ -21,6 +21,7 @@ import Transitions from 'components/@extended/Transitions';
 // assets
 import { Location, Mobile, Sms } from 'iconsax-react';
 
+
 // ==============================|| User - VIEW ||============================== //
 
 export default function UserView({ data }) {
