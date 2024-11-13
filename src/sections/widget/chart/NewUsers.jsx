@@ -94,10 +94,14 @@ function DataChart() {
 // ==============================|| CHART WIDGETS - NEW USERS ||============================== //
 
 export default function NewUsers() {
-  const [age, setAge] = useState('30');
-  const [totalUsers, setTotalUsers] = useState('');
+  const [selectedValue, setSelectedValue] = useState('ever');
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [dailyUsers, setDailyUsers] = useState(0);
+  const [monthlyUsers, setMonthlyUsers] = useState(0);
+
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setSelectedValue(event.target.value);
+    console.log(selectedValue);
   };
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -114,6 +118,8 @@ export default function NewUsers() {
       .then((response) => {
         console.log(response.data.data.attributes.total_users_ever);
         setTotalUsers(response.data.data.attributes.total_users_ever);
+        setDailyUsers(response.data.data.attributes.total_users_today);
+        setMonthlyUsers(response.data.data.attributes.total_users_this_month);
       })
       .catch((error) => {
         console.log(error);
@@ -132,11 +138,10 @@ export default function NewUsers() {
             <Typography variant="h5">Total Users</Typography>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth size="small">
-                <Select id="demo-simple-select" value={age} onChange={handleChange}>
-                  <MenuItem value={10}>Today</MenuItem>
-                  <MenuItem value={20}>Weekly</MenuItem>
-                  <MenuItem value={30}>Monthly</MenuItem>
-                  <MenuItem value={30}>Ever</MenuItem>
+                <Select id="demo-simple-select" value={selectedValue} onChange={handleChange}>
+                  <MenuItem value={'ever'}>Ever</MenuItem>
+                  <MenuItem value={'today'}>Today</MenuItem>
+                  <MenuItem value={'monthly'}>This month</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -147,7 +152,9 @@ export default function NewUsers() {
         </Grid>
         <Grid item xs={12}>
           <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
-            <Typography variant="subtitle1">{totalUsers} users</Typography>
+            <Typography variant="subtitle1">
+              {selectedValue === 'ever' ? totalUsers : selectedValue === 'today' ? dailyUsers : monthlyUsers} users
+            </Typography>
             <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 500 }}>
               <ArrowUp size={14} style={{ transform: 'rotate(45deg)' }} />
               30.6%

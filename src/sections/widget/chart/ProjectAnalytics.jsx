@@ -27,8 +27,9 @@ import IconButton from 'components/@extended/IconButton';
 import MoreIcon from 'components/@extended/MoreIcon';
 import { ThemeMode } from 'config';
 
+import axios from 'axios';
 // assets
-import { ArrowDown, ArrowSwapHorizontal, ArrowUp, Bookmark, Chart, Edit, HomeTrendUp, Maximize4, ShoppingCart } from 'iconsax-react';
+import { ArrowDown, ArrowSwapHorizontal, ArrowUp, Chart, Edit, HomeTrendUp, Maximize4, ShoppingCart } from 'iconsax-react';
 
 function a11yProps(index) {
   return {
@@ -95,7 +96,7 @@ function EcommerceDataChart({ data }) {
       ...prevState,
       colors: [theme.palette.primary.main, theme.palette.primary.main],
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         labels: {
           style: {
             colors: [secondary, secondary, secondary, secondary, secondary, secondary, secondary]
@@ -145,35 +146,61 @@ function EcommerceDataChart({ data }) {
 export default function ProjectAnalytics() {
   const [value, setValue] = useState(0);
   const [age, setAge] = useState('30');
+  const [selectedValue, setSelectedValue] = useState('ever');
+  const [analytics, setAnalytics] = useState(0);
+
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const token = window.localStorage.getItem('serviceToken');
+
+  useEffect(() => {
+    const getAllAnalytics = () => {
+      axios({
+        method: 'get',
+        url: `${baseUrl}/v1/admin/analytics`,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then((response) => {
+          console.log(response);
+          setAnalytics(response.data.data.attributes);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    getAllAnalytics();
+  }, [token, baseUrl]);
 
   const chartData = [
     [
       {
-        name: 'Net Profit',
+        name: 'Users',
         data: [76, 85, 101, 98, 87, 105, 91]
       },
       {
-        name: 'Revenue',
+        name: 'Events',
         data: [44, 55, 57, 56, 61, 58, 63]
       }
     ],
     [
       {
-        name: 'Net Profit',
+        name: 'Users',
         data: [80, 101, 90, 65, 120, 105, 85]
       },
       {
-        name: 'Revenue',
+        name: 'Events',
         data: [45, 30, 57, 45, 78, 48, 63]
       }
     ],
     [
       {
-        name: 'Net Profit',
+        name: 'Users',
         data: [79, 85, 107, 95, 83, 115, 97]
       },
       {
-        name: 'Revenue',
+        name: 'Events',
         data: [48, 56, 50, 54, 68, 53, 65]
       }
     ],
@@ -192,7 +219,7 @@ export default function ProjectAnalytics() {
   const [data, setData] = useState(chartData[0]);
 
   const handleChangeSelect = (event) => {
-    setAge(event.target.value);
+    setSelectedValue(event.target.value);
   };
 
   const handleChange = (event, newValue) => {
@@ -206,9 +233,6 @@ export default function ProjectAnalytics() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{ px: 3, pt: 1, '& .MuiTab-root': { mb: 0.5 } }}>
             <Tab label="Overview" {...a11yProps(0)} />
-            <Tab label="Marketing" {...a11yProps(1)} />
-            <Tab label="Project" {...a11yProps(2)} />
-            <Tab label="Order" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <Box sx={{ p: 3 }}>
@@ -218,22 +242,13 @@ export default function ProjectAnalytics() {
                 <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
                   <Box sx={{ minWidth: 120 }}>
                     <FormControl fullWidth>
-                      <Select id="demo-simple-select" value={age} onChange={handleChangeSelect}>
-                        <MenuItem value={10}>Today</MenuItem>
-                        <MenuItem value={20}>Weekly</MenuItem>
-                        <MenuItem value={30}>Monthly</MenuItem>
+                      <Select id="demo-simple-select" value={selectedValue} onChange={handleChangeSelect}>
+                        <MenuItem value={'ever'}>Ever</MenuItem>
+                        <MenuItem value={'today'}>Today</MenuItem>
+                        <MenuItem value={'monthly'}>Monthly</MenuItem>
                       </Select>
                     </FormControl>
                   </Box>
-                  <IconButton color="secondary" variant="outlined" sx={{ color: 'text.secondary' }}>
-                    <Edit />
-                  </IconButton>
-                  <IconButton color="secondary" variant="outlined" sx={{ color: 'text.secondary' }}>
-                    <Maximize4 />
-                  </IconButton>
-                  <IconButton color="secondary" variant="outlined" sx={{ transform: 'rotate(90deg)', color: 'text.secondary' }}>
-                    <MoreIcon />
-                  </IconButton>
                 </Stack>
                 <EcommerceDataChart data={data} />
               </Stack>
@@ -257,8 +272,16 @@ export default function ProjectAnalytics() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography color="text.secondary">Total Sales</Typography>}
-                    secondary={<Typography variant="subtitle1">1,800</Typography>}
+                    primary={<Typography color="text.secondary">Total Users</Typography>}
+                    secondary={
+                      <Typography variant="subtitle1">
+                        {selectedValue === 'ever'
+                          ? analytics?.total_users_ever
+                          : selectedValue === 'today'
+                            ? analytics?.total_users_today
+                            : analytics?.total_users_this_month}
+                      </Typography>
+                    }
                   />
                 </ListItem>
                 <ListItem
@@ -278,8 +301,16 @@ export default function ProjectAnalytics() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography color="text.secondary">Revenue</Typography>}
-                    secondary={<Typography variant="subtitle1">$5,667</Typography>}
+                    primary={<Typography color="text.secondary">Events</Typography>}
+                    secondary={
+                      <Typography variant="subtitle1">
+                        {selectedValue === 'ever'
+                          ? analytics?.total_events_ever
+                          : selectedValue === 'today'
+                            ? analytics?.total_events_today
+                            : analytics?.total_events_this_month}
+                      </Typography>
+                    }
                   />
                 </ListItem>
                 <ListItem
@@ -299,28 +330,16 @@ export default function ProjectAnalytics() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography color="text.secondary">Abandon Cart</Typography>}
-                    secondary={<Typography variant="subtitle1">128</Typography>}
-                  />
-                </ListItem>
-                <ListItem
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">+200</Typography>
-                      <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
+                    primary={<Typography color="text.secondary">Total Depostits</Typography>}
+                    secondary={
+                      <Typography variant="subtitle1">
+                        {selectedValue === 'ever'
+                          ? analytics?.total_deposits_ever
+                          : selectedValue === 'today'
+                            ? analytics?.total_deposits_today
+                            : analytics?.total_deposits_this_month}
                       </Typography>
-                    </Stack>
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
-                      <Bookmark />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={<Typography color="text.secondary">Ads Spent</Typography>}
-                    secondary={<Typography variant="subtitle1">$2,500</Typography>}
+                    }
                   />
                 </ListItem>
               </List>
