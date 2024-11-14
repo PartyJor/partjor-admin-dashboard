@@ -32,6 +32,8 @@ const AppUserCard = Loadable(lazy(() => import('pages/apps/User/card')));
 
 const AppEventsList = Loadable(lazy(() => import('pages/apps/Events/eventlist')));
 
+const AppTransactionList = Loadable(lazy(() => import('pages/apps/Transactions/WalletTransactionsList')));
+
 const AppACLRoles = Loadable(lazy(() => import('pages/apps/ACL/list')));
 const AppACLPermissions = Loadable(lazy(() => import('pages/apps/ACL/permissions')));
 const AppAdminList = Loadable(lazy(() => import('pages/apps/ACL/adminlist')));
@@ -234,6 +236,15 @@ const MainRoutes = {
                 {
                   path: 'acl-permissions',
                   element: <AppACLPermissions />
+                }
+              ]
+            },
+            {
+              path: 'transactions',
+              children: [
+                {
+                  path: 'wallet-transactions-list',
+                  element: <AppTransactionList />
                 }
               ]
             },

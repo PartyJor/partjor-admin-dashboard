@@ -6,7 +6,19 @@ import { handlerUserDialog } from 'api/user';
 import { NavActionType } from 'config';
 
 // assets
-import { Add, Link1, KyberNetwork, Messages2, Calendar1, Kanban, Profile2User, Bill, UserSquare, ShoppingBag } from 'iconsax-react';
+import {
+  Add,
+  Link1,
+  KyberNetwork,
+  Messages2,
+  Calendar1,
+  Kanban,
+  Profile2User,
+  Bill,
+  UserSquare,
+  ShoppingBag,
+  Wallet1
+} from 'iconsax-react';
 
 // type
 
@@ -21,7 +33,8 @@ const icons = {
   profile: UserSquare,
   ecommerce: ShoppingBag,
   add: Add,
-  link: Link1
+  link: Link1,
+  wallet: Wallet1
 };
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
@@ -113,6 +126,22 @@ const applications = {
           title: <FormattedMessage id="Permissions" />,
           type: 'item',
           url: '/apps/ACL/ACL-permissions',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'transactions',
+      title: <FormattedMessage id="Wallet Transactions" />,
+      type: 'collapse',
+      icon: icons.wallet,
+      url: '/apps/ACL/admin-list',
+      children: [
+        {
+          id: 'transactions-list',
+          title: <FormattedMessage id="Transactions List" />,
+          type: 'item',
+          url: '/apps/transactions/wallet-transactions-list',
           breadcrumbs: false
         }
       ]

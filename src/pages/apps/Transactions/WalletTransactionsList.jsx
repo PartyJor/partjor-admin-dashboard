@@ -7,13 +7,11 @@ import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
@@ -30,36 +28,16 @@ import {
 // project-import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import Avatar from 'components/@extended/Avatar';
-import IconButton from 'components/@extended/IconButton';
 
-import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
-import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
-import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
 import UserView from 'sections/apps/user/UserView';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
-import {
-  CSVExport,
-  DebouncedInput,
-  HeaderSort,
-  IndeterminateCheckbox,
-  RowSelection,
-  SelectColumnSorting,
-  TablePagination
-} from 'components/third-party/react-table';
+import { DebouncedInput, HeaderSort, IndeterminateCheckbox, RowSelection, TablePagination } from 'components/third-party/react-table';
 
-import { useGetUser } from 'api/user';
-import { ImagePath, getImageUrl } from 'utils/getImageUrl';
-
-// assets
-import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
-// import UserAvatar from 'sections/apps/chat/UserAvatar';
-// import Alert from 'themes/overrides/Alert';
-
+import { useGetTransactionsList } from 'api/transactions';
 // ==============================|| REACT TABLE - LIST ||============================== //
 
-function ReactTable({ data, columns, modalToggler }) {
+function ReactTable({ data, columns }) {
   const theme = useTheme();
   const [sorting, setSorting] = useState([{ id: 'name', desc: false }]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -107,16 +85,8 @@ function ReactTable({ data, columns, modalToggler }) {
         <DebouncedInput
           value={globalFilter ?? ''}
           onFilterChange={(value) => setGlobalFilter(String(value))}
-          placeholder={`Search ${data.length} records...`}
+          placeholder={`Search ${data?.length} records...`}
         />
-
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
-          <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
-            Add User
-          </Button>
-          <CSVExport {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'User-list.csv' }} />
-        </Stack>
       </Stack>
       <ScrollX>
         <Stack>
@@ -199,40 +169,7 @@ function ReactTable({ data, columns, modalToggler }) {
 
 export default function WalletTransactionsListPage() {
   const theme = useTheme();
-  const { UsersLoading: loading, Users: lists } = useGetUser();
-  const [open, setOpen] = useState(false);
-  const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
-  const [activateUserOpen, setActivateUserOpen] = useState(false); // Renamed
-  const [userName, setUserName] = useState('');
-  const [UserDeleteId, setUserDeleteId] = useState('');
-
-  const handleClose = () => {
-    setOpen(!open);
-  };
-
-  const handleCloseSuspendModal = () => {
-    setIsSuspendUserOpen(!isSuspendUserOpen);
-  };
-
-  const handleCloseActivateModal = () => {
-    setActivateUserOpen(!activateUserOpen);
-  };
-
-  const getUserInitials = (name) => {
-    if (!name) return '';
-    const nameParts = name.trim().split(' ');
-
-    // Handle case with one name
-    if (nameParts.length === 1) {
-      return nameParts[0][0].toUpperCase();
-    }
-
-    // Get initials from the first and last name
-    const firstInitial = nameParts[0][0].toUpperCase();
-    const lastInitial = nameParts[nameParts.length - 1][0].toUpperCase();
-
-    return `${firstInitial}${lastInitial}`;
-  };
+  const { TransactionsLoading: loading, Transactions: lists, Users } = useGetTransactionsList();
 
   const columns = useMemo(
     () => [
@@ -267,17 +204,10 @@ export default function WalletTransactionsListPage() {
         cell: ({ row }) => <Typography variant="text.primary">{row.index + 1}</Typography>
       },
       {
-        header: 'User',
-        accessorKey: 'attributes.name',
+        header: 'Type',
+        accessorKey: 'attributes.type',
         cell: ({ row, getValue }) => (
           <Stack direction="row" spacing={1.5} alignItems="center">
-            {row.original.attributes.avatar ? (
-              <Avatar alt="Avatar" size="sm" src={getImageUrl(`avatar-${!row.original.attributes.avatar}.png`, ImagePath.USERS)} />
-            ) : (
-              <Avatar alt="User Initials" size="sm">
-                {getUserInitials(getValue())}
-              </Avatar>
-            )}
             <Stack spacing={0}>
               <Typography variant="subtitle1">{getValue()}</Typography>
               <Typography color="text.secondary">{row.original.attributes.email}</Typography>
@@ -286,94 +216,36 @@ export default function WalletTransactionsListPage() {
         )
       },
       {
-        header: 'Contact',
-        accessorKey: 'attributes.phone_number.formattedPhoneNumber',
+        header: 'Amount',
+        accessorKey: 'attributes.amount',
         cell: ({ getValue }) => <Typography variant="text.primary">{getValue()}</Typography>
       },
       {
-        header: 'Platform',
-        accessorKey: 'attributes.platform',
+        header: 'Confirmed',
+        accessorKey: 'attributes.confirmed',
         meta: {
           className: 'cell-left'
         }
       },
       {
-        header: 'Country',
-        accessorKey: 'attributes.country'
+        header: 'Purpose',
+        accessorKey: 'attributes.meta.transaction_purpose'
       },
       {
-        header: 'Status',
-        accessorKey: 'attributes.status',
-        cell: ({ getValue }) => (
-          <Chip
-            color={getValue() === 'active' ? 'success' : getValue() === 'inactive' ? 'info' : 'error'}
-            label={getValue()}
-            size="small"
-            variant="light"
-          />
-        )
+        header: 'Provider',
+        accessorKey: 'attributes.meta.provider',
+        cell: ({ getValue }) => <Chip color={'success'} label={getValue()} size="small" variant="light" />
       },
       {
-        header: 'Actions',
-        meta: {
-          className: 'cell-center'
-        },
-        disableSortBy: true,
+        header: 'Extra Charges',
+        accessorKey: 'attributes.meta.extra_charges'
+      },
+      {
+        header: 'User',
         cell: ({ row }) => {
-          const collapseIcon =
-            row.getCanExpand() && row.getIsExpanded() ? (
-              <Add style={{ color: theme.palette.error.main, transform: 'rotate(45deg)' }} />
-            ) : (
-              <Eye />
-            );
-          return (
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="View">
-                <IconButton color="secondary" onClick={row.getToggleExpandedHandler()}>
-                  {collapseIcon}
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Suspend User">
-                <IconButton
-                  color="info"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCloseSuspendModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <UserRemove />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Activate User">
-                <IconButton
-                  color="success"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCloseActivateModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <UserTick />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClose();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <Trash />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          );
+          const userId = row.original.relationships?.user?.data?.id;
+          const userName = Users[userId] || 'Unknown User';
+          return <Typography>{userName}</Typography>;
         }
       }
     ],
@@ -393,10 +265,6 @@ export default function WalletTransactionsListPage() {
           }
         }}
       />
-      <AlertUserDelete id={UserDeleteId} title={userName} open={open} handleClose={handleClose} />
-      <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
-      <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
-      {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );
 }

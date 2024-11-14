@@ -144,5 +144,7 @@
   "ACL Management": "ACL Management",
   "Roles": "Roles",
   "Permissions": "Permissions",
-  "Admins": "Admins"
+  "Admins": "Admins",
+  "Wallet Transactions": "Wallet Transactions",
+  "Transactions List": "Transactions List"
 }
