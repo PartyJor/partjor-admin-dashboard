@@ -135,7 +135,7 @@ const applications = {
       title: <FormattedMessage id="Wallet Transactions" />,
       type: 'collapse',
       icon: icons.wallet,
-      url: '/apps/ACL/admin-list',
+      url: '/apps/transactions/wallet-transactions-list',
       children: [
         {
           id: 'transactions-list',

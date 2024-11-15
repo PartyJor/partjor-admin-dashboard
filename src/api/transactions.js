@@ -1,5 +1,5 @@
 import useSWR, { mutate } from 'swr';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 
 // utils
 import { fetcher } from 'utils/axios';
@@ -39,50 +39,36 @@ export function useGetTransactionsList() {
     }
   );
 
-  const [userDictionary, setUserDictionary] = useState({});
+  const userMap = data?.included.reduce((acc, user) => {
+    acc[user.id] = user;
+    return acc;
+  }, {});
 
-  useEffect(() => {
-    if (data?.data) {
-      const uniqueUserIds = [...new Set(data.data.map((transaction) => transaction.relationships?.user?.data?.id))].filter(Boolean);
-
-      // Fetch user data for each unique user ID
-      Promise.all(
-        uniqueUserIds.map((userId) =>
-          fetch(endpoints.key + `${endpoints.user}/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }).then((res) => res.json())
-        )
-      )
-        .then((userResponses) => {
-          const users = userResponses.reduce((acc, user) => {
-            acc[user.data.id] = user.data.attributes.name; // Map user ID to user name
-            return acc;
-          }, {});
-          setUserDictionary(users);
-        })
-        .catch((err) => console.error('Failed to fetch user data:', err));
-    }
-  }, [data]);
+  const combinedTransactions = data?.data.map((transaction) => {
+    const userId = transaction.relationships?.user?.data?.id;
+    const user = userMap[userId];
+    return {
+      ...transaction,
+      userName: user?.attributes?.name || 'Unknown'
+    };
+  });
 
   const memoizedValue = useMemo(
     () => ({
-      Transactions: data?.data,
+      Transactions: combinedTransactions,
       TransactionsLoading: isLoading,
       TransactionsError: error,
       TransactionsValidating: isValidating,
-      TransactionsEmpty: !isLoading && !data?.data?.length,
-      Users: userDictionary
+      TransactionsEmpty: !isLoading && !data?.data?.length
     }),
-    [data, error, isLoading, isValidating, userDictionary]
+    [data, error, isLoading, isValidating, combinedTransactions]
   );
 
-  console.log('data:', data);
+  console.log('data:', combinedTransactions);
   console.log('isLoading:', isLoading);
   console.log('error:', error);
   console.log('isValidating:', isValidating);
-  console.log('users', userDictionary);
+  console.log('users', data?.included);
 
   return memoizedValue;
 }

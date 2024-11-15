@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState, Fragment } from 'react';
+import { useMemo, useState, Fragment, useEffect } from 'react';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -32,7 +32,15 @@ import ScrollX from 'components/ScrollX';
 import UserView from 'sections/apps/user/UserView';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
-import { DebouncedInput, HeaderSort, IndeterminateCheckbox, RowSelection, TablePagination } from 'components/third-party/react-table';
+import {
+  DebouncedInput,
+  HeaderSort,
+  IndeterminateCheckbox,
+  RowSelection,
+  TablePagination,
+  CSVExport,
+  SelectColumnSorting
+} from 'components/third-party/react-table';
 
 import { useGetTransactionsList } from 'api/transactions';
 // ==============================|| REACT TABLE - LIST ||============================== //
@@ -87,6 +95,11 @@ function ReactTable({ data, columns }) {
           onFilterChange={(value) => setGlobalFilter(String(value))}
           placeholder={`Search ${data?.length} records...`}
         />
+
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
+          <CSVExport {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'User-list.csv' }} />
+        </Stack>
       </Stack>
       <ScrollX>
         <Stack>
@@ -168,8 +181,10 @@ function ReactTable({ data, columns }) {
 // ==============================|| User LIST ||============================== //
 
 export default function WalletTransactionsListPage() {
-  const theme = useTheme();
   const { TransactionsLoading: loading, Transactions: lists, Users } = useGetTransactionsList();
+  useEffect(() => {
+    console.log('userdata', Users);
+  });
 
   const columns = useMemo(
     () => [
@@ -205,15 +220,7 @@ export default function WalletTransactionsListPage() {
       },
       {
         header: 'Type',
-        accessorKey: 'attributes.type',
-        cell: ({ row, getValue }) => (
-          <Stack direction="row" spacing={1.5} alignItems="center">
-            <Stack spacing={0}>
-              <Typography variant="subtitle1">{getValue()}</Typography>
-              <Typography color="text.secondary">{row.original.attributes.email}</Typography>
-            </Stack>
-          </Stack>
-        )
+        accessorKey: 'attributes.type'
       },
       {
         header: 'Amount',
@@ -242,14 +249,10 @@ export default function WalletTransactionsListPage() {
       },
       {
         header: 'User',
-        cell: ({ row }) => {
-          const userId = row.original.relationships?.user?.data?.id;
-          const userName = Users[userId] || 'Unknown User';
-          return <Typography>{userName}</Typography>;
-        }
+        accessorKey: 'userName'
       }
     ],
-    [theme]
+    []
   );
 
   if (loading) return <EmptyReactTable />;
