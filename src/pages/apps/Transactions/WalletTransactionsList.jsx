@@ -248,6 +248,15 @@ export default function WalletTransactionsListPage() {
         accessorKey: 'attributes.meta.extra_charges'
       },
       {
+        header: 'Date',
+        accessorKey: 'attributes.created_at',
+        cell: (info) => {
+          const date = new Date(info.getValue());
+          // Custom formatting
+          return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+      },
+      {
         header: 'User',
         accessorKey: 'userName'
       }
