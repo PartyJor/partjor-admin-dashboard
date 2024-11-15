@@ -35,7 +35,6 @@ import EmptyReactTable from 'pages/tables/react-table/empty';
 import {
   DebouncedInput,
   HeaderSort,
-  IndeterminateCheckbox,
   RowSelection,
   TablePagination,
   CSVExport,
@@ -189,28 +188,6 @@ export default function WalletTransactionsListPage() {
   const columns = useMemo(
     () => [
       {
-        id: 'Row Selection',
-        header: ({ table }) => (
-          <IndeterminateCheckbox
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler()
-            }}
-          />
-        ),
-        cell: ({ row }) => (
-          <IndeterminateCheckbox
-            {...{
-              checked: row.getIsSelected(),
-              disabled: !row.getCanSelect(),
-              indeterminate: row.getIsSomeSelected(),
-              onChange: row.getToggleSelectedHandler()
-            }}
-          />
-        )
-      },
-      {
         header: '#',
         accessorKey: 'id',
         meta: {
@@ -225,7 +202,7 @@ export default function WalletTransactionsListPage() {
       {
         header: 'Amount',
         accessorKey: 'attributes.amount',
-        cell: ({ getValue }) => <Typography variant="text.primary">{getValue()}</Typography>
+        cell: ({ getValue }) => <Typography variant="text.primary">{`₦ ${getValue()}`}</Typography>
       },
       {
         header: 'Confirmed',

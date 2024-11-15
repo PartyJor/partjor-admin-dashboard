@@ -327,14 +327,14 @@ export default function ProjectAnalytics() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography color="text.secondary">Total Depostits</Typography>}
+                    primary={<Typography color="text.secondary">Total Deposits</Typography>}
                     secondary={
                       <Typography variant="subtitle1">
                         {selectedValue === 'ever'
-                          ? analytics?.total_deposits_ever
+                          ? `₦ ${analytics?.total_deposits_ever}`
                           : selectedValue === 'today'
-                            ? analytics?.total_deposits_today
-                            : analytics?.total_deposits_this_month}
+                            ? `₦ ${analytics?.total_deposits_today}`
+                            : `₦ ${analytics?.total_deposits_this_month}`}
                       </Typography>
                     }
                   />
