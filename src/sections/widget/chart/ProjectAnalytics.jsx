@@ -78,8 +78,23 @@ function EcommerceDataChart({ data }) {
       strokeDashArray: 4
     },
     tooltip: {
-      y: {
-        formatter: (val) => '$ ' + val + ' thousands'
+      custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+        const seriesName = w.globals.seriesNames[seriesIndex];
+        const value = series[seriesIndex][dataPointIndex];
+
+        let formattedValue;
+        if (seriesName === 'Users') {
+          formattedValue = `${value} users`;
+        } else if (seriesName === 'Events') {
+          formattedValue = `${value} events`;
+        } else {
+          formattedValue = `${value}`;
+        }
+
+        return `<div style="padding: 8px; background: white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                <span style="font-size: 12px; font-weight: bold;">${seriesName}</span>
+                <div>${formattedValue}</div>
+              </div>`;
       }
     }
   };
@@ -121,8 +136,14 @@ function EcommerceDataChart({ data }) {
       },
       legend: {
         labels: {
-          colors: 'secondary.main'
+          colors: 'secondary.light'
         }
+        // labels: {
+        //   useSeriesColors: true, // Ensures the colors match the series
+        //   formatter: function (seriesName) {
+        //     return `<span style="opacity: ${seriesName === 'Events' ? 0.5 : 1};">${seriesName}</span>`;
+        //   }
+        // }
       },
       theme: {
         mode: mode === ThemeMode.DARK ? 'dark' : 'light'
@@ -145,75 +166,77 @@ export default function ProjectAnalytics() {
   const [value, setValue] = useState(0);
   const [selectedValue, setSelectedValue] = useState('ever');
   const [analytics, setAnalytics] = useState(0);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [data, setData] = useState([
+    { name: 'Users', data: [0, 0, 0, 0, 0, 0, 0] },
+    { name: 'Events', data: [0, 0, 0, 0, 0, 0, 0] }
+  ]);
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const token = window.localStorage.getItem('serviceToken');
 
   useEffect(() => {
-    const getAllAnalytics = () => {
-      axios({
-        method: 'get',
-        url: `${baseUrl}/v1/admin/analytics`,
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then((response) => {
-          console.log(response);
-          setAnalytics(response.data.data.attributes);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    const fetchAnalytics = async () => {
+      try {
+        const [analyticsRes, monthlyDataRes] = await Promise.all([
+          axios.get(`${baseUrl}/v1/admin/analytics`, { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get(`${baseUrl}/v1/admin/analytics/monthly`, { headers: { Authorization: `Bearer ${token}` } })
+        ]);
+
+        setAnalytics(analyticsRes.data.data.attributes);
+        setMonthlyData(Object.values(monthlyDataRes.data.data.attributes));
+      } catch (error) {
+        console.error('Error fetching analytics:', error);
+      }
     };
 
-    getAllAnalytics();
+    fetchAnalytics();
   }, [token, baseUrl]);
 
-  const chartData = [
-    [
-      {
-        name: 'Users',
-        data: [76, 85, 101, 98, 87, 105, 91]
-      },
-      {
-        name: 'Events',
-        data: [44, 55, 57, 56, 61, 58, 63]
-      }
-    ],
-    [
-      {
-        name: 'Users',
-        data: [80, 101, 90, 65, 120, 105, 85]
-      },
-      {
-        name: 'Events',
-        data: [45, 30, 57, 45, 78, 48, 63]
-      }
-    ],
-    [
-      {
-        name: 'Users',
-        data: [79, 85, 107, 95, 83, 115, 97]
-      },
-      {
-        name: 'Events',
-        data: [48, 56, 50, 54, 68, 53, 65]
-      }
-    ],
-    [
-      {
-        name: 'Net Profit',
-        data: [90, 111, 105, 55, 70, 65, 75]
-      },
-      {
-        name: 'Revenue',
-        data: [55, 80, 57, 45, 38, 48, 43]
-      }
-    ]
-  ];
+  useEffect(() => {
+    if (monthlyData.length > 0 && monthlyData[0]?.users !== undefined) {
+      setData([
+        {
+          name: 'Users',
+          data: [
+            monthlyData[0]?.users,
+            monthlyData[1]?.users,
+            monthlyData[2]?.users,
+            monthlyData[3]?.users,
+            monthlyData[4]?.users,
+            monthlyData[5]?.users,
+            monthlyData[6]?.users,
+            monthlyData[7]?.users,
+            monthlyData[8]?.users,
+            monthlyData[9]?.users,
+            monthlyData[10]?.users,
+            monthlyData[11]?.users
+          ]
+        },
+        {
+          name: 'Events',
+          data: [
+            monthlyData[0]?.events,
+            monthlyData[1]?.events,
+            monthlyData[2]?.events,
+            monthlyData[3]?.events,
+            monthlyData[4]?.events,
+            monthlyData[5]?.events,
+            monthlyData[6]?.events,
+            monthlyData[7]?.events,
+            monthlyData[8]?.events,
+            monthlyData[9]?.events,
+            monthlyData[10]?.events,
+            monthlyData[11]?.events
+          ]
+        }
+      ]);
+    }
+  }, [monthlyData]);
 
-  const [data, setData] = useState(chartData[0]);
+  useEffect(() => {
+    console.log('data', monthlyData);
+  });
 
   const handleChangeSelect = (event) => {
     setSelectedValue(event.target.value);
@@ -221,7 +244,6 @@ export default function ProjectAnalytics() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setData(chartData[newValue]);
   };
 
   return (
