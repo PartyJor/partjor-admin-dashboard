@@ -14,6 +14,9 @@ import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { TextField } from '@mui/material';
 
 // third-party
 import {
@@ -50,9 +53,27 @@ function ReactTable({ data, columns }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const filteredData = useMemo(() => {
+    if (!startDate && !endDate) return data;
+
+    const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : null;
+    const end = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : null;
+
+    return data.filter((row) => {
+      const rowDate = new Date(row.attributes.created_at).getTime();
+      if (start && end) return rowDate >= start && rowDate <= end;
+      if (start) return rowDate >= start;
+      if (end) return rowDate <= end;
+      return true;
+    });
+  }, [data, startDate, endDate]);
+
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     state: {
       columnFilters,
@@ -94,6 +115,23 @@ function ReactTable({ data, columns }) {
           onFilterChange={(value) => setGlobalFilter(String(value))}
           placeholder={`Search ${data?.length} records...`}
         />
+
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              onChange={(newValue) => setStartDate(newValue)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              onChange={(newValue) => setEndDate(newValue)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Stack>
+        </LocalizationProvider>
 
         <Stack direction="row" alignItems="center" spacing={2}>
           <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
