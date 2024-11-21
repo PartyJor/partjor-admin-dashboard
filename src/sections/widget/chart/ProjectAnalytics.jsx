@@ -16,6 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Select from '@mui/material/Select';
+import { alpha } from '@mui/material/styles';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
@@ -27,7 +28,7 @@ import { ThemeMode } from 'config';
 
 import axios from 'axios';
 // assets
-import { ArrowDown, ArrowSwapHorizontal, ArrowUp, Chart, HomeTrendUp, ShoppingCart } from 'iconsax-react';
+import { Chart, HomeTrendUp, ShoppingCart } from 'iconsax-react';
 
 function a11yProps(index) {
   return {
@@ -105,6 +106,9 @@ function EcommerceDataChart({ data }) {
   const [options, setOptions] = useState(areaChartOptions);
 
   useEffect(() => {
+    const userColor = theme.palette.primary.main;
+    const eventColor = alpha(theme.palette.primary.main, 0.5);
+
     setOptions((prevState) => ({
       ...prevState,
       colors: [theme.palette.primary.main, theme.palette.primary.main],
@@ -135,15 +139,12 @@ function EcommerceDataChart({ data }) {
         borderColor: line
       },
       legend: {
+        markers: {
+          fillColors: [userColor, eventColor] // Set marker colors for legend
+        },
         labels: {
-          colors: 'secondary.light'
+          colors: [secondary] // Leave the label text color unchanged
         }
-        // labels: {
-        //   useSeriesColors: true, // Ensures the colors match the series
-        //   formatter: function (seriesName) {
-        //     return `<span style="opacity: ${seriesName === 'Events' ? 0.5 : 1};">${seriesName}</span>`;
-        //   }
-        // }
       },
       theme: {
         mode: mode === ThemeMode.DARK ? 'dark' : 'light'
@@ -276,14 +277,14 @@ export default function ProjectAnalytics() {
               <List disablePadding sx={{ '& .MuiListItem-root': { px: 3, py: 1.5 } }}>
                 <ListItem
                   divider
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">-245</Typography>
-                      <Typography color="error" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowDown style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
-                      </Typography>
-                    </Stack>
-                  }
+                  // secondaryAction={
+                  //   <Stack spacing={0.25} alignItems="flex-end">
+                  //     <Typography variant="subtitle1">-245</Typography>
+                  //     <Typography color="error" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  //       <ArrowDown style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
+                  //     </Typography>
+                  //   </Stack>
+                  // }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
@@ -305,14 +306,14 @@ export default function ProjectAnalytics() {
                 </ListItem>
                 <ListItem
                   divider
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">+2,100</Typography>
-                      <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 30.6%
-                      </Typography>
-                    </Stack>
-                  }
+                  // secondaryAction={
+                  //   <Stack spacing={0.25} alignItems="flex-end">
+                  //     <Typography variant="subtitle1">+2,100</Typography>
+                  //     <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  //       <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 30.6%
+                  //     </Typography>
+                  //   </Stack>
+                  // }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
@@ -334,14 +335,14 @@ export default function ProjectAnalytics() {
                 </ListItem>
                 <ListItem
                   divider
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">-26</Typography>
-                      <Typography color="warning.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowSwapHorizontal size={14} /> 5%
-                      </Typography>
-                    </Stack>
-                  }
+                  // secondaryAction={
+                  //   <Stack spacing={0.25} alignItems="flex-end">
+                  //     <Typography variant="subtitle1">-26</Typography>
+                  //     <Typography color="warning.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  //       <ArrowSwapHorizontal size={14} /> 5%
+                  //     </Typography>
+                  //   </Stack>
+                  // }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>

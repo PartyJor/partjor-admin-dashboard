@@ -71,7 +71,6 @@ function ReactTable({ data, columns }) {
     });
   }, [data, startDate, endDate]);
 
-
   const table = useReactTable({
     data: filteredData,
     columns,
