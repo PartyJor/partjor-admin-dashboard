@@ -1,0 +1,44 @@
+# Settings for Backend (on Cloud Run).
+# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
+runConfig:
+  minInstances: 0
+  # maxInstances: 100
+  # concurrency: 80
+  # cpu: 1
+  # memoryMiB: 512
+
+# Environment variables and secrets.
+env:
+  # Configure environment variables.
+  # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
+  # - variable: MESSAGE
+  #   value: Hello world!
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+
+  # Grant access to secrets in Cloud Secret Manager.
+  # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
+  - variable: VITE_APP_BASE_NAME
+    secret: ${{secrets.VITE_APP_BASE_NAME}}
+
+  - variable: VITE_APP_API_URL
+    secret: ${{secrets.VITE_APP_API_URL}}
+
+  - variable: VITE_APP_JWT_SECRET_KEY
+    secret: ${{secrets.VITE_APP_JWT_SECRET_KEY}}
+
+  - variable: VITE_APP_JWT_TIMEOUT
+    secret: ${{secrets.VITE_APP_JWT_TIMEOUT}}
+
+  - variable: VITE_API_BASE_URL
+    secret: ${{secrets.VITE_API_BASE_URL}}
+
+  - variable: GENERATE_SOURCEMAP
+    secret: ${{secrets.GENERATE_SOURCEMAP}}
+
+  - variable: VITE_APP_VERSION
+    secret: ${{secrets.VITE_APP_VERSION}}
+
+  - variable: PUBLIC_URL
+    secret: ${{secrets.PUBLIC_URL}}
