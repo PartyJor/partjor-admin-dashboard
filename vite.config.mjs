@@ -30,7 +30,6 @@ export default defineConfig({
     ]
   },
   server: {
-   
     open: false,
     // this sets a default port to 3000
     port: 3000
