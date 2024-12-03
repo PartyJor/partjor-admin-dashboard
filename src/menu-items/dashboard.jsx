@@ -15,11 +15,34 @@ const icons = {
 };
 
 const loadingMenu = {
-  id: 'group-dashboard-loading',
-  title: <FormattedMessage id="dashboard" />,
-  type: 'item',
-  url: '/dashboard/analytics',
-  icon: icons.loading
+  id: 'group-dashboard',
+  title: <FormattedMessage id="Dashboard" />,
+  type: 'group',
+  icon: icons.dashboard,
+  children: [
+    {
+      id: 'dashboard1',
+      title: <FormattedMessage id="Dashboard" />,
+      type: 'collapse',
+      icon: icons.dashboard,
+      children: [
+        {
+          id: 'user-analytics',
+          title: 'User Analytics',
+          type: 'item',
+          url: '/dashboard/default',
+          breadcrumbs: false
+        },
+        {
+          id: 'analytics1',
+          title: 'Events Analytics',
+          type: 'item',
+          url: '/dashboard/analytics',
+          breadcrumbs: false
+        }
+      ]
+    }
+  ]
 };
 
 // ==============================|| MENU ITEMS - API ||============================== //
