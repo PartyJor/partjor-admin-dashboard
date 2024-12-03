@@ -81,7 +81,7 @@ export default function MonthlyRevenue() {
   const columns = useMemo(
     () => [
       {
-        Header: 'Customer',
+        Header: 'User',
         accessor: 'fatherName',
         Cell: ({ value }) => {
           const Icons = icons[randomIntFromInterval(0, 3)];

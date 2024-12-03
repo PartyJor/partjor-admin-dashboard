@@ -9,7 +9,7 @@ import jsconfigPaths from 'vite-jsconfig-paths';
 export default defineConfig({
   plugins: [react(), jsconfigPaths()],
   // https://github.com/jpuri/react-draft-wysiwyg/issues/1317
-  base: process.env.VITE_APP_BASE_NAME,
+  base: process.env.VITE_APP_BASE_NAME || '/',
   define: {
     global: 'window'
   },
@@ -22,12 +22,15 @@ export default defineConfig({
       {
         find: /^src(.+)/,
         replacement: path.join(process.cwd(), 'src/$1')
+      },
+      {
+        find: 'react-native',
+        replacement: path.resolve(__dirname, 'node_modules/react-native')
       }
     ]
   },
   server: {
-    // this ensures that the browser opens upon server start
-    open: true,
+    open: false,
     // this sets a default port to 3000
     port: 3000
   },

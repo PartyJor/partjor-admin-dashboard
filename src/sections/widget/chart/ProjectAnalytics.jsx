@@ -16,6 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Select from '@mui/material/Select';
+import { alpha } from '@mui/material/styles';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
@@ -23,12 +24,11 @@ import ReactApexChart from 'react-apexcharts';
 // project-imports
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
-import IconButton from 'components/@extended/IconButton';
-import MoreIcon from 'components/@extended/MoreIcon';
 import { ThemeMode } from 'config';
 
+import axios from 'axios';
 // assets
-import { ArrowDown, ArrowSwapHorizontal, ArrowUp, Bookmark, Chart, Edit, HomeTrendUp, Maximize4, ShoppingCart } from 'iconsax-react';
+import { Chart, HomeTrendUp, ShoppingCart } from 'iconsax-react';
 
 function a11yProps(index) {
   return {
@@ -79,8 +79,23 @@ function EcommerceDataChart({ data }) {
       strokeDashArray: 4
     },
     tooltip: {
-      y: {
-        formatter: (val) => '$ ' + val + ' thousands'
+      custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+        const seriesName = w.globals.seriesNames[seriesIndex];
+        const value = series[seriesIndex][dataPointIndex];
+
+        let formattedValue;
+        if (seriesName === 'Users') {
+          formattedValue = `${value} users`;
+        } else if (seriesName === 'Events') {
+          formattedValue = `${value} events`;
+        } else {
+          formattedValue = `${value}`;
+        }
+
+        return `<div style="padding: 8px; background: white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                <span style="font-size: 12px; font-weight: bold;">${seriesName}</span>
+                <div>${formattedValue}</div>
+              </div>`;
       }
     }
   };
@@ -91,11 +106,14 @@ function EcommerceDataChart({ data }) {
   const [options, setOptions] = useState(areaChartOptions);
 
   useEffect(() => {
+    const userColor = theme.palette.primary.main;
+    const eventColor = alpha(theme.palette.primary.main, 0.5);
+
     setOptions((prevState) => ({
       ...prevState,
       colors: [theme.palette.primary.main, theme.palette.primary.main],
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         labels: {
           style: {
             colors: [secondary, secondary, secondary, secondary, secondary, secondary, secondary]
@@ -121,8 +139,11 @@ function EcommerceDataChart({ data }) {
         borderColor: line
       },
       legend: {
+        markers: {
+          fillColors: [userColor, eventColor] // Set marker colors for legend
+        },
         labels: {
-          colors: 'secondary.main'
+          colors: [secondary] // Leave the label text color unchanged
         }
       },
       theme: {
@@ -144,60 +165,86 @@ function EcommerceDataChart({ data }) {
 
 export default function ProjectAnalytics() {
   const [value, setValue] = useState(0);
-  const [age, setAge] = useState('30');
+  const [selectedValue, setSelectedValue] = useState('ever');
+  const [analytics, setAnalytics] = useState(0);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [data, setData] = useState([
+    { name: 'Users', data: [0, 0, 0, 0, 0, 0, 0] },
+    { name: 'Events', data: [0, 0, 0, 0, 0, 0, 0] }
+  ]);
 
-  const chartData = [
-    [
-      {
-        name: 'Net Profit',
-        data: [76, 85, 101, 98, 87, 105, 91]
-      },
-      {
-        name: 'Revenue',
-        data: [44, 55, 57, 56, 61, 58, 63]
-      }
-    ],
-    [
-      {
-        name: 'Net Profit',
-        data: [80, 101, 90, 65, 120, 105, 85]
-      },
-      {
-        name: 'Revenue',
-        data: [45, 30, 57, 45, 78, 48, 63]
-      }
-    ],
-    [
-      {
-        name: 'Net Profit',
-        data: [79, 85, 107, 95, 83, 115, 97]
-      },
-      {
-        name: 'Revenue',
-        data: [48, 56, 50, 54, 68, 53, 65]
-      }
-    ],
-    [
-      {
-        name: 'Net Profit',
-        data: [90, 111, 105, 55, 70, 65, 75]
-      },
-      {
-        name: 'Revenue',
-        data: [55, 80, 57, 45, 38, 48, 43]
-      }
-    ]
-  ];
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const token = window.localStorage.getItem('serviceToken');
 
-  const [data, setData] = useState(chartData[0]);
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const [analyticsRes, monthlyDataRes] = await Promise.all([
+          axios.get(`${baseUrl}/v1/admin/analytics`, { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get(`${baseUrl}/v1/admin/analytics/monthly`, { headers: { Authorization: `Bearer ${token}` } })
+        ]);
+
+        setAnalytics(analyticsRes.data.data.attributes);
+        setMonthlyData(Object.values(monthlyDataRes.data.data.attributes));
+      } catch (error) {
+        console.error('Error fetching analytics:', error);
+      }
+    };
+
+    fetchAnalytics();
+  }, [token, baseUrl]);
+
+  useEffect(() => {
+    if (monthlyData.length > 0 && monthlyData[0]?.users !== undefined) {
+      setData([
+        {
+          name: 'Users',
+          data: [
+            monthlyData[0]?.users,
+            monthlyData[1]?.users,
+            monthlyData[2]?.users,
+            monthlyData[3]?.users,
+            monthlyData[4]?.users,
+            monthlyData[5]?.users,
+            monthlyData[6]?.users,
+            monthlyData[7]?.users,
+            monthlyData[8]?.users,
+            monthlyData[9]?.users,
+            monthlyData[10]?.users,
+            monthlyData[11]?.users
+          ]
+        },
+        {
+          name: 'Events',
+          data: [
+            monthlyData[0]?.events,
+            monthlyData[1]?.events,
+            monthlyData[2]?.events,
+            monthlyData[3]?.events,
+            monthlyData[4]?.events,
+            monthlyData[5]?.events,
+            monthlyData[6]?.events,
+            monthlyData[7]?.events,
+            monthlyData[8]?.events,
+            monthlyData[9]?.events,
+            monthlyData[10]?.events,
+            monthlyData[11]?.events
+          ]
+        }
+      ]);
+    }
+  }, [monthlyData]);
+
+  useEffect(() => {
+    console.log('data', monthlyData);
+  });
 
   const handleChangeSelect = (event) => {
-    setAge(event.target.value);
+    setSelectedValue(event.target.value);
   };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setData(chartData[newValue]);
   };
 
   return (
@@ -206,9 +253,6 @@ export default function ProjectAnalytics() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{ px: 3, pt: 1, '& .MuiTab-root': { mb: 0.5 } }}>
             <Tab label="Overview" {...a11yProps(0)} />
-            <Tab label="Marketing" {...a11yProps(1)} />
-            <Tab label="Project" {...a11yProps(2)} />
-            <Tab label="Order" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <Box sx={{ p: 3 }}>
@@ -218,22 +262,13 @@ export default function ProjectAnalytics() {
                 <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
                   <Box sx={{ minWidth: 120 }}>
                     <FormControl fullWidth>
-                      <Select id="demo-simple-select" value={age} onChange={handleChangeSelect}>
-                        <MenuItem value={10}>Today</MenuItem>
-                        <MenuItem value={20}>Weekly</MenuItem>
-                        <MenuItem value={30}>Monthly</MenuItem>
+                      <Select id="demo-simple-select" value={selectedValue} onChange={handleChangeSelect}>
+                        <MenuItem value={'ever'}>Ever</MenuItem>
+                        <MenuItem value={'today'}>Today</MenuItem>
+                        <MenuItem value={'monthly'}>Monthly</MenuItem>
                       </Select>
                     </FormControl>
                   </Box>
-                  <IconButton color="secondary" variant="outlined" sx={{ color: 'text.secondary' }}>
-                    <Edit />
-                  </IconButton>
-                  <IconButton color="secondary" variant="outlined" sx={{ color: 'text.secondary' }}>
-                    <Maximize4 />
-                  </IconButton>
-                  <IconButton color="secondary" variant="outlined" sx={{ transform: 'rotate(90deg)', color: 'text.secondary' }}>
-                    <MoreIcon />
-                  </IconButton>
                 </Stack>
                 <EcommerceDataChart data={data} />
               </Stack>
@@ -242,14 +277,14 @@ export default function ProjectAnalytics() {
               <List disablePadding sx={{ '& .MuiListItem-root': { px: 3, py: 1.5 } }}>
                 <ListItem
                   divider
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">-245</Typography>
-                      <Typography color="error" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowDown style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
-                      </Typography>
-                    </Stack>
-                  }
+                  // secondaryAction={
+                  //   <Stack spacing={0.25} alignItems="flex-end">
+                  //     <Typography variant="subtitle1">-245</Typography>
+                  //     <Typography color="error" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  //       <ArrowDown style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
+                  //     </Typography>
+                  //   </Stack>
+                  // }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
@@ -257,20 +292,28 @@ export default function ProjectAnalytics() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography color="text.secondary">Total Sales</Typography>}
-                    secondary={<Typography variant="subtitle1">1,800</Typography>}
+                    primary={<Typography color="text.secondary">Total Users</Typography>}
+                    secondary={
+                      <Typography variant="subtitle1">
+                        {selectedValue === 'ever'
+                          ? analytics?.total_users_ever
+                          : selectedValue === 'today'
+                            ? analytics?.total_users_today
+                            : analytics?.total_users_this_month}
+                      </Typography>
+                    }
                   />
                 </ListItem>
                 <ListItem
                   divider
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">+2,100</Typography>
-                      <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 30.6%
-                      </Typography>
-                    </Stack>
-                  }
+                  // secondaryAction={
+                  //   <Stack spacing={0.25} alignItems="flex-end">
+                  //     <Typography variant="subtitle1">+2,100</Typography>
+                  //     <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  //       <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 30.6%
+                  //     </Typography>
+                  //   </Stack>
+                  // }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
@@ -278,20 +321,28 @@ export default function ProjectAnalytics() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography color="text.secondary">Revenue</Typography>}
-                    secondary={<Typography variant="subtitle1">$5,667</Typography>}
+                    primary={<Typography color="text.secondary">Events</Typography>}
+                    secondary={
+                      <Typography variant="subtitle1">
+                        {selectedValue === 'ever'
+                          ? analytics?.total_events_ever
+                          : selectedValue === 'today'
+                            ? analytics?.total_events_today
+                            : analytics?.total_events_this_month}
+                      </Typography>
+                    }
                   />
                 </ListItem>
                 <ListItem
                   divider
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">-26</Typography>
-                      <Typography color="warning.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowSwapHorizontal size={14} /> 5%
-                      </Typography>
-                    </Stack>
-                  }
+                  // secondaryAction={
+                  //   <Stack spacing={0.25} alignItems="flex-end">
+                  //     <Typography variant="subtitle1">-26</Typography>
+                  //     <Typography color="warning.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  //       <ArrowSwapHorizontal size={14} /> 5%
+                  //     </Typography>
+                  //   </Stack>
+                  // }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
@@ -299,28 +350,16 @@ export default function ProjectAnalytics() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography color="text.secondary">Abandon Cart</Typography>}
-                    secondary={<Typography variant="subtitle1">128</Typography>}
-                  />
-                </ListItem>
-                <ListItem
-                  secondaryAction={
-                    <Stack spacing={0.25} alignItems="flex-end">
-                      <Typography variant="subtitle1">+200</Typography>
-                      <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
+                    primary={<Typography color="text.secondary">Total Deposits</Typography>}
+                    secondary={
+                      <Typography variant="subtitle1">
+                        {selectedValue === 'ever'
+                          ? `₦ ${analytics?.total_deposits_ever}`
+                          : selectedValue === 'today'
+                            ? `₦ ${analytics?.total_deposits_today}`
+                            : `₦ ${analytics?.total_deposits_this_month}`}
                       </Typography>
-                    </Stack>
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
-                      <Bookmark />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={<Typography color="text.secondary">Ads Spent</Typography>}
-                    secondary={<Typography variant="subtitle1">$2,500</Typography>}
+                    }
                   />
                 </ListItem>
               </List>

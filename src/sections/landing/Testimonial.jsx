@@ -73,7 +73,7 @@ export default function TestimonialPage() {
       image: Avatar4,
       text: '“Excellent support, if we need any modification, they are doing immediately“',
       name: 'hemchandkodali',
-      designation: 'Customer Support'
+      designation: 'User Support'
     },
     {
       image: Avatar5,
@@ -91,7 +91,7 @@ export default function TestimonialPage() {
       image: Avatar7,
       text: '“The author is very nice and solved my problem inmediately 😍 “',
       name: 'richitela',
-      designation: 'Customer Support'
+      designation: 'User Support'
     },
     {
       image: Avatar8,
@@ -137,7 +137,7 @@ export default function TestimonialPage() {
                 }}
               >
                 <Typography>
-                  We take pride in our Dashboard development, which has been consistently rated 4.6/5 by our satisfied customers. It brings
+                  We take pride in our Dashboard development, which has been consistently rated 4.6/5 by our satisfied Users. It brings
                   us joy to share the positive feedback we have received from our loyal clients.
                 </Typography>
               </motion.div>

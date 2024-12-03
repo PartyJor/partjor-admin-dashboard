@@ -38,12 +38,12 @@ const rows = [
   createData(Flag2, 'United Kingdom', 'Lori Moore', '8.65%')
 ];
 
-// =========================|| DATA WIDGET - LATEST CUSTOMERS ||========================= //
+// =========================|| DATA WIDGET - LATEST UserS ||========================= //
 
-export default function LatestCustomers() {
+export default function LatestUsers() {
   return (
     <MainCard
-      title="Latest Customers"
+      title="Latest Users"
       content={false}
       secondary={
         <Link component={RouterLink} to="#" color="primary">

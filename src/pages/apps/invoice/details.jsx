@@ -40,7 +40,7 @@ import { DocumentDownload, Edit, Printer, Share } from 'iconsax-react';
 function PDFIconButton({ list }) {
   const theme = useTheme();
   return (
-    <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list.invoice_id}-${list.customer_name}.pdf`}>
+    <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list.invoice_id}-${list.User_name}.pdf`}>
       <IconButton>
         <DocumentDownload color={theme.palette.mode === ThemeMode.DARK ? theme.palette.background.paper : theme.palette.text.secondary} />
       </IconButton>
@@ -182,10 +182,10 @@ export default function Details() {
                       </Stack>
                     ) : (
                       <FormControl sx={{ width: '100%' }}>
-                        <Typography color="secondary">{list.customerInfo.name}</Typography>
-                        <Typography color="secondary">{list.customerInfo.address}</Typography>
-                        <Typography color="secondary">{list.customerInfo.phone}</Typography>
-                        <Typography color="secondary">{list.customerInfo.email}</Typography>
+                        <Typography color="secondary">{list.UserInfo.name}</Typography>
+                        <Typography color="secondary">{list.UserInfo.address}</Typography>
+                        <Typography color="secondary">{list.UserInfo.phone}</Typography>
+                        <Typography color="secondary">{list.UserInfo.email}</Typography>
                       </FormControl>
                     )}
                   </Stack>
@@ -293,7 +293,7 @@ export default function Details() {
             </Grid>
           </Box>
           <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ p: 2.5, a: { textDecoration: 'none', color: 'inherit' } }}>
-            <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list?.invoice_id}-${list?.customer_name}.pdf`}>
+            <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list?.invoice_id}-${list?.User_name}.pdf`}>
               <LoadingButton
                 loading={isLoader}
                 color="primary"

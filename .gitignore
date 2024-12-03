@@ -110,3 +110,5 @@ dist
 #env
 .env
 .env
+
+.vercel

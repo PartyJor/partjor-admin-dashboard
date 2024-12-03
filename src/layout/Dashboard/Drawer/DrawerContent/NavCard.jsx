@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import MainCard from 'components/MainCard';
 
 // assets
-import avatar from 'assets/images/users/customer-support-1.png';
+import avatar from 'assets/images/users/user-support-1.png';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 // ==============================|| DRAWER CONTENT - NAV CARD ||============================== //

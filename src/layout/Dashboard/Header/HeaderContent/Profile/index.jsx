@@ -94,6 +94,22 @@ export default function ProfilePage() {
     setValue(newValue);
   };
 
+  const userData = JSON.parse(window.localStorage.getItem('userData'));
+
+  const getUserInitials = (name) => {
+    if (!name) return '';
+    const nameParts = name.trim().split(' ');
+
+    if (nameParts.length === 1) {
+      return nameParts[0][0].toUpperCase();
+    }
+
+    const firstInitial = nameParts[0][0].toUpperCase();
+    const lastInitial = nameParts[nameParts.length - 1][0].toUpperCase();
+
+    return `${firstInitial}${lastInitial}`;
+  };
+
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
@@ -141,11 +157,15 @@ export default function ProfilePage() {
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         <Stack direction="row" spacing={1.25} alignItems="center">
-                          <Avatar alt="profile user" src={avatar1} />
+                          {userData.avatar ? (
+                            <Avatar alt="profile user" src={userData.avatar} />
+                          ) : (
+                            <Avatar alt="profile user">{getUserInitials(userData.first_name + ' ' + userData.last_name)}</Avatar>
+                          )}
                           <Stack>
                             <Typography variant="subtitle1">{user?.name}</Typography>
                             <Typography variant="body2" color="secondary">
-                              UI/UX Designer
+                              {userData.first_name + ' ' + userData.last_name}
                             </Typography>
                           </Stack>
                         </Stack>

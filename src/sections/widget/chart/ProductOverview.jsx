@@ -20,9 +20,11 @@ import IconButton from 'components/@extended/IconButton';
 import MoreIcon from 'components/@extended/MoreIcon';
 import { ThemeMode } from 'config';
 
+import axios from 'axios';
+
 // ==============================|| CHART ||============================== //
 
-function ApexPieChart() {
+function ApexPieChart({ series }) {
   const theme = useTheme();
   const downSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -41,13 +43,12 @@ function ApexPieChart() {
       enabled: true,
       fillSeriesColor: true
     },
-    labels: ['Components', 'Widgets', 'Pages', 'Forms', 'Other', 'Apps'],
+    labels: ['Android', 'Web', 'IOS'],
     legend: {
       show: false
     }
   };
 
-  const [series] = useState([40, 20, 10, 15, 5, 10]);
   const [options, setOptions] = useState(pieChartOptions);
 
   useEffect(() => {
@@ -102,6 +103,11 @@ function ApexPieChart() {
 
 export default function ProductOverview() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [android, setAndroid] = useState(0);
+  const [web, setWeb] = useState(0);
+  const [ios, setIos] = useState(0);
+  const [series, setSeries] = useState([0, 0, 0]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const open = Boolean(anchorEl);
 
@@ -113,12 +119,54 @@ export default function ProductOverview() {
     setAnchorEl(null);
   };
 
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const token = window.localStorage.getItem('serviceToken');
+
+  // Fetching the data from API
+  useEffect(() => {
+    const getDevicesData = () => {
+      axios({
+        method: 'get',
+        url: `${baseUrl}/v1/admin/analytics`,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then((response) => {
+          const androidData = response?.data?.data?.attributes?.signup_device_data?.ANDROID || 0;
+          const webData = response?.data?.data?.attributes?.signup_device_data?.WEB || 0;
+          const iosData = response?.data?.data?.attributes?.signup_device_data?.IOS || 0;
+
+          setAndroid(androidData);
+          setWeb(webData);
+          setIos(iosData);
+
+          // Update series state here
+          setSeries([androidData, webData, iosData]);
+
+          // Set data as loaded
+          setIsDataLoaded(true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsDataLoaded(true); // Mark as loaded even if there's an error to avoid infinite loading
+        });
+    };
+
+    getDevicesData();
+  }, [baseUrl, token]);
+
+  // Ensure the chart is only rendered when data is available
+  if (!isDataLoaded) {
+    return <Typography>Loading...</Typography>;
+  }
+
   return (
     <MainCard>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-            <Typography variant="h5">Project overview</Typography>
+            <Typography variant="h5">Devices Data</Typography>
             <IconButton
               color="secondary"
               id="wallet-button"
@@ -145,16 +193,16 @@ export default function ProductOverview() {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <ApexPieChart />
+          <ApexPieChart series={series} />
         </Grid>
         <Grid item xs={6} md={4}>
           <MainCard content={false}>
             <Stack alignItems="center" sx={{ py: 1.5 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Dot size={6} componentDiv sx={{ bgcolor: 'secondary.darker' }} />
-                <Typography>Apps</Typography>
+                <Typography>Android</Typography>
               </Stack>
-              <Typography variant="subtitle1">10+</Typography>
+              <Typography variant="subtitle1">{android}</Typography>
             </Stack>
           </MainCard>
         </Grid>
@@ -163,9 +211,9 @@ export default function ProductOverview() {
             <Stack alignItems="center" sx={{ py: 1.5 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Dot size={6} componentDiv sx={{ bgcolor: 'secondary.darker' }} />
-                <Typography>Other</Typography>
+                <Typography>Web</Typography>
               </Stack>
-              <Typography variant="subtitle1">5+</Typography>
+              <Typography variant="subtitle1">{web}</Typography>
             </Stack>
           </MainCard>
         </Grid>
@@ -174,42 +222,9 @@ export default function ProductOverview() {
             <Stack alignItems="center" sx={{ py: 1.5 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Dot size={6} componentDiv sx={{ bgcolor: 'secondary.darker' }} />
-                <Typography>Widgets</Typography>
+                <Typography>IOS</Typography>
               </Stack>
-              <Typography variant="subtitle1">150+</Typography>
-            </Stack>
-          </MainCard>
-        </Grid>
-        <Grid item xs={6} md={4}>
-          <MainCard content={false}>
-            <Stack alignItems="center" sx={{ py: 1.5 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Dot size={6} componentDiv sx={{ bgcolor: 'secondary.darker' }} />
-                <Typography>Forms</Typography>
-              </Stack>
-              <Typography variant="subtitle1">50+</Typography>
-            </Stack>
-          </MainCard>
-        </Grid>
-        <Grid item xs={6} md={4}>
-          <MainCard content={false}>
-            <Stack alignItems="center" sx={{ py: 1.5 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Dot size={6} componentDiv sx={{ bgcolor: 'secondary.darker' }} />
-                <Typography>Components</Typography>
-              </Stack>
-              <Typography variant="subtitle1">200+</Typography>
-            </Stack>
-          </MainCard>
-        </Grid>
-        <Grid item xs={6} md={4}>
-          <MainCard content={false}>
-            <Stack alignItems="center" sx={{ py: 1.5 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Dot size={6} componentDiv sx={{ bgcolor: 'secondary.darker' }} />
-                <Typography>Pages</Typography>
-              </Stack>
-              <Typography variant="subtitle1">150+</Typography>
+              <Typography variant="subtitle1">{ios}</Typography>
             </Stack>
           </MainCard>
         </Grid>
@@ -217,9 +232,6 @@ export default function ProductOverview() {
           <Stack direction="row" alignItems="center" spacing={1.25}>
             <Button variant="outlined" fullWidth color="secondary">
               View all
-            </Button>
-            <Button variant="contained" fullWidth>
-              Create new page
             </Button>
           </Stack>
         </Grid>

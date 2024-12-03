@@ -25,7 +25,7 @@ const steps = [
   },
   {
     label: 'Create an ad',
-    description: `Try out different ad text to see what brings in the most customers,
+    description: `Try out different ad text to see what brings in the most Users,
               and learn how to enhance your ads using features like ad extensions.
               If you run into any problems with your ads, find out how to tell if
               they're running and how to resolve approval issues.`

@@ -2,11 +2,23 @@
 import { FormattedMessage } from 'react-intl';
 
 // project-imports
-import { handlerCustomerDialog } from 'api/customer';
+import { handlerUserDialog } from 'api/user';
 import { NavActionType } from 'config';
 
 // assets
-import { Add, Link1, KyberNetwork, Messages2, Calendar1, Kanban, Profile2User, Bill, UserSquare, ShoppingBag } from 'iconsax-react';
+import {
+  Add,
+  Link1,
+  KyberNetwork,
+  Messages2,
+  Calendar1,
+  Kanban,
+  Profile2User,
+  Bill,
+  UserSquare,
+  ShoppingBag,
+  Wallet1
+} from 'iconsax-react';
 
 // type
 
@@ -16,12 +28,13 @@ const icons = {
   chat: Messages2,
   calendar: Calendar1,
   kanban: Kanban,
-  customer: Profile2User,
+  User: Profile2User,
   invoice: Bill,
   profile: UserSquare,
   ecommerce: ShoppingBag,
   add: Add,
-  link: Link1
+  link: Link1,
+  wallet: Wallet1
 };
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
@@ -66,30 +79,70 @@ const applications = {
       breadcrumbs: false
     },
     {
-      id: 'customer',
-      title: <FormattedMessage id="customer" />,
+      id: 'User',
+      title: <FormattedMessage id="User Management" />,
+      type: 'item',
+      icon: icons.User,
+      url: '/apps/User/User-list',
+      actions: [
+        {
+          type: NavActionType.FUNCTION,
+          label: 'Add User',
+          function: () => handlerUserDialog(true),
+          icon: icons.add
+        }
+      ]
+    },
+    {
+      id: 'events',
+      title: <FormattedMessage id="Events Management" />,
+      type: 'item',
+      icon: icons.User,
+      url: '/apps/event-list'
+    },
+    {
+      id: 'acl',
+      title: <FormattedMessage id="ACL Management" />,
       type: 'collapse',
-      icon: icons.customer,
+      icon: icons.User,
+      url: '/apps/ACL/admin-list',
       children: [
         {
-          id: 'customer-list',
-          title: <FormattedMessage id="list" />,
+          id: 'admin-list',
+          title: <FormattedMessage id="Admins" />,
           type: 'item',
-          url: '/apps/customer/customer-list',
-          actions: [
-            {
-              type: NavActionType.FUNCTION,
-              label: 'Add Customer',
-              function: () => handlerCustomerDialog(true),
-              icon: icons.add
-            }
-          ]
+          url: '/apps/ACL/admin-list',
+          breadcrumbs: false
         },
         {
-          id: 'customer-card',
-          title: <FormattedMessage id="cards" />,
+          id: 'acl-roles',
+          title: <FormattedMessage id="Roles" />,
           type: 'item',
-          url: '/apps/customer/customer-card'
+          url: '/apps/ACL/ACL-roles',
+          breadcrumbs: false
+        },
+        {
+          id: 'acl-permissions',
+          title: <FormattedMessage id="Permissions" />,
+          type: 'item',
+          url: '/apps/ACL/ACL-permissions',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'transactions',
+      title: <FormattedMessage id="Wallet Transactions" />,
+      type: 'collapse',
+      icon: icons.wallet,
+      url: '/apps/transactions/wallet-transactions-list',
+      children: [
+        {
+          id: 'transactions-list',
+          title: <FormattedMessage id="Transactions List" />,
+          type: 'item',
+          url: '/apps/transactions/wallet-transactions-list',
+          breadcrumbs: false
         }
       ]
     },
@@ -134,70 +187,13 @@ const applications = {
       ]
     },
     {
-      id: 'profile',
+      id: 'Profile',
       title: <FormattedMessage id="profile" />,
-      type: 'collapse',
+      type: 'item',
       icon: icons.profile,
-      children: [
-        {
-          id: 'user-profile',
-          title: <FormattedMessage id="user-profile" />,
-          type: 'item',
-          link: '/apps/profiles/user/:tab',
-          url: '/apps/profiles/user/personal',
-          breadcrumbs: false
-        },
-        {
-          id: 'account-profile',
-          title: <FormattedMessage id="account-profile" />,
-          type: 'item',
-          url: '/apps/profiles/account/basic',
-          link: '/apps/profiles/account/:tab',
-          breadcrumbs: false
-        }
-      ]
-    },
-
-    {
-      id: 'e-commerce',
-      title: <FormattedMessage id="e-commerce" />,
-      type: 'collapse',
-      icon: icons.ecommerce,
-      children: [
-        {
-          id: 'products',
-          title: <FormattedMessage id="products" />,
-          type: 'item',
-          url: '/apps/e-commerce/products'
-        },
-        {
-          id: 'product-details',
-          title: <FormattedMessage id="product-details" />,
-          type: 'item',
-          link: '/apps/e-commerce/product-details/:id',
-          url: '/apps/e-commerce/product-details/1',
-          breadcrumbs: false
-        },
-        {
-          id: 'product-list',
-          title: <FormattedMessage id="product-list" />,
-          type: 'item',
-          url: '/apps/e-commerce/product-list',
-          breadcrumbs: false
-        },
-        {
-          id: 'add-new-product',
-          title: <FormattedMessage id="add-new-product" />,
-          type: 'item',
-          url: '/apps/e-commerce/add-new-product'
-        },
-        {
-          id: 'checkout',
-          title: <FormattedMessage id="checkout" />,
-          type: 'item',
-          url: '/apps/e-commerce/checkout'
-        }
-      ]
+      url: '/apps/profiles/account/basic',
+      link: '/apps/profiles/account/:tab',
+      breadcrumbs: false
     }
   ]
 };

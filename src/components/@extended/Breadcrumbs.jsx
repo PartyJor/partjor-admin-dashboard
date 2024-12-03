@@ -52,7 +52,7 @@ export default function Breadcrumbs({
 
   // only used for component demo breadcrumbs
   if (customLocation.includes('/components-overview/breadcrumbs')) {
-    customLocation = '/apps/customer/customer-card';
+    customLocation = '/apps/User/User-card';
   }
 
   useEffect(() => {

@@ -14,7 +14,7 @@ import Header from './Header';
 import Footer from './Footer';
 import HorizontalBar from './Drawer/HorizontalBar';
 import Loader from 'components/Loader';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import AddUser from 'sections/apps/user/AddUser';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
@@ -69,7 +69,7 @@ export default function MainLayout() {
             <Footer />
           </Container>
         </Box>
-        <AddCustomer />
+        <AddUser />
       </Box>
     </AuthGuard>
   );

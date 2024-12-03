@@ -30,8 +30,8 @@ function createData(name, calories, fat, carbs, protein, price) {
     protein,
     price,
     history: [
-      { date: '2020-01-05', customerId: '11091700', amount: 3 },
-      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 }
+      { date: '2020-01-05', UserId: '11091700', amount: 3 },
+      { date: '2020-01-02', UserId: 'Anonymous', amount: 1 }
     ]
   };
 }
@@ -70,7 +70,7 @@ function Row({ row }) {
                       <TableHead>
                         <TableRow>
                           <TableCell>Date</TableCell>
-                          <TableCell>Customer</TableCell>
+                          <TableCell>User</TableCell>
                           <TableCell align="right">Amount</TableCell>
                           <TableCell align="right">Total price ($)</TableCell>
                         </TableRow>
@@ -81,7 +81,7 @@ function Row({ row }) {
                             <TableCell component="th" scope="row">
                               {historyRow.date}
                             </TableCell>
-                            <TableCell>{historyRow.customerId}</TableCell>
+                            <TableCell>{historyRow.UserId}</TableCell>
                             <TableCell align="right">{historyRow.amount}</TableCell>
                             <TableCell align="right">{Math.round(historyRow.amount * row.price * 100) / 100}</TableCell>
                           </TableRow>

@@ -5,12 +5,6 @@ import Stack from '@mui/material/Stack';
 
 // project-imports
 
-import NewOrders from 'sections/widget/chart/NewOrders';
-import NewUsers from 'sections/widget/chart/NewUsers';
-import Visitors from 'sections/widget/chart/Visitors';
-
-import SwitchBalanace from 'sections/widget/statistics/SwitchBalanace';
-
 import ProjectAnalytics from 'sections/widget/chart/ProjectAnalytics';
 
 import EcommerceIncome from 'sections/widget/chart/EcommerceIncome';
@@ -29,7 +23,7 @@ export default function DashboardAnalytics() {
   return (
     <Grid container rowSpacing={4.5} columnSpacing={3}>
       {/* row 1 */}
-      <Grid item xs={12} md={4} lg={3}>
+      {/* <Grid item xs={12} md={4} lg={3}>
         <NewOrders />
       </Grid>
       <Grid item xs={12} md={4} lg={3}>
@@ -44,7 +38,7 @@ export default function DashboardAnalytics() {
             <SwitchBalanace />
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       {/* row 2 */}
       <Grid item xs={12}>

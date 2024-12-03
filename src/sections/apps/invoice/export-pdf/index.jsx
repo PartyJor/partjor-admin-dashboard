@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
 
 export default function ExportPDFView({ list }) {
   let title = list?.invoiceId || list?.invoice_id;
-  let customer_name = list?.customer_name || list?.from?.name || list?.customerInfo?.name;
+  let User_name = list?.User_name || list?.from?.name || list?.UserInfo?.name;
 
   return (
-    <Document title={`${title} ${customer_name}`}>
+    <Document title={`${title} ${User_name}`}>
       <Page size="A4" style={styles.page}>
         <Header list={list} />
         <View style={styles.container}>

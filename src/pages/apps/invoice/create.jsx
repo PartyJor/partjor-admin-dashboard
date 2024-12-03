@@ -42,8 +42,8 @@ import InvoiceModal from 'sections/apps/invoice/InvoiceModal';
 import incrementer from 'utils/incrementer';
 import { openSnackbar } from 'api/snackbar';
 import {
-  handlerCustomerTo,
-  handlerCustomerFrom,
+  handlerUserTo,
+  handlerUserFrom,
   handlerPreview,
   insertInvoice,
   selectCountry,
@@ -62,7 +62,7 @@ const validationSchema = yup.object({
     .when('date', (date, schema) => date && schema.min(date, "Due date can't be before invoice date"))
     .nullable()
     .required('Due date is required'),
-  customerInfo: yup
+  UserInfo: yup
     .object({
       name: yup.string().required('Invoice receiver information is required')
     })
@@ -90,7 +90,7 @@ function CreateForm({ lists, invoiceMaster }) {
     const newList = {
       id: Number(incrementer(lists.length)),
       invoice_id: Number(values.invoice_id),
-      customer_name: values.cashierInfo?.name,
+      User_name: values.cashierInfo?.name,
       email: values.cashierInfo?.email,
       avatar: Number(Math.round(Math.random() * 10)),
       discount: Number(values.discount),
@@ -104,7 +104,7 @@ function CreateForm({ lists, invoiceMaster }) {
       ),
       status: values.status,
       cashierInfo: values.cashierInfo,
-      customerInfo: values.customerInfo,
+      UserInfo: values.UserInfo,
       invoice_detail: values.invoice_detail,
       notes: values.notes
     };
@@ -137,7 +137,7 @@ function CreateForm({ lists, invoiceMaster }) {
           phone: '305-829-7809',
           email: 'belljrc23@gmail.com'
         },
-        customerInfo: {
+        UserInfo: {
           address: '',
           email: '',
           name: '',
@@ -264,14 +264,14 @@ function CreateForm({ lists, invoiceMaster }) {
                           variant="outlined"
                           startIcon={<Edit />}
                           color="secondary"
-                          onClick={() => handlerCustomerFrom(true)}
+                          onClick={() => handlerUserFrom(true)}
                           size="small"
                         >
                           Change
                         </Button>
                         <AddressModal
                           open={invoiceMaster.open}
-                          setOpen={(value) => handlerCustomerFrom(value)}
+                          setOpen={(value) => handlerUserFrom(value)}
                           handlerAddress={(address) => setFieldValue('cashierInfo', address)}
                         />
                       </Box>
@@ -286,10 +286,10 @@ function CreateForm({ lists, invoiceMaster }) {
                       <Stack spacing={2}>
                         <Typography variant="h5">To:</Typography>
                         <Stack sx={{ width: '100%' }}>
-                          <Typography variant="subtitle1">{values?.customerInfo?.name}</Typography>
-                          <Typography color="secondary">{values?.customerInfo?.address}</Typography>
-                          <Typography color="secondary">{values?.customerInfo?.phone}</Typography>
-                          <Typography color="secondary">{values?.customerInfo?.email}</Typography>
+                          <Typography variant="subtitle1">{values?.UserInfo?.name}</Typography>
+                          <Typography color="secondary">{values?.UserInfo?.address}</Typography>
+                          <Typography color="secondary">{values?.UserInfo?.phone}</Typography>
+                          <Typography color="secondary">{values?.UserInfo?.email}</Typography>
                         </Stack>
                       </Stack>
                     </Grid>
@@ -300,20 +300,20 @@ function CreateForm({ lists, invoiceMaster }) {
                           startIcon={<Add />}
                           color="secondary"
                           variant="outlined"
-                          onClick={() => handlerCustomerTo(true)}
+                          onClick={() => handlerUserTo(true)}
                         >
                           Add
                         </Button>
                         <AddressModal
-                          open={invoiceMaster.isCustomerOpen}
-                          setOpen={(value) => handlerCustomerTo(value)}
-                          handlerAddress={(value) => setFieldValue('customerInfo', value)}
+                          open={invoiceMaster.isUserOpen}
+                          setOpen={(value) => handlerUserTo(value)}
+                          handlerAddress={(value) => setFieldValue('UserInfo', value)}
                         />
                       </Box>
                     </Grid>
                   </Grid>
                 </MainCard>
-                {touched.customerInfo && errors.customerInfo && <FormHelperText error={true}>{errors?.customerInfo?.name}</FormHelperText>}
+                {touched.UserInfo && errors.UserInfo && <FormHelperText error={true}>{errors?.UserInfo?.name}</FormHelperText>}
               </Grid>
 
               <Grid item xs={12}>

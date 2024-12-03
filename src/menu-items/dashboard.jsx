@@ -15,27 +15,27 @@ const icons = {
 };
 
 const loadingMenu = {
-  id: 'group-dashboard-loading',
-  title: <FormattedMessage id="dashboard" />,
+  id: 'group-dashboard',
+  title: <FormattedMessage id="Dashboard" />,
   type: 'group',
-  icon: icons.loading,
+  icon: icons.dashboard,
   children: [
     {
       id: 'dashboard1',
-      title: <FormattedMessage id="dashboard" />,
+      title: <FormattedMessage id="Dashboard" />,
       type: 'collapse',
-      icon: icons.loading,
+      icon: icons.dashboard,
       children: [
         {
-          id: 'default1',
-          title: 'loading',
+          id: 'user-analytics',
+          title: 'User Analytics',
           type: 'item',
           url: '/dashboard/default',
           breadcrumbs: false
         },
         {
           id: 'analytics1',
-          title: 'loading',
+          title: 'Events Analytics',
           type: 'item',
           url: '/dashboard/analytics',
           breadcrumbs: false

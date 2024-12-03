@@ -116,10 +116,10 @@ export default function Content({ list }) {
         </View>
         <View style={styles.card}>
           <Text style={[styles.title, { marginBottom: 8 }]}>To:</Text>
-          <Text style={[styles.caption, styles.pb5]}>{list?.customerInfo?.name}</Text>
-          <Text style={[styles.caption, styles.pb5]}>{list?.customerInfo?.address}</Text>
-          <Text style={[styles.caption, styles.pb5]}>{list?.customerInfo?.phone}</Text>
-          <Text style={[styles.caption, styles.pb5]}>{list?.customerInfo?.email}</Text>
+          <Text style={[styles.caption, styles.pb5]}>{list?.UserInfo?.name}</Text>
+          <Text style={[styles.caption, styles.pb5]}>{list?.UserInfo?.address}</Text>
+          <Text style={[styles.caption, styles.pb5]}>{list?.UserInfo?.phone}</Text>
+          <Text style={[styles.caption, styles.pb5]}>{list?.UserInfo?.email}</Text>
         </View>
       </View>
       <View>

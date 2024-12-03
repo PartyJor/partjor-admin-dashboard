@@ -94,7 +94,7 @@ export default function TabRole() {
                       {row.role === 1 && <Chip size="small" color="primary" label="Owner" />}
                       {row.role === 2 && <Chip size="small" variant="light" color="info" label="Manager" />}
                       {row.role === 3 && <Chip size="small" variant="light" color="warning" label="Staff" />}
-                      {row.role === 0 && <Chip size="small" variant="light" color="success" label="Customer" />}
+                      {row.role === 0 && <Chip size="small" variant="light" color="success" label="User" />}
                     </TableCell>
                     <TableCell align="right">
                       {!row.status && (
