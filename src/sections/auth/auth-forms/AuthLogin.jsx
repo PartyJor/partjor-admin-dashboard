@@ -71,7 +71,7 @@ export default function AuthLogin({ forgot }) {
               setStatus({ success: true });
               setSubmitting(false);
               setTimeout(() => {
-                navigate(isLoggedIn ? '/dashboard/default' : '/');
+                navigate(isLoggedIn ? '/dashboard/user-analytics' : '/');
               }, 1500); // load menu on login success
             }
           } catch (err) {

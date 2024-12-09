@@ -6,7 +6,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid';
 import Menu from '@mui/material/Menu';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 
@@ -101,7 +101,7 @@ function ApexPieChart({ series }) {
 
 // ==============================|| CHART WIDGETS - PRODUCT OVERVIEW ||============================== //
 
-export default function ProductOverview() {
+export default function DevicesData() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [android, setAndroid] = useState(0);
   const [web, setWeb] = useState(0);
@@ -228,13 +228,13 @@ export default function ProductOverview() {
             </Stack>
           </MainCard>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Stack direction="row" alignItems="center" spacing={1.25}>
             <Button variant="outlined" fullWidth color="secondary">
               View all
             </Button>
           </Stack>
-        </Grid>
+        </Grid> */}
       </Grid>
     </MainCard>
   );

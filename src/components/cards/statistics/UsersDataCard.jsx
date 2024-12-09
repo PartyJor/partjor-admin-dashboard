@@ -17,8 +17,9 @@ import MoreIcon from 'components/@extended/MoreIcon';
 
 // ==============================|| CHART WIDGET - ECOMMERCE CARD  ||============================== //
 
-export default function EcommerceDataCard({ title, count, percentage, color, iconPrimary, children }) {
+export default function UsersDataCard({ title, count, percentage, color, iconPrimary, children, onSelectValue }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('All');
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -27,6 +28,14 @@ export default function EcommerceDataCard({ title, count, percentage, color, ico
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSelectecValue = (value) => {
+    setSelectedValue(value);
+    if (onSelectValue) {
+      onSelectValue(value);
+    }
+    handleClose();
   };
 
   return (
@@ -68,9 +77,18 @@ export default function EcommerceDataCard({ title, count, percentage, color, ico
                 horizontal: 'right'
               }}
             >
-              <ListItemButton onClick={handleClose}>Today</ListItemButton>
-              <ListItemButton onClick={handleClose}>Weekly</ListItemButton>
-              <ListItemButton onClick={handleClose}>Monthly</ListItemButton>
+              <ListItemButton onClick={() => handleSelectecValue('all')} selected={selectedValue === 'all'}>
+                All
+              </ListItemButton>
+              <ListItemButton onClick={() => handleSelectecValue('today')} selected={selectedValue === 'today'}>
+                Today
+              </ListItemButton>
+              <ListItemButton onClick={() => handleSelectecValue('weekly')} selected={selectedValue === 'weekly'}>
+                Weekly
+              </ListItemButton>
+              <ListItemButton onClick={() => handleSelectecValue('monthly')} selected={selectedValue === 'monthly'}>
+                Monthly
+              </ListItemButton>
             </Menu>
           </Stack>
         </Grid>
@@ -96,9 +114,9 @@ export default function EcommerceDataCard({ title, count, percentage, color, ico
   );
 }
 
-EcommerceDataCard.propTypes = {
+UsersDataCard.propTypes = {
   title: PropTypes.string,
-  count: PropTypes.string,
+  count: PropTypes.number,
   percentage: PropTypes.node,
   color: PropTypes.any,
   iconPrimary: PropTypes.node,

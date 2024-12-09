@@ -30,14 +30,14 @@ const loadingMenu = {
           id: 'user-analytics',
           title: 'User Analytics',
           type: 'item',
-          url: '/dashboard/default',
+          url: '/dashboard/user-analytics',
           breadcrumbs: false
         },
         {
           id: 'analytics1',
           title: 'Events Analytics',
           type: 'item',
-          url: '/dashboard/analytics',
+          url: '/dashboard/event-analytics',
           breadcrumbs: false
         }
       ]
