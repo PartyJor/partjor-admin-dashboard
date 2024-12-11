@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 // material-ui
@@ -29,7 +29,7 @@ import { ThemeMode } from 'config';
 import useAuth from 'hooks/useAuth';
 
 // assets
-import avatar1 from 'assets/images/users/avatar-6.png';
+// import avatar1 from 'assets/images/users/avatar-6.png';
 import { Setting2, Profile, Logout } from 'iconsax-react';
 
 // tab panel wrapper
@@ -110,6 +110,11 @@ export default function ProfilePage() {
     return `${firstInitial}${lastInitial}`;
   };
 
+  const name = userData.first_name + userData.last_name;
+  useEffect(() => {
+    console.log('name', name);
+  });
+
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
@@ -128,7 +133,7 @@ export default function ProfilePage() {
         aria-haspopup="true"
         onClick={handleToggle}
       >
-        <Avatar alt="profile user" src={avatar1} />
+        <Avatar>{getUserInitials(userData.first_name + ' ' + userData.last_name)}</Avatar>
       </ButtonBase>
       <Popper
         placement="bottom-end"

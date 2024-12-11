@@ -100,7 +100,7 @@ export const JWTProvider = ({ children }) => {
         user
       }
     });
-    window.localStorage.setItem('serviceToken', response.data.meta.token);
+    sessionStorage.setItem('authToken', response.data.meta.token);
     window.localStorage.setItem('userData', JSON.stringify(userData));
   };
 
@@ -166,7 +166,6 @@ export const JWTProvider = ({ children }) => {
   if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;
   }
-
 
   return <JWTContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile }}>{children}</JWTContext.Provider>;
 };

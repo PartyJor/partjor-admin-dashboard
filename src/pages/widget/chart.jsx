@@ -30,7 +30,8 @@ import NewOrders from 'sections/widget/chart/NewOrders';
 import NewUsers from 'sections/widget/chart/NewUsers';
 import Visitors from 'sections/widget/chart/Visitors';
 
-import ProjectAnalytics from 'sections/widget/chart/ProjectAnalytics';
+// import ProjectAnalytics from 'sections/widget/chart/ProjectAnalytics';
+
 
 import DevicesData from 'sections/widget/chart/DevicesData';
 import TotalIncome from 'sections/widget/chart/TotalIncome';
@@ -150,9 +151,9 @@ export default function WidgetChart() {
       </Grid>
 
       {/* row 3 */}
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <ProjectAnalytics />
-      </Grid>
+      </Grid> */}
 
       {/* row 4 */}
       <Grid item xs={12} md={6}>

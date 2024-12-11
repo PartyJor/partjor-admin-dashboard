@@ -46,6 +46,7 @@ import CircularWithPath from 'components/@extended/progress/CircularWithPath';
 import { ThemeMode, Gender } from 'config';
 import { openSnackbar } from 'api/snackbar';
 import { insertUser, updateUser } from 'api/user';
+import { createAdmin } from 'api/acl';
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
@@ -142,11 +143,11 @@ export default function FormAdminAdd({ User, closeModal }) {
     getImageUrl(`avatar-${User && User !== null && User?.avatar ? User.avatar : 1}.png`, ImagePath.USERS)
   );
 
-  useEffect(() => {
-    if (selectedImage) {
-      setAvatar(URL.createObjectURL(selectedImage));
-    }
-  }, [selectedImage]);
+  // useEffect(() => {
+  //   if (selectedImage) {
+  //     setAvatar(URL.createObjectURL(selectedImage));
+  //   }
+  // }, [selectedImage]);
 
   useEffect(() => {
     setLoading(false);
@@ -161,19 +162,32 @@ export default function FormAdminAdd({ User, closeModal }) {
     about: Yup.string().max(500)
   });
 
-//   const [openAlert, setOpenAlert] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
-//   const handleAlertClose = () => {
-//     setOpenAlert(!openAlert);
-//     closeModal();
-//   };
+  const handleAlertClose = () => {
+    setOpenAlert(!openAlert);
+    closeModal();
+  };
 
   const formik = useFormik({
-    initialValues: getInitialValues(User),
+    initialValues: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      role: ''
+    },
     validationSchema: UserSchema,
     enableReinitialize: true,
     onSubmit: async (values, { setSubmitting }) => {
+      const data = {
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
+        role: values.role
+      };
+
       try {
+        console.log(data);
         let newUser = values;
         newUser.name = newUser.firstName + ' ' + newUser.lastName;
 
