@@ -39,10 +39,11 @@ const initialState = {
 
 const setSession = (serviceToken) => {
   if (serviceToken) {
-    localStorage.setItem('serviceToken', serviceToken);
+    // localStorage.setItem('serviceToken', serviceToken);
+    sessionStorage.setItem('serviceToken', serviceToken)
     axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
   } else {
-    localStorage.removeItem('serviceToken');
+    sessionStorage.removeItem('serviceToken');
     delete axios.defaults.headers.common.Authorization;
   }
 };
@@ -100,7 +101,7 @@ export const JWTProvider = ({ children }) => {
         user
       }
     });
-    sessionStorage.setItem('authToken', response.data.meta.token);
+    // sessionStorage.setItem('authToken', response.data.meta.token);
     window.localStorage.setItem('userData', JSON.stringify(userData));
   };
 
