@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const token = window.localStorage.getItem('serviceToken');
+const token = sessionStorage.getItem('authToken');
 export const endpoints = {
   key: baseUrl,
   list: '/v1/admin/users', // server URL

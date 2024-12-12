@@ -11,7 +11,7 @@ import Toolbar from '@mui/material/Toolbar';
 // project-imports
 import Drawer from './Drawer';
 import Header from './Header';
-import Footer from './Footer';
+// import Footer from './Footer';
 import HorizontalBar from './Drawer/HorizontalBar';
 import Loader from 'components/Loader';
 import AddUser from 'sections/apps/user/AddUser';
@@ -66,7 +66,7 @@ export default function MainLayout() {
           >
             <Breadcrumbs />
             <Outlet />
-            <Footer />
+            {/* <Footer /> */}
           </Container>
         </Box>
         <AddUser />

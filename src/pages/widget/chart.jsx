@@ -18,7 +18,7 @@ import IconButton from 'components/@extended/IconButton';
 import SalesChart from 'sections/dashboard/SalesChart';
 import AcquisitionChannels from 'sections/dashboard/analytics/AcquisitionChannels';
 
-import EcommerceDataCard from 'components/cards/statistics/EcommerceDataCard';
+import UsersDataCard from 'components/cards/statistics/UsersDataCard';
 import EcommerceDataChart from 'sections/widget/chart/EcommerceDataChart';
 
 import RepeatUserRate from 'sections/widget/chart/RepeatUserRate';
@@ -30,9 +30,10 @@ import NewOrders from 'sections/widget/chart/NewOrders';
 import NewUsers from 'sections/widget/chart/NewUsers';
 import Visitors from 'sections/widget/chart/Visitors';
 
-import ProjectAnalytics from 'sections/widget/chart/ProjectAnalytics';
+// import ProjectAnalytics from 'sections/widget/chart/ProjectAnalytics';
 
-import ProductOverview from 'sections/widget/chart/ProductOverview';
+
+import DevicesData from 'sections/widget/chart/DevicesData';
 import TotalIncome from 'sections/widget/chart/TotalIncome';
 
 import LanguagesSupport from 'sections/widget/chart/LanguagesSupport';
@@ -62,7 +63,7 @@ export default function WidgetChart() {
     <Grid container rowSpacing={4.5} columnSpacing={3}>
       {/* row 1 */}
       <Grid item xs={12} sm={6} lg={3}>
-        <EcommerceDataCard
+        <UsersDataCard
           title="All Earnings"
           count="$3200"
           iconPrimary={<Wallet3 />}
@@ -73,10 +74,10 @@ export default function WidgetChart() {
           }
         >
           <EcommerceDataChart color={theme.palette.primary.main} />
-        </EcommerceDataCard>
+        </UsersDataCard>
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
-        <EcommerceDataCard
+        <UsersDataCard
           title="Page Views"
           count="290+"
           color="warning"
@@ -88,10 +89,10 @@ export default function WidgetChart() {
           }
         >
           <EcommerceDataChart color={theme.palette.warning.main} />
-        </EcommerceDataCard>
+        </UsersDataCard>
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
-        <EcommerceDataCard
+        <UsersDataCard
           title="Total task"
           count="1468"
           color="success"
@@ -103,10 +104,10 @@ export default function WidgetChart() {
           }
         >
           <EcommerceDataChart color={theme.palette.success.main} />
-        </EcommerceDataCard>
+        </UsersDataCard>
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
-        <EcommerceDataCard
+        <UsersDataCard
           title="Download"
           count="$300"
           color="error"
@@ -118,7 +119,7 @@ export default function WidgetChart() {
           }
         >
           <EcommerceDataChart color={theme.palette.error.dark} />
-        </EcommerceDataCard>
+        </UsersDataCard>
       </Grid>
 
       {/* row 2 */}
@@ -150,13 +151,13 @@ export default function WidgetChart() {
       </Grid>
 
       {/* row 3 */}
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <ProjectAnalytics />
-      </Grid>
+      </Grid> */}
 
       {/* row 4 */}
       <Grid item xs={12} md={6}>
-        <ProductOverview />
+        <DevicesData />
       </Grid>
       <Grid item xs={12} md={6}>
         <TotalIncome />

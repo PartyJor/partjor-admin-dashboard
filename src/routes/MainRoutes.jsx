@@ -11,8 +11,8 @@ import { SimpleLayoutType } from 'config';
 import { loader as productsLoader, productLoader } from 'api/products';
 
 // render - dashboard
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
-const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
+const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/user-analytics')));
+const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/events-analytics')));
 
 // render - widget
 const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
@@ -154,11 +154,11 @@ const MainRoutes = {
           path: 'dashboard',
           children: [
             {
-              path: 'default',
+              path: 'user-analytics',
               element: <DashboardDefault />
             },
             {
-              path: 'analytics',
+              path: 'event-analytics',
               element: <DashboardAnalytics />
             }
           ]

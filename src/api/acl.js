@@ -10,7 +10,7 @@ import axios from 'axios';
 // };
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const token = window.localStorage.getItem('serviceToken');
+const token = sessionStorage.getItem('authToken');
 export const endpoints = {
   key: baseUrl,
   admins: '/v1/admin/admins',
@@ -148,6 +148,23 @@ export async function createRole(data) {
   axios({
     method: 'POST',
     url: endpoints.key + endpoints.roles,
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    data: data
+  })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function createAdmin(data) {
+  axios({
+    method: 'POST',
+    url: endpoints.key + endpoints.admins,
     headers: {
       Authorization: `Bearer ${token}`
     },

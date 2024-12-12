@@ -22,13 +22,13 @@ const widget = {
   icon: icons.widgets,
   type: 'group',
   children: [
-    {
-      id: 'statistics',
-      title: <FormattedMessage id="statistics" />,
-      type: 'item',
-      url: '/widget/statistics',
-      icon: icons.statistics
-    },
+    // {
+    //   id: 'statistics',
+    //   title: <FormattedMessage id="statistics" />,
+    //   type: 'item',
+    //   url: '/widget/statistics',
+    //   icon: icons.statistics
+    // },
     {
       id: 'data',
       title: <FormattedMessage id="data" />,

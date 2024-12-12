@@ -28,7 +28,7 @@ import { ThemeMode } from 'config';
 
 import axios from 'axios';
 // assets
-import { Chart, HomeTrendUp, ShoppingCart } from 'iconsax-react';
+import { HomeTrendUp } from 'iconsax-react';
 
 function a11yProps(index) {
   return {
@@ -163,18 +163,18 @@ function EcommerceDataChart({ data }) {
 
 // ==============================|| CHART WIDGET - PROJECT ANALYTICS ||============================== //
 
-export default function ProjectAnalytics() {
+export default function EventsOverview() {
   const [value, setValue] = useState(0);
   const [selectedValue, setSelectedValue] = useState('ever');
   const [analytics, setAnalytics] = useState(0);
   const [monthlyData, setMonthlyData] = useState([]);
   const [data, setData] = useState([
-    { name: 'Users', data: [0, 0, 0, 0, 0, 0, 0] },
+    // { name: 'Users', data: [0, 0, 0, 0, 0, 0, 0] },
     { name: 'Events', data: [0, 0, 0, 0, 0, 0, 0] }
   ]);
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token = window.localStorage.getItem('serviceToken');
+  const token = sessionStorage.getItem('authToken');
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -195,25 +195,25 @@ export default function ProjectAnalytics() {
   }, [token, baseUrl]);
 
   useEffect(() => {
-    if (monthlyData.length > 0 && monthlyData[0]?.users !== undefined) {
+    if (monthlyData.length > 0) {
       setData([
-        {
-          name: 'Users',
-          data: [
-            monthlyData[0]?.users,
-            monthlyData[1]?.users,
-            monthlyData[2]?.users,
-            monthlyData[3]?.users,
-            monthlyData[4]?.users,
-            monthlyData[5]?.users,
-            monthlyData[6]?.users,
-            monthlyData[7]?.users,
-            monthlyData[8]?.users,
-            monthlyData[9]?.users,
-            monthlyData[10]?.users,
-            monthlyData[11]?.users
-          ]
-        },
+        // {
+        //   name: 'Users',
+        //   data: [
+        //     monthlyData[0]?.users,
+        //     monthlyData[1]?.users,
+        //     monthlyData[2]?.users,
+        //     monthlyData[3]?.users,
+        //     monthlyData[4]?.users,
+        //     monthlyData[5]?.users,
+        //     monthlyData[6]?.users,
+        //     monthlyData[7]?.users,
+        //     monthlyData[8]?.users,
+        //     monthlyData[9]?.users,
+        //     monthlyData[10]?.users,
+        //     monthlyData[11]?.users
+        //   ]
+        // },
         {
           name: 'Events',
           data: [
@@ -276,22 +276,21 @@ export default function ProjectAnalytics() {
             <Grid item xs={12} md={4}>
               <List disablePadding sx={{ '& .MuiListItem-root': { px: 3, py: 1.5 } }}>
                 <ListItem
-                  divider
-                  // secondaryAction={
-                  //   <Stack spacing={0.25} alignItems="flex-end">
-                  //     <Typography variant="subtitle1">-245</Typography>
-                  //     <Typography color="error" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  //       <ArrowDown style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
-                  //     </Typography>
-                  //   </Stack>
-                  // }
+                // secondaryAction={
+                //   <Stack spacing={0.25} alignItems="flex-end">
+                //     <Typography variant="subtitle1">-245</Typography>
+                //     <Typography color="error" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                //       <ArrowDown style={{ transform: 'rotate(45deg)' }} size={14} /> 10.6%
+                //     </Typography>
+                //   </Stack>
+                // }
                 >
-                  <ListItemAvatar>
+                  {/* <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
                       <Chart />
                     </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
+                  </ListItemAvatar> */}
+                  {/* <ListItemText
                     primary={<Typography color="text.secondary">Total Users</Typography>}
                     secondary={
                       <Typography variant="subtitle1">
@@ -302,18 +301,17 @@ export default function ProjectAnalytics() {
                             : analytics?.total_users_this_month}
                       </Typography>
                     }
-                  />
+                  /> */}
                 </ListItem>
                 <ListItem
-                  divider
-                  // secondaryAction={
-                  //   <Stack spacing={0.25} alignItems="flex-end">
-                  //     <Typography variant="subtitle1">+2,100</Typography>
-                  //     <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  //       <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 30.6%
-                  //     </Typography>
-                  //   </Stack>
-                  // }
+                // secondaryAction={
+                //   <Stack spacing={0.25} alignItems="flex-end">
+                //     <Typography variant="subtitle1">+2,100</Typography>
+                //     <Typography color="success.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                //       <ArrowUp style={{ transform: 'rotate(45deg)' }} size={14} /> 30.6%
+                //     </Typography>
+                //   </Stack>
+                // }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
@@ -333,16 +331,16 @@ export default function ProjectAnalytics() {
                     }
                   />
                 </ListItem>
-                <ListItem
+                {/* <ListItem
                   divider
-                  // secondaryAction={
-                  //   <Stack spacing={0.25} alignItems="flex-end">
-                  //     <Typography variant="subtitle1">-26</Typography>
-                  //     <Typography color="warning.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  //       <ArrowSwapHorizontal size={14} /> 5%
-                  //     </Typography>
-                  //   </Stack>
-                  // }
+                  secondaryAction={
+                    <Stack spacing={0.25} alignItems="flex-end">
+                      <Typography variant="subtitle1">-26</Typography>
+                      <Typography color="warning.main" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <ArrowSwapHorizontal size={14} /> 5%
+                      </Typography>
+                    </Stack>
+                  }
                 >
                   <ListItemAvatar>
                     <Avatar variant="rounded" color="secondary" sx={{ color: 'text.secondary' }}>
@@ -361,7 +359,7 @@ export default function ProjectAnalytics() {
                       </Typography>
                     }
                   />
-                </ListItem>
+                </ListItem> */}
               </List>
             </Grid>
           </Grid>

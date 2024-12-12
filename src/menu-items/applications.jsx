@@ -45,39 +45,39 @@ const applications = {
   icon: icons.applications,
   type: 'group',
   children: [
-    {
-      id: 'chat',
-      title: <FormattedMessage id="chat" />,
-      type: 'item',
-      url: '/apps/chat',
-      icon: icons.chat,
-      breadcrumbs: false
-    },
-    {
-      id: 'calendar',
-      title: <FormattedMessage id="calendar" />,
-      type: 'item',
-      url: '/apps/calendar',
-      icon: icons.calendar,
-      actions: [
-        {
-          type: NavActionType.LINK,
-          label: 'Full Calendar',
-          icon: icons.link,
-          url: 'https://fullcalendar.io/docs/react',
-          target: true
-        }
-      ]
-    },
-    {
-      id: 'kanban',
-      title: <FormattedMessage id="kanban" />,
-      type: 'item',
-      icon: icons.kanban,
-      url: '/apps/kanban/board',
-      link: '/apps/kanban/:tab',
-      breadcrumbs: false
-    },
+    // {
+    //   id: 'chat',
+    //   title: <FormattedMessage id="chat" />,
+    //   type: 'item',
+    //   url: '/apps/chat',
+    //   icon: icons.chat,
+    //   breadcrumbs: false
+    // },
+    // {
+    //   id: 'calendar',
+    //   title: <FormattedMessage id="calendar" />,
+    //   type: 'item',
+    //   url: '/apps/calendar',
+    //   icon: icons.calendar,
+    //   actions: [
+    //     {
+    //       type: NavActionType.LINK,
+    //       label: 'Full Calendar',
+    //       icon: icons.link,
+    //       url: 'https://fullcalendar.io/docs/react',
+    //       target: true
+    //     }
+    //   ]
+    // },
+    // {
+    //   id: 'kanban',
+    //   title: <FormattedMessage id="kanban" />,
+    //   type: 'item',
+    //   icon: icons.kanban,
+    //   url: '/apps/kanban/board',
+    //   link: '/apps/kanban/:tab',
+    //   breadcrumbs: false
+    // },
     {
       id: 'User',
       title: <FormattedMessage id="User Management" />,
@@ -145,56 +145,56 @@ const applications = {
           breadcrumbs: false
         }
       ]
-    },
-    {
-      id: 'invoice',
-      title: <FormattedMessage id="invoice" />,
-      url: '/apps/invoice/dashboard',
-      type: 'collapse',
-      icon: icons.invoice,
-      breadcrumbs: false,
-      children: [
-        {
-          id: 'create',
-          title: <FormattedMessage id="create" />,
-          type: 'item',
-          url: '/apps/invoice/create',
-          breadcrumbs: false
-        },
-        {
-          id: 'details',
-          title: <FormattedMessage id="details" />,
-          type: 'item',
-          url: '/apps/invoice/details/1',
-          link: '/apps/invoice/details/:id',
-          breadcrumbs: false
-        },
-        {
-          id: 'list',
-          title: <FormattedMessage id="list" />,
-          type: 'item',
-          url: '/apps/invoice/list',
-          breadcrumbs: false
-        },
-        {
-          id: 'edit',
-          title: <FormattedMessage id="edit" />,
-          type: 'item',
-          url: '/apps/invoice/edit/1',
-          link: '/apps/invoice/edit/:id',
-          breadcrumbs: false
-        }
-      ]
-    },
-    {
-      id: 'Profile',
-      title: <FormattedMessage id="profile" />,
-      type: 'item',
-      icon: icons.profile,
-      url: '/apps/profiles/account/basic',
-      link: '/apps/profiles/account/:tab',
-      breadcrumbs: false
     }
+    // {
+    //   id: 'invoice',
+    //   title: <FormattedMessage id="invoice" />,
+    //   url: '/apps/invoice/dashboard',
+    //   type: 'collapse',
+    //   icon: icons.invoice,
+    //   breadcrumbs: false,
+    //   children: [
+    //     {
+    //       id: 'create',
+    //       title: <FormattedMessage id="create" />,
+    //       type: 'item',
+    //       url: '/apps/invoice/create',
+    //       breadcrumbs: false
+    //     },
+    //     {
+    //       id: 'details',
+    //       title: <FormattedMessage id="details" />,
+    //       type: 'item',
+    //       url: '/apps/invoice/details/1',
+    //       link: '/apps/invoice/details/:id',
+    //       breadcrumbs: false
+    //     },
+    //     {
+    //       id: 'list',
+    //       title: <FormattedMessage id="list" />,
+    //       type: 'item',
+    //       url: '/apps/invoice/list',
+    //       breadcrumbs: false
+    //     },
+    //     {
+    //       id: 'edit',
+    //       title: <FormattedMessage id="edit" />,
+    //       type: 'item',
+    //       url: '/apps/invoice/edit/1',
+    //       link: '/apps/invoice/edit/:id',
+    //       breadcrumbs: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id: 'Profile',
+    //   title: <FormattedMessage id="profile" />,
+    //   type: 'item',
+    //   icon: icons.profile,
+    //   url: '/apps/profiles/account/basic',
+    //   link: '/apps/profiles/account/:tab',
+    //   breadcrumbs: false
+    // }
   ]
 };
 

@@ -6,7 +6,7 @@ import { fetcher } from 'utils/axios';
 import axios from 'axios';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const token = window.localStorage.getItem('serviceToken');
+const token = sessionStorage.getItem('authToken');
 
 export const endpoints = {
   key: baseUrl,
