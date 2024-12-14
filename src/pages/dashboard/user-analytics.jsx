@@ -34,9 +34,7 @@ export default function DashboardDefault() {
   const [analytics, setAnalytics] = useState(0);
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token = sessionStorage.getItem('authToken');
-
-  // const handleMenuSelection = (value) => {
+  const token =window.localStorage.getItem('authToken');  // const handleMenuSelection = (value) => {
   //   setSelectedValue(value);
   // };
 
@@ -52,7 +50,7 @@ export default function DashboardDefault() {
   }, [baseUrl, token]);
 
   useEffect(() => {
-    console.log('analytics', analytics.total_users_ever);
+    console.log('analytics', token);
   });
 
   return (

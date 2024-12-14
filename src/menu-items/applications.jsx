@@ -2,8 +2,6 @@
 import { FormattedMessage } from 'react-intl';
 
 // project-imports
-import { handlerUserDialog } from 'api/user';
-import { NavActionType } from 'config';
 
 // assets
 import {
@@ -83,15 +81,7 @@ const applications = {
       title: <FormattedMessage id="User Management" />,
       type: 'item',
       icon: icons.User,
-      url: '/apps/User/User-list',
-      actions: [
-        {
-          type: NavActionType.FUNCTION,
-          label: 'Add User',
-          function: () => handlerUserDialog(true),
-          icon: icons.add
-        }
-      ]
+      url: '/apps/User/User-list'
     },
     {
       id: 'events',
@@ -101,8 +91,8 @@ const applications = {
       url: '/apps/event-list'
     },
     {
-      id: 'acl',
-      title: <FormattedMessage id="ACL Management" />,
+      id: 'admin',
+      title: <FormattedMessage id="Admin Management" />,
       type: 'collapse',
       icon: icons.User,
       url: '/apps/ACL/admin-list',

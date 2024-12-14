@@ -105,9 +105,7 @@ export default function NewUsers() {
   };
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token = sessionStorage.getItem('authToken');
-
-  const getAllUsers = () => {
+  const token =window.localStorage.getItem('authToken');  const getAllUsers = () => {
     axios({
       method: 'get',
       url: `${baseUrl}/v1/admin/analytics`,

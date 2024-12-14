@@ -6,7 +6,7 @@ import { fetcher } from 'utils/axios';
 import axios from 'axios';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const token = sessionStorage.getItem('authToken');
+const token = window.localStorage.getItem('authToken');
 export const endpoints = {
   key: baseUrl,
   analytics: '/v1/admin/users'
@@ -42,4 +42,3 @@ export function useGetAnalytics() {
   );
   return memoizedValue;
 }
-

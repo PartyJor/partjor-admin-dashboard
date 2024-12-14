@@ -57,7 +57,7 @@ export const JWTProvider = ({ children }) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const serviceToken = window.localStorage.getItem('serviceToken');
+        const serviceToken = window.localStorage.getItem('authToken');
         if (serviceToken) {
           setSession(serviceToken);
           const response = JSON.parse(window.localStorage.getItem('userData'));
@@ -100,7 +100,7 @@ export const JWTProvider = ({ children }) => {
         user
       }
     });
-    sessionStorage.setItem('authToken', response.data.meta.token);
+    window.localStorage.setItem('authToken', response.data.meta.token);
     window.localStorage.setItem('userData', JSON.stringify(userData));
   };
 
@@ -139,6 +139,7 @@ export const JWTProvider = ({ children }) => {
     })
       .then((response) => {
         console.log(response);
+        window.localStorage.removeItem('authToken');
       })
       .catch((error) => {
         console.log(error);

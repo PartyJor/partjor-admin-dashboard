@@ -24,9 +24,7 @@ export default function RoleView({ id }) {
   const [role, setRole] = useState('');
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token = sessionStorage.getItem('authToken');
-
-  const fetchRole = async () => {
+  const token =window.localStorage.getItem('authToken');  const fetchRole = async () => {
     await axios({
       method: 'get',
       url: `${baseUrl}/v1/admin/acl/roles/${id}?include=permissions`,

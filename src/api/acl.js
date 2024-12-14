@@ -10,8 +10,7 @@ import axios from 'axios';
 // };
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const token = sessionStorage.getItem('authToken');
-export const endpoints = {
+window.localStorage.getItem('authToken');export const endpoints = {
   key: baseUrl,
   admins: '/v1/admin/admins',
   roles: '/v1/admin/acl/roles',

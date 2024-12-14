@@ -120,9 +120,7 @@ export default function DevicesData() {
   };
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token = sessionStorage.getItem('authToken');
-
-  // Fetching the data from API
+  const token =window.localStorage.getItem('authToken');  // Fetching the data from API
   useEffect(() => {
     const getDevicesData = () => {
       axios({

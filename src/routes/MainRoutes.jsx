@@ -6,7 +6,7 @@ import Loadable from 'components/Loadable';
 import DashboardLayout from 'layout/Dashboard';
 import PagesLayout from 'layout/Pages';
 import SimpleLayout from 'layout/Simple';
-
+import AuthGuard from './AuthGuard';
 import { SimpleLayoutType } from 'config';
 import { loader as productsLoader, productLoader } from 'api/products';
 
@@ -155,11 +155,19 @@ const MainRoutes = {
           children: [
             {
               path: 'user-analytics',
-              element: <DashboardDefault />
+              element: (
+                <AuthGuard>
+                  <DashboardDefault />
+                </AuthGuard>
+              )
             },
             {
               path: 'event-analytics',
-              element: <DashboardAnalytics />
+              element: (
+                <AuthGuard>
+                  <DashboardAnalytics />
+                </AuthGuard>
+              )
             }
           ]
         },
@@ -210,32 +218,56 @@ const MainRoutes = {
               children: [
                 {
                   path: 'user-list',
-                  element: <AppUserList />
+                  element: (
+                    <AuthGuard>
+                      <AppUserList />
+                    </AuthGuard>
+                  )
                 },
                 {
                   path: 'User-card',
-                  element: <AppUserCard />
+                  element: (
+                    <AuthGuard>
+                      <AppUserCard />
+                    </AuthGuard>
+                  )
                 }
               ]
             },
             {
               path: 'event-list',
-              element: <AppEventsList />
+              element: (
+                <AuthGuard>
+                  <AppEventsList />
+                </AuthGuard>
+              )
             },
             {
               path: 'ACL',
               children: [
                 {
                   path: 'admin-list',
-                  element: <AppAdminList />
+                  element: (
+                    <AuthGuard>
+                      <AppAdminList />
+                    </AuthGuard>
+                  )
                 },
                 {
                   path: 'acl-roles',
-                  element: <AppACLRoles />
+                  element: (
+                    <AuthGuard>
+                      <AppACLRoles />
+                    </AuthGuard>
+                  )
                 },
                 {
                   path: 'acl-permissions',
-                  element: <AppACLPermissions />
+                  element: (
+                    <AuthGuard>
+                      <AppACLPermissions />
+                    </AuthGuard>
+                  )
                 }
               ]
             },
@@ -244,7 +276,11 @@ const MainRoutes = {
               children: [
                 {
                   path: 'wallet-transactions-list',
-                  element: <AppTransactionList />
+                  element: (
+                    <AuthGuard>
+                      <AppTransactionList />
+                    </AuthGuard>
+                  )
                 }
               ]
             },
@@ -278,31 +314,59 @@ const MainRoutes = {
               children: [
                 {
                   path: 'account',
-                  element: <AccountProfile />,
+                  element: (
+                    <AuthGuard>
+                      <AccountProfile />
+                    </AuthGuard>
+                  ),
                   children: [
                     {
                       path: 'basic',
-                      element: <AccountTabProfile />
+                      element: (
+                        <AuthGuard>
+                          <AccountTabProfile />
+                        </AuthGuard>
+                      )
                     },
                     {
                       path: 'personal',
-                      element: <AccountTabPersonal />
+                      element: (
+                        <AuthGuard>
+                          <AccountTabPersonal />
+                        </AuthGuard>
+                      )
                     },
                     {
                       path: 'my-account',
-                      element: <AccountTabAccount />
+                      element: (
+                        <AuthGuard>
+                          <AccountTabAccount />
+                        </AuthGuard>
+                      )
                     },
                     {
                       path: 'password',
-                      element: <AccountTabPassword />
+                      element: (
+                        <AuthGuard>
+                          <AccountTabPassword />
+                        </AuthGuard>
+                      )
                     },
                     {
                       path: 'role',
-                      element: <AccountTabRole />
+                      element: (
+                        <AuthGuard>
+                          <AccountTabRole />
+                        </AuthGuard>
+                      )
                     },
                     {
                       path: 'settings',
-                      element: <AccountTabSettings />
+                      element: (
+                        <AuthGuard>
+                          <AccountTabSettings />
+                        </AuthGuard>
+                      )
                     }
                   ]
                 },
