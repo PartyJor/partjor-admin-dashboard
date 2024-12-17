@@ -10,9 +10,10 @@ import axios from 'axios';
 // };
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-window.localStorage.getItem('authToken');export const endpoints = {
+const token = window.localStorage.getItem('authToken');
+export const endpoints = {
   key: baseUrl,
-  admins: '/v1/admin/admins',
+  admins: '/v1/admin/admins/',
   roles: '/v1/admin/acl/roles',
   permissions: '/v1/admin/acl/permissions' // server URL
 };
@@ -168,6 +169,39 @@ export async function createAdmin(data) {
       Authorization: `Bearer ${token}`
     },
     data: data
+  })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function deleteAdmin(adminId) {
+  axios({
+    method: 'DELETE',
+    url: endpoints.key + endpoints.admins + adminId,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function updateAdmin(adminId, data){
+  axios({
+    method: 'PUT',
+    url: endpoints.key + endpoints.admins + adminId,
+    data: data,
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
   })
     .then((response) => {
       console.log(response);

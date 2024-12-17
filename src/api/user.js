@@ -15,7 +15,7 @@ export const endpoints = {
   key: baseUrl,
   list: '/v1/admin/users', // server URL
   modal: '/modal', // server URL
-  insert: '/insert', // server URL
+  insert: '/v1/admin/admins', // server URL
   update: '/update', // server URL
   delete: `/v1/admin/users/`, // server URL
   suspend: '/v1/admin/users/'
@@ -53,25 +53,20 @@ export function useGetUser() {
 }
 
 export async function insertUser(newUser) {
-  // to update local state based on key
-  mutate(
-    endpoints.key + endpoints.list,
-    (currentUser) => {
-      newUser.id = currentUser.Users.length + 1;
-      const addedUser = [...currentUser.Users, newUser];
-
-      return {
-        ...currentUser,
-        Users: addedUser
-      };
-    },
-    false
-  );
-
-  // to hit server
-  // you may need to refetch latest data after server hit and based on your logic
-  //   const data = { newUser };
-  //   await axios.post(endpoints.key + endpoints.insert, data);
+  axios({
+    method: 'POST',
+    url: endpoints.key + endpoints.insert,
+    data: newUser,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 export async function updateUser(UserId, updatedUser) {

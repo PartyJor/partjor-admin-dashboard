@@ -26,18 +26,12 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import CircularWithPath from 'components/@extended/progress/CircularWithPath';
 
 import { openSnackbar } from 'api/snackbar';
-import { insertUser } from 'api/user';
-import { createAdmin } from 'api/acl';
+import { updateAdmin } from 'api/acl';
 
 // ==============================|| User ADD / EDIT - FORM ||============================== //
 
-export default function FormAdminAdd({ closeModal }) {
+export default function FormEditAdmin({ adminId, adminData, closeModal }) {
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState('admin');
-
-  const handleChangeSelect = (event) => {
-    setSelectedValue(event.target.value);
-  };
 
   useEffect(() => {
     setLoading(false);
@@ -52,13 +46,13 @@ export default function FormAdminAdd({ closeModal }) {
 
   const formik = useFormik({
     initialValues: {
-      first_name: '',
-      last_name: '',
-      email: '',
-      role: ''
+      first_name: adminData?.first_name || '',
+      last_name: adminData?.last_name || '',
+      email: adminData?.email || '',
+      role: adminData?.roles[0]?.name || ''
     },
     validationSchema: UserSchema,
-    enableReinitialize: true,
+    enableReinitialize: true
   });
 
   const { errors, touched, isSubmitting, getFieldProps } = formik;
@@ -81,10 +75,10 @@ export default function FormAdminAdd({ closeModal }) {
             noValidate
             onSubmit={(e) => {
               e.preventDefault();
-              createAdmin(formik.values).then(() => {
+              updateAdmin(adminId, formik.values).then(() => {
                 openSnackbar({
                   open: true,
-                  message: 'Admin added successfully.',
+                  message: 'Admin updated successfully.',
                   variant: 'alert',
 
                   alert: {
@@ -96,7 +90,7 @@ export default function FormAdminAdd({ closeModal }) {
               console.log('admin', formik.values);
             }}
           >
-            <DialogTitle>New Admin</DialogTitle>
+            <DialogTitle>Edit Admin</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 4 }}>
               <Grid container spacing={3}>
@@ -144,14 +138,8 @@ export default function FormAdminAdd({ closeModal }) {
                     <Grid item xs={12}>
                       <Stack spacing={1}>
                         <InputLabel htmlFor="User-role">Role</InputLabel>
-                        <Select
-                          id="demo-simple-select"
-                          value={selectedValue}
-                          onChange={handleChangeSelect}
-                          {...getFieldProps('role')}
-                          error={touched.role && errors.role}
-                        >
-                          <MenuItem value={'admin'}>Admin</MenuItem>
+                        <Select id="User-role" {...getFieldProps('role')} defaultValue="admin" error={Boolean(touched.role && errors.role)}>
+                          <MenuItem value="admin">Admin</MenuItem>
                         </Select>
                       </Stack>
                     </Grid>
@@ -168,7 +156,7 @@ export default function FormAdminAdd({ closeModal }) {
                       Cancel
                     </Button>
                     <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      Add Admin
+                      Edit Admin
                     </Button>
                   </Stack>
                 </Grid>
@@ -182,4 +170,4 @@ export default function FormAdminAdd({ closeModal }) {
   );
 }
 
-FormAdminAdd.propTypes = { User: PropTypes.any, closeModal: PropTypes.func };
+FormEditAdmin.propTypes = { User: PropTypes.any, closeModal: PropTypes.func };

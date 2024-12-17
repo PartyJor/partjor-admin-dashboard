@@ -174,7 +174,8 @@ export default function EventsOverview() {
   ]);
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token =window.localStorage.getItem('authToken');  useEffect(() => {
+  const token = window.localStorage.getItem('authToken');
+  useEffect(() => {
     const fetchAnalytics = async () => {
       try {
         const [analyticsRes, monthlyDataRes] = await Promise.all([

@@ -32,12 +32,10 @@ import ScrollX from 'components/ScrollX';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
-import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
-import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
-import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
+import AlertAdminDelete from 'sections/apps/Acl/AlertAdminDelete';
 import AdminView from 'sections/apps/Acl/AdminView';
-import CreateRoleModal from 'sections/apps/Acl/CreateRoleModal';
 import CreateAdminModal from 'sections/apps/Acl/CreateAdminModal';
+import EditAdminModal from 'sections/apps/Acl/EditAdminModal';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
 import {
@@ -54,7 +52,7 @@ import { useGetAdmins } from 'api/acl';
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
-import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
+import { Add, Eye, Trash, Edit2 } from 'iconsax-react';
 // import UserAvatar from 'sections/apps/chat/UserAvatar';
 // import Alert from 'themes/overrides/Alert';
 
@@ -202,23 +200,14 @@ export default function AdminListPage() {
   const theme = useTheme();
   const { UsersLoading: loading, Users: lists } = useGetAdmins();
   const [open, setOpen] = useState(false);
-  const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
-  const [activateUserOpen, setActivateUserOpen] = useState(false);
-  const [activateCreateRoleOpen, setActivateCreateRoleOpen] = useState(false);
   const [activateCreateAdminOpen, setActivateCreateAdminOpen] = useState(false);
+  const [activateEditAdminOpen, setActivateEditAdminOpen] = useState(false);
   const [userName, setUserName] = useState('');
-  const [UserDeleteId, setUserDeleteId] = useState('');
+  const [adminId, setAdminId] = useState('');
+  const [selectedAdmin, setSelectedAdmin] = useState('');
 
   const handleClose = useCallback(() => {
     setOpen((prevState) => !prevState);
-  }, []);
-
-  const handleCloseSuspendModal = useCallback(() => {
-    setIsSuspendUserOpen((prevState) => !prevState);
-  }, []);
-
-  const handleCloseActivateModal = useCallback(() => {
-    setActivateUserOpen((prevState) => !prevState);
   }, []);
 
   const getUserInitials = (name) => {
@@ -315,30 +304,17 @@ export default function AdminListPage() {
                   {collapseIcon}
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Suspend User">
+              <Tooltip title="Edit Admin">
                 <IconButton
                   color="info"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleCloseSuspendModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
+                    setActivateEditAdminOpen(true);
+                    setAdminId(row.original.id);
+                    setSelectedAdmin(row?.original?.attributes);
                   }}
                 >
-                  <UserRemove />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Activate User">
-                <IconButton
-                  color="success"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCloseActivateModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <UserTick />
+                  <Edit2 />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
@@ -347,8 +323,8 @@ export default function AdminListPage() {
                   onClick={(e) => {
                     e.stopPropagation();
                     handleClose();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
+                    setAdminId(row?.original?.id);
+                    setUserName(row.original.attributes.first_name + ' ' + row.original.attributes.last_name);
                   }}
                 >
                   <Trash />
@@ -359,7 +335,7 @@ export default function AdminListPage() {
         }
       }
     ],
-    [theme, handleClose, handleCloseActivateModal, handleCloseSuspendModal]
+    [theme, handleClose]
   );
 
   if (loading) return <EmptyReactTable />;
@@ -375,11 +351,9 @@ export default function AdminListPage() {
           }
         }}
       />
-      <AlertUserDelete id={UserDeleteId} title={userName} open={open} handleClose={handleClose} />
-      <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
-      <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
-      <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setActivateCreateRoleOpen} />
+      <AlertAdminDelete id={adminId} title={userName} open={open} handleClose={handleClose} />
       <CreateAdminModal open={activateCreateAdminOpen} modalToggler={setActivateCreateAdminOpen} />
+      <EditAdminModal open={activateEditAdminOpen} modalToggler={setActivateEditAdminOpen} adminId={adminId} admin={selectedAdmin} />
       {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );
