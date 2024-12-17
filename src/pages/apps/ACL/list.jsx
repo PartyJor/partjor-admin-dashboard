@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState, Fragment, useCallback } from 'react';
+import { useMemo, useState, Fragment } from 'react';
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 // import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
@@ -32,11 +31,7 @@ import ScrollX from 'components/ScrollX';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
-import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
-import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
-import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
 import RoleView from 'sections/apps/Acl/Roleview';
-import CreateRoleModal from 'sections/apps/Acl/CreateRoleModal';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
 import {
@@ -53,13 +48,13 @@ import { useGetRoles } from 'api/acl';
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
-import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
+import { Add, Eye } from 'iconsax-react';
 // import UserAvatar from 'sections/apps/chat/UserAvatar';
 // import Alert from 'themes/overrides/Alert';
 
 // ==============================|| REACT TABLE - LIST ||============================== //
 
-function ReactTable({ data, columns, modalToggler }) {
+function ReactTable({ data, columns }) {
   const theme = useTheme();
   const [sorting, setSorting] = useState([{ id: 'name', desc: false }]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -112,9 +107,9 @@ function ReactTable({ data, columns, modalToggler }) {
 
         <Stack direction="row" alignItems="center" spacing={2}>
           <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
-          <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
+          {/* <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
             Create roles
-          </Button>
+          </Button> */}
           <CSVExport {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'User-list.csv' }} />
         </Stack>
       </Stack>
@@ -200,24 +195,18 @@ function ReactTable({ data, columns, modalToggler }) {
 export default function ACLListPage() {
   const theme = useTheme();
   const { UsersLoading: loading, Users: lists } = useGetRoles();
-  const [open, setOpen] = useState(false);
-  const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
-  const [activateUserOpen, setActivateUserOpen] = useState(false);
-  const [activateCreateRoleOpen, setActivateCreateRoleOpen] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [UserDeleteId, setUserDeleteId] = useState('');
+  // const [open, setOpen] = useState(false);
+  // const [activateCreateRoleOpen, setActivateCreateRoleOpen] = useState(false);
+  // const [roleName, setRoleName] = useState('');
+  // const [roleId, setRoleId] = useState('');
 
-  const handleClose = useCallback(() => {
-    setOpen((prevState) => !prevState);
-  }, []);
+  // const handleClose = useCallback(() => {
+  //   setOpen((prevState) => !prevState);
+  // }, []);
 
-  const handleCloseSuspendModal = useCallback(() => {
-    setIsSuspendUserOpen((prevState) => !prevState);
-  }, []);
-
-  const handleCloseActivateModal = useCallback(() => {
-    setActivateUserOpen((prevState) => !prevState);
-  }, []);
+  // const handleCloseSuspendModal = useCallback(() => {
+  //   setIsSuspendUserOpen((prevState) => !prevState);
+  // }, []);
 
   const getUserInitials = (name) => {
     if (!name) return '';
@@ -311,51 +300,38 @@ export default function ACLListPage() {
                   {collapseIcon}
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Suspend User">
+              {/* <Tooltip title="Edit User">
                 <IconButton
                   color="info"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleCloseSuspendModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
+                    setRoleId(row.original.id);
+                    setRoleName(row.original.attributes.name);
                   }}
                 >
-                  <UserRemove />
+                  <Edit2 />
                 </IconButton>
-              </Tooltip>
-              <Tooltip title="Activate User">
-                <IconButton
-                  color="success"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCloseActivateModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <UserTick />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
+              </Tooltip> */}
+              {/* <Tooltip title="Delete">
                 <IconButton
                   color="error"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleClose();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
+                    setRoleId(row.original.id);
+                    setRoleName(row.original.attributes.name);
                   }}
                 >
                   <Trash />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
             </Stack>
           );
         }
       }
     ],
-    [theme, handleClose, handleCloseActivateModal, handleCloseSuspendModal]
+    [theme]
   );
 
   if (loading) return <EmptyReactTable />;
@@ -371,10 +347,10 @@ export default function ACLListPage() {
           }
         }}
       />
-      <AlertUserDelete id={UserDeleteId} title={userName} open={open} handleClose={handleClose} />
-      <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
-      <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
-      <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setActivateCreateRoleOpen} />
+      {/* <AlertRoleDelete id={roleId} title={roleName} open={open} handleClose={handleClose} /> */}
+      {/* <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
+      <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} /> */}
+      {/* <CreateRoleModal open={activateCreateRoleOpen} modalToggler={setActivateCreateRoleOpen} /> */}
     </>
   );
 }

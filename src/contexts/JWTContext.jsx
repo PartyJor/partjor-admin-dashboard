@@ -23,20 +23,6 @@ const initialState = {
   user: null
 };
 
-// const verifyToken = (serviceToken) => {
-//   if (!serviceToken) {
-//     return false;
-//   }
-
-//   global.atob = decode;
-//   const decoded = decode(serviceToken, { header: true });
-
-//   /**
-//    * Property 'exp' does not exist on type '<T = unknown>(token: string, options?: JwtDecodeOptions | undefined) => T'.
-//    */
-//   return decoded.exp > Date.now() / 1000;
-// };
-
 const setSession = (serviceToken) => {
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
@@ -148,7 +134,7 @@ export const JWTProvider = ({ children }) => {
     dispatch({ type: LOGOUT });
   };
 
-  const resetPassword = async (email) => {
+  const forgotPassword = async (email) => {
     axios({
       method: 'post',
       url: `${baseUrl}/v1/admin/auth/forgot-password`,
@@ -162,13 +148,30 @@ export const JWTProvider = ({ children }) => {
       });
   };
 
+  const resetPassword = async (data) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `${baseUrl}/v1/admin/auth/reset-password`,
+        data: data
+      });
+      return response;
+    } catch (error) {
+      console.error('Error in resetPassword:', error);
+      throw error;
+    }
+  };
   const updateProfile = () => {};
 
   if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;
   }
 
-  return <JWTContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile }}>{children}</JWTContext.Provider>;
+  return (
+    <JWTContext.Provider value={{ ...state, login, logout, register, forgotPassword, resetPassword, updateProfile }}>
+      {children}
+    </JWTContext.Provider>
+  );
 };
 
 export default JWTContext;

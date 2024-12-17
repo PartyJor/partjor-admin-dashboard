@@ -7,13 +7,11 @@ import { alpha, useTheme } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
@@ -31,11 +29,6 @@ import {
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Avatar from 'components/@extended/Avatar';
-import IconButton from 'components/@extended/IconButton';
-
-import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
-import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
-import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
 import UserView from 'sections/apps/user/UserView';
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
@@ -53,13 +46,12 @@ import { useGetPermissions } from 'api/acl';
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
-import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
 // import UserAvatar from 'sections/apps/chat/UserAvatar';
 // import Alert from 'themes/overrides/Alert';
 
 // ==============================|| REACT TABLE - LIST ||============================== //
 
-function ReactTable({ data, columns, modalToggler }) {
+function ReactTable({ data, columns }) {
   const theme = useTheme();
   const [sorting, setSorting] = useState([{ id: 'name', desc: false }]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -112,9 +104,9 @@ function ReactTable({ data, columns, modalToggler }) {
 
         <Stack direction="row" alignItems="center" spacing={2}>
           <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
-          <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
+          {/* <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
             Create roles
-          </Button>
+          </Button> */}
           <CSVExport {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'User-list.csv' }} />
         </Stack>
       </Stack>
@@ -200,23 +192,6 @@ function ReactTable({ data, columns, modalToggler }) {
 export default function ACLPermissionsPage() {
   const theme = useTheme();
   const { UsersLoading: loading, Users: lists } = useGetPermissions();
-  const [open, setOpen] = useState(false);
-  const [isSuspendUserOpen, setIsSuspendUserOpen] = useState(false);
-  const [activateUserOpen, setActivateUserOpen] = useState(false); // Renamed
-  const [userName, setUserName] = useState('');
-  const [UserDeleteId, setUserDeleteId] = useState('');
-
-  const handleClose = () => {
-    setOpen(!open);
-  };
-
-  const handleCloseSuspendModal = () => {
-    setIsSuspendUserOpen(!isSuspendUserOpen);
-  };
-
-  const handleCloseActivateModal = () => {
-    setActivateUserOpen(!activateUserOpen);
-  };
 
   const getUserInitials = (name) => {
     if (!name) return '';
@@ -289,7 +264,7 @@ export default function ACLPermissionsPage() {
         header: 'Guard Name',
         accessorKey: 'attributes.guard_name',
         cell: ({ getValue }) => <Typography variant="text.primary">{getValue()}</Typography>
-      },
+      }
       //   {
       //     header: 'Platform',
       //     accessorKey: 'attributes.platform',
@@ -313,69 +288,6 @@ export default function ACLPermissionsPage() {
       //       />
       //     )
       //   },
-      {
-        header: 'Actions',
-        meta: {
-          className: 'cell-center'
-        },
-        disableSortBy: true,
-        cell: ({ row }) => {
-          const collapseIcon =
-            row.getCanExpand() && row.getIsExpanded() ? (
-              <Add style={{ color: theme.palette.error.main, transform: 'rotate(45deg)' }} />
-            ) : (
-              <Eye />
-            );
-          return (
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="View">
-                <IconButton color="secondary" onClick={row.getToggleExpandedHandler()}>
-                  {collapseIcon}
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Suspend User">
-                <IconButton
-                  color="info"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCloseSuspendModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <UserRemove />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Activate User">
-                <IconButton
-                  color="success"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCloseActivateModal();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <UserTick />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClose();
-                    setUserDeleteId(row.original.id);
-                    setUserName(row.original.attributes.name);
-                  }}
-                >
-                  <Trash />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          );
-        }
-      }
     ],
     [theme]
   );
@@ -393,9 +305,6 @@ export default function ACLPermissionsPage() {
           }
         }}
       />
-      <AlertUserDelete id={UserDeleteId} title={userName} open={open} handleClose={handleClose} />
-      <AlertSuspendUser id={UserDeleteId} title={userName} open={isSuspendUserOpen} handleClose={handleCloseSuspendModal} />
-      <AlertActivateUser id={UserDeleteId} title={userName} open={activateUserOpen} handleClose={handleCloseActivateModal} />
       {/* {isUserModalOpen && <UserModal open={isUserModalOpen} modalToggler={setIsUserModalOpen} User={selectedUser} />} */}
     </>
   );

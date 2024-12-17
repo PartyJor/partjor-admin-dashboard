@@ -7,15 +7,12 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 // project-imports
-import useAuth from 'hooks/useAuth';
 import AnimateButton from 'components/@extended/AnimateButton';
 import AuthWrapper from 'sections/auth/AuthWrapper';
 
 // ================================|| CHECK MAIL ||================================ //
 
 export default function CheckMail() {
-  const { isLoggedIn } = useAuth();
-
   return (
     <AuthWrapper>
       <Grid container spacing={3}>
@@ -31,7 +28,7 @@ export default function CheckMail() {
           <AnimateButton>
             <Button
               component={Link}
-              to={isLoggedIn ? '/auth/login' : '/login'}
+              to={'/reset-password'}
               disableElevation
               fullWidth
               size="large"
@@ -39,7 +36,7 @@ export default function CheckMail() {
               variant="contained"
               color="primary"
             >
-              Sign in
+              Reset Password
             </Button>
           </AnimateButton>
         </Grid>

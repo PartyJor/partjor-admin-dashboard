@@ -7,7 +7,6 @@ import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
@@ -59,7 +58,7 @@ import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
 
 // ==============================|| REACT TABLE - LIST ||============================== //
 
-function ReactTable({ data, columns, modalToggler }) {
+function ReactTable({ data, columns }) {
   const theme = useTheme();
   const [sorting, setSorting] = useState([{ id: 'name', desc: false }]);
   const [columnFilters, setColumnFilters] = useState([]);

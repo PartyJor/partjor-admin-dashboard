@@ -106,6 +106,36 @@ export default function FormRoleAdd({ closeModal }) {
       id: 16,
       name: 'edit.event',
       permission: 'Edit event'
+    },
+    {
+      id: 17,
+      name: 'delete.event',
+      permission: 'Delete event'
+    },
+    {
+      id: 18,
+      name: 'create.event',
+      permission: 'Create event'
+    },
+    {
+      id: 19,
+      name: 'view.analytics',
+      permission: 'Edit event'
+    },
+    {
+      id: 20,
+      name: 'edit.analytics',
+      permission: 'Edit analytics'
+    },
+    {
+      id: 21,
+      name: 'edit.transactions',
+      permission: 'Edit transactions'
+    },
+    {
+      id: 22,
+      name: 'view.transactions',
+      permission: 'View transactions'
     }
   ];
 
@@ -200,7 +230,7 @@ export default function FormRoleAdd({ closeModal }) {
                     <Grid item xs={12} sm={6}>
                       <FormGroup>
                         {permissions
-                          .filter((permission) => permission.id >= 1 && permission.id <= 8)
+                          .filter((permission) => permission.id >= 1 && permission.id <= 11)
                           .map((permission) => (
                             <FormControlLabel
                               key={permission.id}
@@ -227,7 +257,7 @@ export default function FormRoleAdd({ closeModal }) {
                     <Grid item xs={12} sm={6}>
                       <FormGroup>
                         {permissions
-                          .filter((permission) => permission.id >= 9 && permission.id <= 16)
+                          .filter((permission) => permission.id >= 12 && permission.id <= 22)
                           .map((permission) => (
                             <FormControlLabel
                               key={permission.id}

@@ -150,7 +150,7 @@ export default function FormAdminAdd({ closeModal }) {
                           {...getFieldProps('role')}
                           error={touched.role && errors.role}
                         >
-                          <MenuItem value={'admin'}>Admin</MenuItem>
+                          <MenuItem value={'Admin'}>Admin</MenuItem>
                         </Select>
                       </Stack>
                     </Grid>

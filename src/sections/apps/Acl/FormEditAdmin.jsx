@@ -139,7 +139,7 @@ export default function FormEditAdmin({ adminId, adminData, closeModal }) {
                       <Stack spacing={1}>
                         <InputLabel htmlFor="User-role">Role</InputLabel>
                         <Select id="User-role" {...getFieldProps('role')} defaultValue="admin" error={Boolean(touched.role && errors.role)}>
-                          <MenuItem value="admin">Admin</MenuItem>
+                          <MenuItem value="Admin">Admin</MenuItem>
                         </Select>
                       </Stack>
                     </Grid>

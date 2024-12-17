@@ -11,9 +11,10 @@ const initialState = {
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = window.localStorage.getItem('authToken');
+
 export const endpoints = {
   key: baseUrl,
-  list: '/v1/admin/users', // server URL
+  list: '/v1/admin/users?all=true', // server URL
   modal: '/modal', // server URL
   insert: '/v1/admin/admins', // server URL
   update: '/update', // server URL

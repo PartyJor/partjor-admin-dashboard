@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState, Fragment, useCallback } from 'react';
+import { useMemo, useState, Fragment, useCallback, useEffect } from 'react';
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 // import Chip from '@mui/material/Chip';
@@ -64,6 +64,7 @@ function ReactTable({ data, columns, modalToggler }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
+  const userData = JSON.parse(window.localStorage.getItem('userData'));
 
   const table = useReactTable({
     data,
@@ -111,9 +112,11 @@ function ReactTable({ data, columns, modalToggler }) {
 
         <Stack direction="row" alignItems="center" spacing={2}>
           <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} />
-          <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
-            Create admin
-          </Button>
+          {userData?.roles?.includes('super_admin') && (
+            <Button variant="contained" startIcon={<Add />} onClick={modalToggler} size="large">
+              Create admin
+            </Button>
+          )}
           <CSVExport {...{ data: table.getSelectedRowModel().flatRows.map((row) => row.original), headers, filename: 'User-list.csv' }} />
         </Stack>
       </Stack>
@@ -204,7 +207,8 @@ export default function AdminListPage() {
   const [activateEditAdminOpen, setActivateEditAdminOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [adminId, setAdminId] = useState('');
-  const [selectedAdmin, setSelectedAdmin] = useState('');
+  const [selectedAdmin, setSelectedAdmin] = useState({});
+  const [role, setRole] = useState('');
 
   const handleClose = useCallback(() => {
     setOpen((prevState) => !prevState);
@@ -225,6 +229,14 @@ export default function AdminListPage() {
 
     return `${firstInitial}${lastInitial}`;
   };
+
+  const userData = JSON.parse(window.localStorage.getItem('userData'));
+
+  useEffect(() => {
+    if (userData?.roles.includes('admin')) {
+      setRole('admin');
+    }
+  }, [role, userData?.roles]);
 
   const columns = useMemo(
     () => [
@@ -304,38 +316,43 @@ export default function AdminListPage() {
                   {collapseIcon}
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Edit Admin">
-                <IconButton
-                  color="info"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActivateEditAdminOpen(true);
-                    setAdminId(row.original.id);
-                    setSelectedAdmin(row?.original?.attributes);
-                  }}
-                >
-                  <Edit2 />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClose();
-                    setAdminId(row?.original?.id);
-                    setUserName(row.original.attributes.first_name + ' ' + row.original.attributes.last_name);
-                  }}
-                >
-                  <Trash />
-                </IconButton>
-              </Tooltip>
+
+              {userData?.roles?.includes('super_admin') && (
+                <>
+                  <Tooltip title="Edit Admin">
+                    <IconButton
+                      color="info"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActivateEditAdminOpen(true);
+                        setAdminId(row.original.id);
+                        setSelectedAdmin(row?.original?.attributes);
+                      }}
+                    >
+                      <Edit2 />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete">
+                    <IconButton
+                      color="error"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleClose();
+                        setAdminId(row?.original?.id);
+                        setUserName(row.original.attributes.first_name + ' ' + row.original.attributes.last_name);
+                      }}
+                    >
+                      <Trash />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
             </Stack>
           );
         }
       }
     ],
-    [theme, handleClose]
+    [theme, handleClose, userData?.roles]
   );
 
   if (loading) return <EmptyReactTable />;

@@ -174,7 +174,8 @@ export default function UserOverview() {
   ]);
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token =window.localStorage.getItem('authToken');  useEffect(() => {
+  const token = window.localStorage.getItem('authToken');
+  useEffect(() => {
     const fetchAnalytics = async () => {
       try {
         const [analyticsRes, monthlyDataRes] = await Promise.all([
@@ -190,6 +191,7 @@ export default function UserOverview() {
     };
 
     fetchAnalytics();
+    console.log('token', token);
   }, [token, baseUrl]);
 
   useEffect(() => {

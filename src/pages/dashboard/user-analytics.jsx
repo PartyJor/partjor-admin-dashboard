@@ -34,7 +34,7 @@ export default function DashboardDefault() {
   const [analytics, setAnalytics] = useState(0);
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const token =window.localStorage.getItem('authToken');  // const handleMenuSelection = (value) => {
+  const token = window.localStorage.getItem('authToken'); // const handleMenuSelection = (value) => {
   //   setSelectedValue(value);
   // };
 

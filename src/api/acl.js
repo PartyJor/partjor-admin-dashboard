@@ -14,8 +14,8 @@ const token = window.localStorage.getItem('authToken');
 export const endpoints = {
   key: baseUrl,
   admins: '/v1/admin/admins/',
-  roles: '/v1/admin/acl/roles',
-  permissions: '/v1/admin/acl/permissions' // server URL
+  roles: '/v1/admin/acl/roles/',
+  permissions: '/v1/admin/acl/permissions?all=true' // server URL
 };
 
 export function useGetRoles() {
@@ -194,14 +194,30 @@ export async function deleteAdmin(adminId) {
     });
 }
 
-export async function updateAdmin(adminId, data){
+export async function updateAdmin(adminId, data) {
   axios({
     method: 'PUT',
     url: endpoints.key + endpoints.admins + adminId,
     data: data,
     headers: {
       Authorization: `Bearer ${token}`
-    },
+    }
+  })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function deleteRole(roleId){
+  axios({
+    method: 'DELETE',
+    url: endpoints.key + endpoints.roles + roleId,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
     .then((response) => {
       console.log(response);
