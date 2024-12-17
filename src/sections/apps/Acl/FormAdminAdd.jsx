@@ -26,7 +26,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import CircularWithPath from 'components/@extended/progress/CircularWithPath';
 
 import { openSnackbar } from 'api/snackbar';
-import { insertUser } from 'api/user';
 import { createAdmin } from 'api/acl';
 
 // ==============================|| User ADD / EDIT - FORM ||============================== //
@@ -58,7 +57,7 @@ export default function FormAdminAdd({ closeModal }) {
       role: ''
     },
     validationSchema: UserSchema,
-    enableReinitialize: true,
+    enableReinitialize: true
   });
 
   const { errors, touched, isSubmitting, getFieldProps } = formik;
