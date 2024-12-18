@@ -43,8 +43,8 @@ export default function FormAdminAdd({ closeModal }) {
   }, []);
 
   const UserSchema = Yup.object().shape({
-    firstName: Yup.string().max(255).required('First Name is required'),
-    lastName: Yup.string().max(255).required('Last Name is required'),
+    first_name: Yup.string().max(255).required('First Name is required'),
+    last_name: Yup.string().max(255).required('Last Name is required'),
     email: Yup.string().max(255).required('Email is required').email('Must be a valid email'),
     role: Yup.string().required('Role is required')
   });
@@ -57,10 +57,38 @@ export default function FormAdminAdd({ closeModal }) {
       role: ''
     },
     validationSchema: UserSchema,
-    enableReinitialize: true
+    enableReinitialize: true,
+    onSubmit: (values, { setSubmitting }) => {
+      createAdmin(values)
+        .then(() => {
+          openSnackbar({
+            open: true,
+            message: 'Admin added successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            }
+          });
+          closeModal();
+        })
+        .catch((error) => {
+          console.error(error);
+          openSnackbar({
+            open: true,
+            message: error?.response?.data?.message,
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            }
+          });
+        })
+        .finally(() => {
+          setSubmitting(false); // Ensure the submitting state is reset
+        });
+    }
   });
 
-  const { errors, touched, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, isSubmitting, getFieldProps, handleSubmit } = formik;
 
   if (loading)
     return (
@@ -75,26 +103,7 @@ export default function FormAdminAdd({ closeModal }) {
     <>
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Form
-            autoComplete="off"
-            noValidate
-            onSubmit={(e) => {
-              e.preventDefault();
-              createAdmin(formik.values).then(() => {
-                openSnackbar({
-                  open: true,
-                  message: 'Admin added successfully.',
-                  variant: 'alert',
-
-                  alert: {
-                    color: 'success'
-                  }
-                });
-                closeModal();
-              });
-              console.log('admin', formik.values);
-            }}
-          >
+          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogTitle>New Admin</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 4 }}>

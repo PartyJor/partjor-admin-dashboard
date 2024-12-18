@@ -263,7 +263,7 @@ export default function UserOverview() {
                   <Box sx={{ minWidth: 120 }}>
                     <FormControl fullWidth>
                       <Select id="demo-simple-select" value={selectedValue} onChange={handleChangeSelect}>
-                        <MenuItem value={'ever'}>Ever</MenuItem>
+                        <MenuItem value={'ever'}>Total</MenuItem>
                         <MenuItem value={'today'}>Today</MenuItem>
                         <MenuItem value={'monthly'}>Monthly</MenuItem>
                       </Select>

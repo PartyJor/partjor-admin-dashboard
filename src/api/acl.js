@@ -145,84 +145,84 @@ export async function useFetchRole(userId) {
 }
 
 export async function createRole(data) {
-  axios({
-    method: 'POST',
-    url: endpoints.key + endpoints.roles,
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    data: data
-  })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: endpoints.key + endpoints.roles,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      data: data
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function createAdmin(data) {
-  axios({
-    method: 'POST',
-    url: endpoints.key + endpoints.admins,
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    data: data
-  })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: endpoints.key + endpoints.admins,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      data: data
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function deleteAdmin(adminId) {
-  axios({
-    method: 'DELETE',
-    url: endpoints.key + endpoints.admins + adminId,
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const response = await axios({
+      method: 'DELETE',
+      url: endpoints.key + endpoints.admins + adminId,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function updateAdmin(adminId, data) {
-  axios({
-    method: 'PUT',
-    url: endpoints.key + endpoints.admins + adminId,
-    data: data,
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const response = await axios({
+      method: 'PUT',
+      url: endpoints.key + endpoints.admins + adminId,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
-export async function deleteRole(roleId){
-  axios({
-    method: 'DELETE',
-    url: endpoints.key + endpoints.roles + roleId,
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
+export async function deleteRole(roleId) {
+  try {
+    const response = await axios({
+      method: 'DELETE',
+      url: endpoints.key + endpoints.roles + roleId,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }

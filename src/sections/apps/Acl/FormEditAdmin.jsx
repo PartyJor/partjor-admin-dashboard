@@ -57,6 +57,33 @@ export default function FormEditAdmin({ adminId, adminData, closeModal }) {
 
   const { errors, touched, isSubmitting, getFieldProps } = formik;
 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    try {
+      await updateAdmin(adminId, formik.values); // Wait for the promise to resolve
+      openSnackbar({
+        open: true,
+        message: 'Admin updated successfully.',
+        variant: 'alert',
+        alert: {
+          color: 'success'
+        }
+      });
+      closeModal();
+    } catch (error) {
+      console.error(error);
+      openSnackbar({
+        open: true,
+        message: error?.response?.data?.message || 'An unexpected error occurred.',
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        }
+      });
+    }
+    console.log('admin', formik.values);
+  };
+
   if (loading)
     return (
       <Box sx={{ p: 5 }}>
@@ -70,26 +97,7 @@ export default function FormEditAdmin({ adminId, adminData, closeModal }) {
     <>
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Form
-            autoComplete="off"
-            noValidate
-            onSubmit={(e) => {
-              e.preventDefault();
-              updateAdmin(adminId, formik.values).then(() => {
-                openSnackbar({
-                  open: true,
-                  message: 'Admin updated successfully.',
-                  variant: 'alert',
-
-                  alert: {
-                    color: 'success'
-                  }
-                });
-                closeModal();
-              });
-              console.log('admin', formik.values);
-            }}
-          >
+          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogTitle>Edit Admin</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 4 }}>
@@ -132,14 +140,25 @@ export default function FormEditAdmin({ adminId, adminData, closeModal }) {
                           {...getFieldProps('email')}
                           error={Boolean(touched.email && errors.email)}
                           helperText={touched.email && errors.email}
+                          disabled={true}
+                          style={{ backgroundColor: '#FAF9F6' }}
                         />
                       </Stack>
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1}>
                         <InputLabel htmlFor="User-role">Role</InputLabel>
-                        <Select id="User-role" {...getFieldProps('role')} defaultValue="admin" error={Boolean(touched.role && errors.role)}>
-                          <MenuItem value="Admin">Admin</MenuItem>
+                        <Select
+                          id="User-role"
+                          {...getFieldProps('role')}
+                          defaultValue="Admin"
+                          error={Boolean(touched.role && errors.role)}
+                          disabled={formik?.initialValues?.role === 'super_admin' ? true : false}
+                          style={{ backgroundColor: formik?.initialValues?.role === 'super_admin' ? '#FAF9F6' : '#FFF' }}
+                        >
+                          <MenuItem value={formik?.initialValues?.role === 'super_admin' ? 'super_admin' : 'Admin'}>
+                            {formik?.initialValues?.role === 'super_admin' ? 'Super Admin' : 'Admin'}
+                          </MenuItem>
                         </Select>
                       </Stack>
                     </Grid>

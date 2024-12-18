@@ -309,6 +309,7 @@ export default function AdminListPage() {
             ) : (
               <Eye />
             );
+          const userRole = row.original.attributes.roles.length > 0 ? row.original.attributes.roles[0].name : 'No Role';
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="View">
@@ -332,19 +333,21 @@ export default function AdminListPage() {
                       <Edit2 />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Delete">
-                    <IconButton
-                      color="error"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleClose();
-                        setAdminId(row?.original?.id);
-                        setUserName(row.original.attributes.first_name + ' ' + row.original.attributes.last_name);
-                      }}
-                    >
-                      <Trash />
-                    </IconButton>
-                  </Tooltip>
+                  {userRole !== 'super_admin' && (
+                    <Tooltip title="Delete">
+                      <IconButton
+                        color="error"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleClose();
+                          setAdminId(row?.original?.id);
+                          setUserName(row.original.attributes.first_name + ' ' + row.original.attributes.last_name);
+                        }}
+                      >
+                        <Trash />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </>
               )}
             </Stack>

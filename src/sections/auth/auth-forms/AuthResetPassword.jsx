@@ -82,7 +82,6 @@ export default function AuthResetPassword() {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            console.log(values);
             // password reset
             await resetPassword(values).then(() => {
               setStatus({ success: true });
@@ -104,8 +103,16 @@ export default function AuthResetPassword() {
             console.error(err);
             if (scriptedRef.current) {
               setStatus({ success: false });
-              setErrors({ submit: err.message });
+              setErrors({ submit: err?.response?.data?.message });
               setSubmitting(false);
+              openSnackbar({
+                open: true,
+                message: err?.response?.data?.message,
+                variant: 'alert',
+                alert: {
+                  color: 'error'
+                }
+              });
             }
           }
         }}
