@@ -88,7 +88,7 @@ const applications = {
       title: <FormattedMessage id="Events Management" />,
       type: 'item',
       icon: icons.User,
-      url: '/apps/event-list'
+      url: 'apps/events/events-list'
     },
     {
       id: 'admin',

@@ -29,8 +29,11 @@ const AppKanbanBoard = Loadable(lazy(() => import('sections/apps/kanban/Board'))
 
 const AppUserList = Loadable(lazy(() => import('pages/apps/User/list')));
 const AppUserCard = Loadable(lazy(() => import('pages/apps/User/card')));
+const AppUserEvents = Loadable(lazy(() => import('pages/apps/User/user-event-list')));
 
 const AppEventsList = Loadable(lazy(() => import('pages/apps/Events/eventlist')));
+const AppInvitationsList = Loadable(lazy(() => import('pages/apps/Events/InvitationsList')));
+const AppGiftsList = Loadable(lazy(() => import('pages/apps/Events/GiftsList')));
 
 const AppTransactionList = Loadable(lazy(() => import('pages/apps/Transactions/WalletTransactionsList')));
 
@@ -231,16 +234,45 @@ const MainRoutes = {
                       <AppUserCard />
                     </AuthGuard>
                   )
+                },
+                {
+                  path: 'user-events/:name',
+                  element: (
+                    <AuthGuard>
+                      <AppUserEvents />
+                    </AuthGuard>
+                  )
                 }
               ]
             },
             {
-              path: 'event-list',
-              element: (
-                <AuthGuard>
-                  <AppEventsList />
-                </AuthGuard>
-              )
+              path: 'events',
+              children: [
+                {
+                  path: 'events-list',
+                  element: (
+                    <AuthGuard>
+                      <AppEventsList />
+                    </AuthGuard>
+                  )
+                },
+                {
+                  path: 'invitations-list/:title',
+                  element: (
+                    <AuthGuard>
+                      <AppInvitationsList />
+                    </AuthGuard>
+                  )
+                },
+                {
+                  path: 'gifts-list/:title',
+                  element: (
+                    <AuthGuard>
+                      <AppGiftsList />
+                    </AuthGuard>
+                  )
+                }
+              ]
             },
             {
               path: 'ACL',

@@ -36,7 +36,6 @@ import CircularWithPath from 'components/@extended/progress/CircularWithPath';
 import { openSnackbar } from 'api/snackbar';
 import { updateEvent } from 'api/event';
 
-
 // assets
 import { Trash } from 'iconsax-react';
 
@@ -162,7 +161,7 @@ export default function FormEventEdit({ event, closeModal }) {
   const formik = useFormik({
     initialValues: getInitialValues(event),
     validationSchema: EventsSchema,
-    enableReinitialize: true,
+    enableReinitialize: true
   });
 
   const { errors, touched, isSubmitting, getFieldProps, setFieldValue } = formik;

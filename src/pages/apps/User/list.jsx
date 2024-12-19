@@ -49,7 +49,6 @@ import {
 } from 'components/third-party/react-table';
 
 import { useGetUser } from 'api/user';
-import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 
 // assets
 import { Add, Eye, Trash, UserRemove, UserTick } from 'iconsax-react';
@@ -268,7 +267,7 @@ export default function UserListPage() {
         cell: ({ row, getValue }) => (
           <Stack direction="row" spacing={1.5} alignItems="center">
             {row.original.attributes.avatar ? (
-              <Avatar alt="Avatar" size="sm" src={getImageUrl(`avatar-${!row.original.attributes.avatar}.png`, ImagePath.USERS)} />
+              <Avatar alt="Avatar 1" src={row.original.attributes.avatar} />
             ) : (
               <Avatar alt="User Initials" size="sm">
                 {getUserInitials(getValue())}

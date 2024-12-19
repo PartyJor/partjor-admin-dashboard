@@ -12,6 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import Button from '@mui/material/Button';
 
 // project-imports
 import MainCard from 'components/MainCard';
@@ -20,12 +21,15 @@ import Transitions from 'components/@extended/Transitions';
 
 // assets
 import { Location, Mobile, Calendar } from 'iconsax-react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 // ==============================|| User - VIEW ||============================== //
 
 export default function EventView({ data }) {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
 
   const getUserInitials = (name) => {
     if (!name) return '';
@@ -47,13 +51,17 @@ export default function EventView({ data }) {
     let timePeriod = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
 
-    return `${hours}:${minutes}:${timePeriod}`
+    return `${hours}:${minutes}:${timePeriod}`;
   }
   const start_time = data.attributes.start_time;
   let formattedStartTime = formatTime(start_time);
 
   const end_time = data.attributes.end_time;
   let formattedEndTime = formatTime(end_time);
+
+  useEffect(() => {
+    console.log('data', data);
+  });
 
   return (
     <Transitions type="slide" direction="down" in={true}>
@@ -209,8 +217,35 @@ export default function EventView({ data }) {
                 </ListItem>
                 <ListItem>
                   <Stack spacing={0.5}>
-                    <Typography color="secondary">Key Note</Typography>
+                    <Typography color="secondary">Description</Typography>
                     <Typography>{data.attributes.keynote}</Typography>
+                  </Stack>
+                </ListItem>
+                <ListItem>
+                  <Stack spacing={0.5}>
+                    <Typography color="secondary">Invitations Count</Typography>
+                    <Typography>{data.attributes.invitations_count}</Typography>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        navigate(`/apps/events/invitations-list/${data?.attributes?.title}`, { state: { eventId: data.id } });
+                      }}
+                    >
+                      View all invitations
+                    </Button>
+                  </Stack>
+                </ListItem>
+                <ListItem>
+                  <Stack spacing={0.5}>
+                    <Typography color="secondary">Gifts</Typography>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        navigate(`/apps/events/gifts-list/${data?.attributes?.title}`, { state: { eventId: data.id } });
+                      }}
+                    >
+                      View all gifts
+                    </Button>
                   </Stack>
                 </ListItem>
               </List>

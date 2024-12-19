@@ -9,7 +9,8 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = window.localStorage.getItem('authToken');
 export const endpoints = {
   key: baseUrl,
-  list: '/v1/admin/events/',
+  update: '/v1/admin/events/',
+  list: '/v1/admin/events?include=user,invitationsCount,stream',
   delete: '/v1/admin/events/'
 };
 
@@ -30,8 +31,6 @@ export function useGetEventsList() {
       revalidateOnReconnect: false
     }
   );
-
-  console.log('events', data);
   const memoizedValue = useMemo(
     () => ({
       Events: data?.data,
@@ -64,6 +63,22 @@ export async function deleteEvent(EventId) {
     });
 }
 
+export async function fetchEventDetails(EventId) {
+  try {
+    const response = await fetch(endpoints.key + `/v1/admin/events/${EventId}?include=invitations,gifts`, {
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching details:', error);
+    return null;
+  }
+}
+
 export async function updateEvent(EventId, EditedEvent, Event) {
   const eventId = EventId;
   const otherEventData = {
@@ -76,7 +91,7 @@ export async function updateEvent(EventId, EditedEvent, Event) {
   await axios({
     method: 'put',
     data: data,
-    url: endpoints.key + endpoints.list + `${eventId}`,
+    url: endpoints.key + endpoints.update + `${eventId}`,
     headers: {
       Authorization: `Bearer ${token}`
     }

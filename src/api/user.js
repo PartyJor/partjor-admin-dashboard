@@ -14,7 +14,8 @@ const token = window.localStorage.getItem('authToken');
 
 export const endpoints = {
   key: baseUrl,
-  list: '/v1/admin/users?all=true', // server URL
+  list: '/v1/admin/users?include=wallet&include=eventsCount',
+  user: '', // server URL
   modal: '/modal', // server URL
   insert: '/v1/admin/admins', // server URL
   update: '/update', // server URL
@@ -47,6 +48,37 @@ export function useGetUser() {
       UsersError: error,
       UsersValidating: isValidating,
       UsersEmpty: !isLoading && !data?.Users?.length
+    }),
+    [data, error, isLoading, isValidating]
+  );
+  return memoizedValue;
+}
+
+export function useGetUserDetails(userId) {
+  const { data, isLoading, error, isValidating } = useSWR(
+    [
+      endpoints.key + `/v1/admin/users/${userId}?include=events`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    ],
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
+  );
+
+  const memoizedValue = useMemo(
+    () => ({
+      Events: data?.data?.relationships?.events?.data,
+      EventsLoading: isLoading,
+      EventsError: error,
+      EventsValidating: isValidating,
+      EventsEmpty: !isLoading && !data?.Users?.length
     }),
     [data, error, isLoading, isValidating]
   );

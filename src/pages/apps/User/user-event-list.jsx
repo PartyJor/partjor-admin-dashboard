@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useMemo, useState, Fragment, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -35,14 +36,15 @@ import IconButton from 'components/@extended/IconButton';
 import AlertEventDelete from 'sections/apps/events/AlertEventDelete';
 // import AlertSuspendUser from 'sections/apps/user/AlertSuspendUser';
 // import AlertActivateUser from 'sections/apps/user/AlertActivateUser';
-import EventView from 'sections/apps/events/EventView';
-import EventsModal from './EventsModal';
+import EventsModal from '../Events/EventsModal';
+import UserEventView from './user-event-view';
 
 import EmptyReactTable from 'pages/tables/react-table/empty';
 
 import { DebouncedInput, HeaderSort, IndeterminateCheckbox, RowSelection, TablePagination } from 'components/third-party/react-table';
 
-import { useGetEventsList } from 'api/event';
+import { useGetUserDetails } from 'api/user';
+import { fetchEventDetails } from 'api/event';
 
 // assets
 import { Add, Eye, Trash, Edit } from 'iconsax-react';
@@ -57,6 +59,7 @@ function ReactTable({ data, columns }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
+  const { name } = useParams();
 
   const table = useReactTable({
     data,
@@ -94,110 +97,127 @@ function ReactTable({ data, columns }) {
   );
 
   return (
-    <MainCard content={false}>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 3 }}>
-        <DebouncedInput
-          value={globalFilter ?? ''}
-          onFilterChange={(value) => setGlobalFilter(String(value))}
-          placeholder={`Search ${data?.length} records...`}
-        />
-      </Stack>
-      <ScrollX>
-        <Stack>
-          <RowSelection selected={Object.keys(rowSelection).length} />
-          <TableContainer>
-            <Table>
-              <TableHead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      if (header.column.columnDef.meta !== undefined && header.column.getCanSort()) {
-                        Object.assign(header.column.columnDef.meta, {
-                          className: header.column.columnDef.meta.className + ' cursor-pointer prevent-select'
-                        });
-                      }
-
-                      return (
-                        <TableCell
-                          key={header.id}
-                          {...header.column.columnDef.meta}
-                          onClick={header.column.getToggleSortingHandler()}
-                          {...(header.column.getCanSort() &&
-                            header.column.columnDef.meta === undefined && {
-                              className: 'cursor-pointer prevent-select'
-                            })}
-                        >
-                          {header.isPlaceholder ? null : (
-                            <Stack direction="row" spacing={1} alignItems="center">
-                              <Box>{flexRender(header.column.columnDef.header, header.getContext())}</Box>
-                              {header.column.getCanSort() && <HeaderSort column={header.column} />}
-                            </Stack>
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHead>
-              <TableBody>
-                {table.getRowModel().rows.map((row) => (
-                  <Fragment key={row.original.id}>
-                    <TableRow>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} {...cell.column.columnDef.meta}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                    {row.getIsExpanded() && (
-                      <TableRow sx={{ bgcolor: backColor, '&:hover': { bgcolor: `${backColor} !important` }, overflow: 'hidden' }}>
-                        <TableCell colSpan={row.getVisibleCells().length} sx={{ p: 2.5, overflow: 'hidden' }}>
-                          <EventView data={row.original} />
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </Fragment>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <>
-            <Divider />
-            <Box sx={{ p: 2 }}>
-              <TablePagination
-                {...{
-                  setPageSize: table.setPageSize,
-                  setPageIndex: table.setPageIndex,
-                  getState: table.getState,
-                  getPageCount: table.getPageCount
-                }}
-              />
-            </Box>
-          </>
+    <>
+      <Typography style={{ marginBottom: 15, fontSize: 20, fontWeight: 'bold' }}>Events created by {name}</Typography>
+      <MainCard content={false}>
+        <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 3 }}>
+          <DebouncedInput
+            value={globalFilter ?? ''}
+            onFilterChange={(value) => setGlobalFilter(String(value))}
+            placeholder={`Search ${data?.length} records...`}
+          />
         </Stack>
-      </ScrollX>
-    </MainCard>
+        <ScrollX>
+          <Stack>
+            <RowSelection selected={Object.keys(rowSelection).length} />
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
+                        if (header.column.columnDef.meta !== undefined && header.column.getCanSort()) {
+                          Object.assign(header.column.columnDef.meta, {
+                            className: header.column.columnDef.meta.className + ' cursor-pointer prevent-select'
+                          });
+                        }
+
+                        return (
+                          <TableCell
+                            key={header.id}
+                            {...header.column.columnDef.meta}
+                            onClick={header.column.getToggleSortingHandler()}
+                            {...(header.column.getCanSort() &&
+                              header.column.columnDef.meta === undefined && {
+                                className: 'cursor-pointer prevent-select'
+                              })}
+                          >
+                            {header.isPlaceholder ? null : (
+                              <Stack direction="row" spacing={1} alignItems="center">
+                                <Box>{flexRender(header.column.columnDef.header, header.getContext())}</Box>
+                                {header.column.getCanSort() && <HeaderSort column={header.column} />}
+                              </Stack>
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  {table.getRowModel().rows.map((row) => (
+                    <Fragment key={row?.original?.id}>
+                      <TableRow>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id} {...cell.column.columnDef.meta}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                      {row.getIsExpanded() && (
+                        <TableRow sx={{ bgcolor: backColor, '&:hover': { bgcolor: `${backColor} !important` }, overflow: 'hidden' }}>
+                          <TableCell colSpan={row.getVisibleCells().length} sx={{ p: 2.5, overflow: 'hidden' }}>
+                            <UserEventView data={row?.original?.detail} />
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </Fragment>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <>
+              <Divider />
+              <Box sx={{ p: 2 }}>
+                <TablePagination
+                  {...{
+                    setPageSize: table.setPageSize,
+                    setPageIndex: table.setPageIndex,
+                    getState: table.getState,
+                    getPageCount: table.getPageCount
+                  }}
+                />
+              </Box>
+            </>
+          </Stack>
+        </ScrollX>
+      </MainCard>
+    </>
   );
 }
 // ==============================|| User LIST ||============================== //
 
-export default function EventsListPage() {
+export default function UserEventsListPage() {
   const theme = useTheme();
-  const { EventsLoading: loading, Events: lists } = useGetEventsList();
+  const location = useLocation();
+  const userId = location.state?.userId;
+  const { EventsLoading: loading, Events: lists } = useGetUserDetails(userId);
   const [open, setOpen] = useState(false);
   const [eventTitle, setEventTitle] = useState('');
   const [eventDeleteId, setEventDeleteId] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
   const [eventId, setEventId] = useState('');
   const [eventModalOpen, setEventModalOpen] = useState(false);
+  const [detailedData, setDetailedData] = useState([]);
 
   const handleClose = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    console.log('event', lists);
-  });
+    const fetchAllEventDetails = async () => {
+      if (lists) {
+        const details = await Promise.all(
+          lists.map(async (event) => {
+            const detail = await fetchEventDetails(event.id);
+            return { ...event, detail };
+          })
+        );
+        setDetailedData(details);
+      }
+    };
+    fetchAllEventDetails();
+  }, [lists]);
 
   const columns = useMemo(
     () => [
@@ -233,35 +253,35 @@ export default function EventsListPage() {
       },
       {
         header: 'Event Name',
-        accessorKey: 'attributes.title',
+        accessorKey: 'detail.data.attributes.title',
         cell: ({ row, getValue }) => (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Stack spacing={0}>
               <Typography variant="subtitle1">{getValue()}</Typography>
-              <Typography color="text.secondary">{row.original.attributes.email}</Typography>
+              <Typography color="text.secondary">{row.original.email}</Typography>
             </Stack>
           </Stack>
         )
       },
       {
         header: 'Category',
-        accessorKey: 'attributes.category',
+        accessorKey: 'detail.data.attributes.category',
         cell: ({ getValue }) => <Typography variant="text.primary">{getValue()}</Typography>
       },
       {
         header: 'Venue',
-        accessorKey: 'attributes.venue',
+        accessorKey: 'detail.data.attributes.venue',
         meta: {
           className: 'cell-left'
         }
       },
       {
         header: 'Type',
-        accessorKey: 'attributes.type'
+        accessorKey: 'detail.data.attributes.type'
       },
       {
         header: 'Status',
-        accessorKey: 'attributes.status',
+        accessorKey: 'detail.data.attributes.status',
         cell: ({ getValue }) => (
           <Chip
             color={
@@ -302,9 +322,9 @@ export default function EventsListPage() {
                   color="success"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedEvent(row.original.attributes);
+                    setSelectedEvent(row.original.detail.data.attributes);
                     setEventModalOpen(true);
-                    setEventId(row.original.id);
+                    setEventId(row.original.detail.data.id);
                   }}
                 >
                   <Edit />
@@ -316,8 +336,8 @@ export default function EventsListPage() {
                   onClick={(e) => {
                     e.stopPropagation();
                     handleClose();
-                    setEventDeleteId(row.original.id);
-                    setEventTitle(row.original.attributes.title);
+                    setEventDeleteId(row.original.detail.data.id);
+                    setEventTitle(row.original.detail.data.attributes.title);
                   }}
                 >
                   <Trash />
@@ -337,7 +357,7 @@ export default function EventsListPage() {
     <>
       <ReactTable
         {...{
-          data: lists,
+          data: detailedData,
           columns,
           modalToggler: () => {
             setUserModal(true);
